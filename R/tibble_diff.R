@@ -1,10 +1,11 @@
-x <- trees
-y <- trees %>%
-  slice(sample(1:31, size = 15)) #%>%
-  # mutate(Tall = Height > 70) %>%
-  # select(Tall, Girth, Volume) %>%
-  # mutate(ID = 1)
-
+#' Find differences between two tibbles.
+#'
+#' @param x A [tibble::tibble()].
+#' @param y A [tibble::tibble()].
+#' @importFrom tibble as_tibble tibble
+#' @importFrom dplyr mutate semi_join right_join select rename bind_rows arrange everything row_number
+#' @importFrom purrr map_dbl
+#' @export
 tibble_diff <- function(x, y) {
   x <- as_tibble(x)
   y <- as_tibble(y)
@@ -36,14 +37,5 @@ tibble_diff <- function(x, y) {
     ) %>%
     arrange(Index_X)
 
-
-}
-
-which_ <- function(x) {
-  result <- which(x)
-  if(length(result) < 1) {
-    NA
-  } else {
-    result
-  }
+  result
 }

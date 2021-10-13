@@ -2,6 +2,7 @@
 # mario
 
 <!-- badges: start -->
+[![R-CMD-check](https://github.com/seankross/mario/workflows/R-CMD-check/badge.svg)](https://github.com/seankross/mario/actions)
 <!-- badges: end -->
 
 Explore, deconstruct, and analyze pipes.
