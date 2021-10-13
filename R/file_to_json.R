@@ -1,9 +1,3 @@
-
-path <- system.file("test", "code", "slice-1.R", package = "mario")
-
-file_to_json(path)
-
-
 #' Turn a file that ends with a pipeline into JSON
 #'
 #' @param path The path to an R code file.

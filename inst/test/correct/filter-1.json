@@ -1,0 +1,48 @@
+[
+  {
+    "type": "filter",
+    "mapping": [
+      {
+        "illustrate": "highlight",
+        "select": "column",
+        "index": 2
+      },
+      {
+        "illustrate": "outline",
+        "select": "row",
+        "from": 1,
+        "to": "NA"
+      },
+      {
+        "illustrate": "outline",
+        "select": "row",
+        "from": 2,
+        "to": "NA"
+      },
+      {
+        "illustrate": "outline",
+        "select": "row",
+        "from": 3,
+        "to": "NA"
+      },
+      {
+        "illustrate": "outline",
+        "select": "row",
+        "from": 4,
+        "to": 1
+      },
+      {
+        "illustrate": "outline",
+        "select": "row",
+        "from": 5,
+        "to": 2
+      },
+      {
+        "illustrate": "outline",
+        "select": "row",
+        "from": 6,
+        "to": 3
+      }
+    ]
+  }
+]
