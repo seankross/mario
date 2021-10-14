@@ -20,6 +20,9 @@ file_to_json <- function(path) {
   (pipeline_tbl_to_list(ptbl)[-1]) %>% toJSON(auto_unbox = TRUE, pretty = TRUE)
 }
 
+# When you have the mario project open in RStudio, run this with
+# mario:::create_jsons()
+#' @importFrom purrr map2
 create_jsons <- function(r_files = list.files(system.file("test", "code", package = "mario"), full.names = TRUE),
                          dest_path = file.path("inst", "test", "correct")){
   file.path(dest_path, basename(r_files)) %>%
@@ -80,4 +83,11 @@ handle_filter <- function(Name_Strings, Verb_Strings, DF, Verbs,
   result <- handle_arrange(Name_Strings, Verb_Strings, DF, Verbs, Names, Args, Values, BA)
   result[["type"]] <- "filter"
   result
+}
+
+handle_select <- function(Name_Strings, Verb_Strings, DF, Verbs,
+                          Names, Args, Values, BA){
+  result <- list(type = "select")
+  suppressMessages(tbl_diff <- tibble_diff(BA[[1]], BA[[2]]))
+  result[["mapping"]] <- pmap(tbl_diff$Row_Position, ~ list(illustrate = "outline", select = "row", from = .x, to = .y))
 }

@@ -1,19 +1,28 @@
 #' See the data at each step of the pipeline
 #'
-#' @param verbs A [base::list()] of verbs from [get_verbs()].
+#' @param call A pipeline call, likely from either [parse_pipeline()]
+#' or [rlang::parse_expr()].
 #' @param envir An [base::environment()] where the pipeline will be evaluated.
 #'
-#' @importFrom tibble as_tibble
-#' @importFrom purrr accumulate map_if
+#' @importFrom tibble as_tibble is_tibble
+#' @importFrom purrr map_if
 #' @importFrom dplyr is_grouped_df
 #' @export
-get_data_steps <- function(verbs, envir = parent.frame()) {
-  c(
-    eval(verbs[[1]], envir = envir) %>%
-      tibble::as_tibble() %>%
-      list(),
-    suppressMessages(purrr::accumulate(verbs, ~ call("%>%", .x, .y) %>% eval(envir = envir))[-1])
-  ) %>%
-    purrr::map_if(~ (is.data.frame(.x) || is.vector(.x)) && !dplyr::is_grouped_df(.x), tibble::as_tibble)
+get_data_steps <- function(call, envir = parent.frame()) {
+  walk_pipeline(call, envir = envir) %>%
+    purrr::map_if(~ is.data.frame(.x) && !dplyr::is_grouped_df(.x) && !is_tibble(.x), tibble::as_tibble)
 }
 
+walk_pipeline <- function(pipeline, acc = list(), envir = parent.frame()){
+  if(is.call(pipeline)){
+    acc <- c(acc, list(eval(pipeline, envir = envir)))
+    pipeline <- as.list(pipeline)[[2]]
+    walk_pipeline(pipeline, acc, envir)
+  } else if(is.name(pipeline)){
+    c(acc, list(eval(pipeline, envir = envir))) %>% rev()
+  } else if(!is.language(pipeline)){
+    acc %>% rev()
+  } else {
+    NA
+  }
+}

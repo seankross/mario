@@ -37,7 +37,6 @@ pipeline_call %>%
 #> slice(1:3)
 
 pipeline_call %>% 
-  get_verbs() %>% 
   get_data_steps()
 
 #> [[1]]

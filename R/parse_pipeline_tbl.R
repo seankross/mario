@@ -19,7 +19,7 @@ parse_pipeline_tbl <- function(pipeline) {
 pipeline_tbl <- function(pipeline_call) {
   tibble(
     Verbs = pipeline_call %>% get_verbs(),
-    DF = Verbs %>% get_data_steps(),
+    DF = pipeline_call %>% get_data_steps(),
     Verb_Strings = Verbs %>% as.character(),
     Args = (Verbs %>% get_args())[["Args"]],
     Values = (Verbs %>% get_args())[["Values"]],

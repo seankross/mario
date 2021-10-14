@@ -4,10 +4,11 @@
 \alias{get_data_steps}
 \title{See the data at each step of the pipeline}
 \usage{
-get_data_steps(verbs, envir = parent.frame())
+get_data_steps(call, envir = parent.frame())
 }
 \arguments{
-\item{verbs}{A \code{\link[base:list]{base::list()}} of verbs from \code{\link[=get_verbs]{get_verbs()}}.}
+\item{call}{A pipeline call, likely from either \code{\link[=parse_pipeline]{parse_pipeline()}}
+or \code{\link[rlang:parse_expr]{rlang::parse_expr()}}.}
 
 \item{envir}{An \code{\link[base:environment]{base::environment()}} where the pipeline will be evaluated.}
 }
