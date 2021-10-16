@@ -1,0 +1,19 @@
+[
+  {
+    "type": "mutate",
+    "mapping": [
+      {
+        "illustrate": "outline",
+        "select": "column",
+        "from": 1,
+        "to": 3
+      },
+      {
+        "illustrate": "outline",
+        "select": "column",
+        "from": 2,
+        "to": 4
+      }
+    ]
+  }
+]

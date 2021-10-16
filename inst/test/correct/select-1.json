@@ -1,0 +1,19 @@
+[
+  {
+    "type": "select",
+    "mapping": [
+      {
+        "illustrate": "outline",
+        "select": "column",
+        "from": 1,
+        "to": "NA"
+      },
+      {
+        "illustrate": "outline",
+        "select": "column",
+        "from": 2,
+        "to": 1
+      }
+    ]
+  }
+]

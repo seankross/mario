@@ -5,14 +5,9 @@
 #' @importFrom jsonlite toJSON
 #' @export
 file_to_json <- function(path) {
-  # eval_env <- new_environment(parent = parent.frame())
   exprs_ <- parse_exprs(file(path))
   on.exit(close(file(path)))
-  # setup <- exprs_[-length(exprs_)]
   pipeline <- exprs_[[length(exprs_)]]
-
-  # map(setup, eval, envir = eval_env)
-  # eval(pipeline, envir = eval_env)
 
   ptbl <- pipeline_tbl(pipeline)
   ptbl$BA <- c(NA, before_after_tbl_list(ptbl$DF))
@@ -52,6 +47,10 @@ handle_pipeline_tbl_row <- function(Name_Strings, Verb_Strings, DF, Verbs,
     handle_arrange(Name_Strings, Verb_Strings, DF, Verbs, Names, Args, Values, BA)
   } else if(Name_Strings == "filter"){
     handle_filter(Name_Strings, Verb_Strings, DF, Verbs, Names, Args, Values, BA)
+  } else if(Name_Strings == "select"){
+    handle_select(Name_Strings, Verb_Strings, DF, Verbs, Names, Args, Values, BA)
+  } else if(Name_Strings == "mutate"){
+    handle_mutate(Name_Strings, Verb_Strings, DF, Verbs, Names, Args, Values, BA)
   } else {
     list(type = "NA")
   }
@@ -88,6 +87,30 @@ handle_filter <- function(Name_Strings, Verb_Strings, DF, Verbs,
 handle_select <- function(Name_Strings, Verb_Strings, DF, Verbs,
                           Names, Args, Values, BA){
   result <- list(type = "select")
+  #suppressMessages(tbl_diff <- tibble_diff(ptbl$BA[[2]][[1]], ptbl$BA[[2]][[2]]))
   suppressMessages(tbl_diff <- tibble_diff(BA[[1]], BA[[2]]))
-  result[["mapping"]] <- pmap(tbl_diff$Row_Position, ~ list(illustrate = "outline", select = "row", from = .x, to = .y))
+  result[["mapping"]] <- pmap(tbl_diff$Col_Names_Position %>% select(contains("Position")),
+                              ~ list(illustrate = "outline", select = "column", from = .x, to = .y))
+  result
+}
+
+handle_mutate  <- function(Name_Strings, Verb_Strings, DF, Verbs,
+                           Names, Args, Values, BA){
+  result <- list(type = "mutate")
+  before_columns <- colnames(BA[[1]])
+  after_columns <- colnames(BA[[2]])
+  source_args <- Values %>% as.character()
+  mutated_columns <- Args %>% as.character()
+
+  result[["mapping"]] <- after_columns %>% map(function(x){
+    mutated_columns[grep(x, source_args)]
+  }) %>%
+    map2(after_columns, function(to, from){
+      map2(rep(from, length(to)), to, ~list(from = .x, to = .y))
+    }) %>%
+    flatten() %>%
+    map(~ list(illustrate = "outline", select = "column",
+               from = which(.x[["from"]] == after_columns),
+               to = which(.x[["to"]] == after_columns)))
+  result
 }
