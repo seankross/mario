@@ -2,14 +2,23 @@
 #'
 #' @param path The path to an R code file.
 #' @importFrom rlang parse_exprs
-#' @importFrom jsonlite toJSON
 #' @export
 file_to_json <- function(path) {
   exprs_ <- parse_exprs(file(path))
   on.exit(close(file(path)))
-  pipeline <- exprs_[[length(exprs_)]]
+  pipeline_call <- exprs_[[length(exprs_)]]
 
-  ptbl <- pipeline_tbl(pipeline)
+  pipeline_to_json(pipeline_call)
+}
+
+#' Turn a pipeline call into JSON
+#'
+#' @param call A pipeline call, likely from either [parse_pipeline()]
+#' or [rlang::parse_expr()].
+#' @importFrom jsonlite toJSON
+#' @export
+pipeline_to_json <- function(call){
+  ptbl <- pipeline_tbl(call)
   ptbl$BA <- c(NA, before_after_tbl_list(ptbl$DF))
 
   (pipeline_tbl_to_list(ptbl)[-1]) %>% toJSON(auto_unbox = TRUE, pretty = TRUE)
@@ -84,6 +93,7 @@ handle_filter <- function(Name_Strings, Verb_Strings, DF, Verbs,
   result
 }
 
+#' @importFrom dplyr contains
 handle_select <- function(Name_Strings, Verb_Strings, DF, Verbs,
                           Names, Args, Values, BA){
   result <- list(type = "select")
@@ -94,17 +104,40 @@ handle_select <- function(Name_Strings, Verb_Strings, DF, Verbs,
   result
 }
 
+# Formaldehyde %>% mutate(Sum = carb + optden, TripleSum = Sum * 3, Two = 2) %>% parse_pipeline() -> call
+# Formaldehyde %>% mutate(carb = carb * 2) %>% parse_pipeline() -> call
+# Formaldehyde %>% mutate(DoubleCarb = carb * 2, TinyCarb = DoubleCarb / 200) %>% parse_pipeline() -> call
+# ptbl <- pipeline_tbl(call)
+# ptbl$BA <- c(NA, mario:::before_after_tbl_list(ptbl$DF))
+# map2(colnames(ptbl), ptbl %>% slice(2) %>% purrr::flatten(), ~assign(.x, .y, envir = globalenv()))
+
+#' @importFrom purrr flatten
 handle_mutate  <- function(Name_Strings, Verb_Strings, DF, Verbs,
                            Names, Args, Values, BA){
   result <- list(type = "mutate")
   before_columns <- colnames(BA[[1]])
   after_columns <- colnames(BA[[2]])
-  source_args <- Values %>% as.character()
+  values <- Values %>% as.character()
   mutated_columns <- Args %>% as.character()
 
-  result[["mapping"]] <- after_columns %>% map(function(x){
-    mutated_columns[grep(x, source_args)]
+  map2(Args, values, function(arg, value){
+    after_columns %>% keep(~ grepl(.x, value))
   }) %>%
+    map_if(~ length(.x) < 1, ~NA) %>%
+    map2(Args, function(from, to){
+      map2(rep(from, length(to)), to, ~list(from = .x, to = .y))
+    }) %>%
+    flatten() %>%
+    map(function(x){
+      if(is.na(x$from)){
+
+      }
+    })
+
+  Args
+
+  result[["mapping"]] <- after_columns %>%
+    map(~ mutated_columns[grep(.x, source_args)]) %>%
     map2(after_columns, function(to, from){
       map2(rep(from, length(to)), to, ~list(from = .x, to = .y))
     }) %>%
