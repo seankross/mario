@@ -1,0 +1,30 @@
+[
+  {
+    "type": "mutate",
+    "mapping": [
+      {
+        "illustrate": "outline",
+        "select": "code-column",
+        "from": 1,
+        "to": 3
+      },
+      {
+        "illustrate": "outline",
+        "select": "code-column",
+        "from": 2,
+        "to": 4
+      }
+    ]
+  },
+  {
+    "type": "mutate",
+    "mapping": [
+      {
+        "illustrate": "outline",
+        "select": "column",
+        "from": 2,
+        "to": 5
+      }
+    ]
+  }
+]
