@@ -104,46 +104,62 @@ handle_select <- function(Name_Strings, Verb_Strings, DF, Verbs,
   result
 }
 
-# Formaldehyde %>% mutate(Sum = carb + optden, TripleSum = Sum * 3, Two = 2) %>% parse_pipeline() -> call
+# # For debugging
+# Formaldehyde %>% mutate(Sum = carb + optden, TripleSum = Sum * 3, Two = 2, Col = sapply(2:7, function(x){x - 1})) %>% parse_pipeline() -> call
 # Formaldehyde %>% mutate(carb = carb * 2) %>% parse_pipeline() -> call
+# Formaldehyde %>% mutate(Quack = sapply(2:7, function(x){x - 1})) %>% parse_pipeline() -> call
 # Formaldehyde %>% mutate(DoubleCarb = carb * 2, TinyCarb = DoubleCarb / 200) %>% parse_pipeline() -> call
+# Formaldehyde %>% mutate(Sum = carb + optden, carb = carb * 2) %>% parse_pipeline() -> call
 # ptbl <- pipeline_tbl(call)
 # ptbl$BA <- c(NA, mario:::before_after_tbl_list(ptbl$DF))
 # map2(colnames(ptbl), ptbl %>% slice(2) %>% purrr::flatten(), ~assign(.x, .y, envir = globalenv()))
 
-#' @importFrom purrr flatten
+#' @importFrom purrr flatten discard
 handle_mutate  <- function(Name_Strings, Verb_Strings, DF, Verbs,
                            Names, Args, Values, BA){
   result <- list(type = "mutate")
   before_columns <- colnames(BA[[1]])
   after_columns <- colnames(BA[[2]])
-  values <- Values %>% as.character()
+  values <- Values %>%
+    as.character() %>%
+    strsplit("[^\\w\\d\\._]+", perl = TRUE)
   mutated_columns <- Args %>% as.character()
 
-  map2(Args, values, function(arg, value){
-    after_columns %>% keep(~ grepl(.x, value))
+  # The goal is to map from the sources of data to the new columns
+  # There are three sources of data:
+  # - from existing columns: mutate(Sum = carb + optden)
+  # - from columns created inline in the mutate: mutate(Double = card * 2, Triple = Double * 1.5)
+  # - from "raw" values: mutate(Two = 2)
+
+  from_old_columns <- map2(Args, values, function(arg, value){
+    list(from = which(value %in% before_columns), to = which(arg == after_columns))
   }) %>%
-    map_if(~ length(.x) < 1, ~NA) %>%
-    map2(Args, function(from, to){
-      map2(rep(from, length(to)), to, ~list(from = .x, to = .y))
+    discard(~ length(.x$from) < 1) %>%
+    map(function(z){
+      map2(z$from, rep(z$to, length(z$from)), function(from, to){
+        list(illustrate = "outline", select = "column", from = from, to = to)
+      })
     }) %>%
-    flatten() %>%
-    map(function(x){
-      if(is.na(x$from)){
+    flatten()
 
-      }
-    })
-
-  Args
-
-  result[["mapping"]] <- after_columns %>%
-    map(~ mutated_columns[grep(.x, source_args)]) %>%
-    map2(after_columns, function(to, from){
-      map2(rep(from, length(to)), to, ~list(from = .x, to = .y))
+  from_inline_columns <- intersect(unlist(values), Args) %>%
+    discard(~ any(.x == before_columns)) %>%
+    map(function(z){
+      list(from = which(after_columns == z),
+        to = which(Args[map_lgl(values, ~ z %in% .x)] == after_columns))
     }) %>%
-    flatten() %>%
-    map(~ list(illustrate = "outline", select = "column",
-               from = which(.x[["from"]] == after_columns),
-               to = which(.x[["to"]] == after_columns)))
+    map(~ list(illustrate = "outline", select = "column", from = .x$from, to = .x$to))
+
+  new_col_index <- which(after_columns %in% Args)
+  from_values_columns <- map_lgl(values, ~ all(!(.x %in% after_columns))) %>%
+    which() %>%
+    map(~list(illustrate = "outline",
+              select = "code-column",
+              from = .x, to = new_col_index[.x]))
+
+  result[["mapping"]] <- c(from_old_columns,
+                           from_inline_columns,
+                           from_values_columns)
+
   result
 }

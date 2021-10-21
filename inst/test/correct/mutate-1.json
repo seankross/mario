@@ -11,7 +11,7 @@
       {
         "illustrate": "outline",
         "select": "column",
-        "from": 2,
+        "from": 1,
         "to": 4
       }
     ]
