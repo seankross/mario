@@ -43,6 +43,60 @@
         "from": 6,
         "to": 6
       }
-    ]
+    ],
+    "data_frame": {
+      "lhs": [
+        {
+          "Time": 1,
+          "demand": 8.3
+        },
+        {
+          "Time": 2,
+          "demand": 10.3
+        },
+        {
+          "Time": 3,
+          "demand": 19
+        },
+        {
+          "Time": 4,
+          "demand": 16
+        },
+        {
+          "Time": 5,
+          "demand": 15.6
+        },
+        {
+          "Time": 7,
+          "demand": 19.8
+        }
+      ],
+      "rhs": [
+        {
+          "Time": 1,
+          "demand": 8.3
+        },
+        {
+          "Time": 2,
+          "demand": 10.3
+        },
+        {
+          "Time": 5,
+          "demand": 15.6
+        },
+        {
+          "Time": 4,
+          "demand": 16
+        },
+        {
+          "Time": 3,
+          "demand": 19
+        },
+        {
+          "Time": 7,
+          "demand": 19.8
+        }
+      ]
+    }
   }
 ]

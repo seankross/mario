@@ -77,7 +77,17 @@ before_after_tbl_list <- function(tbl_list) {
 
 #' @importFrom purrr pmap
 pipeline_tbl_to_list <- function(ptbl) {
-  pmap(ptbl, handle_pipeline_tbl_row)
+  pmap(ptbl, handle)
+}
+
+handle <- function(Name_Strings, Verb_Strings, DF, Verbs,
+                                    Names, Args, Values, BA){
+  result <- handle_pipeline_tbl_row(Name_Strings, Verb_Strings, DF, Verbs,
+                                    Names, Args, Values, BA)
+  if(length(BA) > 1){
+    result[["data_frame"]] <- list(lhs = BA[[1]], rhs = BA[[2]])
+  }
+  result
 }
 
 handle_pipeline_tbl_row <- function(Name_Strings, Verb_Strings, DF, Verbs,

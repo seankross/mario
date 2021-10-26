@@ -8,6 +8,60 @@
         "from": 1,
         "to": 1
       }
-    ]
+    ],
+    "data_frame": {
+      "lhs": [
+        {
+          "carb": 0.1,
+          "optden": 0.086
+        },
+        {
+          "carb": 0.3,
+          "optden": 0.269
+        },
+        {
+          "carb": 0.5,
+          "optden": 0.446
+        },
+        {
+          "carb": 0.6,
+          "optden": 0.538
+        },
+        {
+          "carb": 0.7,
+          "optden": 0.626
+        },
+        {
+          "carb": 0.9,
+          "optden": 0.782
+        }
+      ],
+      "rhs": [
+        {
+          "Carbohydrate": 0.1,
+          "optden": 0.086
+        },
+        {
+          "Carbohydrate": 0.3,
+          "optden": 0.269
+        },
+        {
+          "Carbohydrate": 0.5,
+          "optden": 0.446
+        },
+        {
+          "Carbohydrate": 0.6,
+          "optden": 0.538
+        },
+        {
+          "Carbohydrate": 0.7,
+          "optden": 0.626
+        },
+        {
+          "Carbohydrate": 0.9,
+          "optden": 0.782
+        }
+      ]
+    }
   }
 ]

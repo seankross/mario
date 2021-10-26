@@ -14,7 +14,73 @@
         "from_arg": 2,
         "to": 4
       }
-    ]
+    ],
+    "data_frame": {
+      "lhs": [
+        {
+          "carb": 0.1,
+          "optden": 0.086
+        },
+        {
+          "carb": 0.3,
+          "optden": 0.269
+        },
+        {
+          "carb": 0.5,
+          "optden": 0.446
+        },
+        {
+          "carb": 0.6,
+          "optden": 0.538
+        },
+        {
+          "carb": 0.7,
+          "optden": 0.626
+        },
+        {
+          "carb": 0.9,
+          "optden": 0.782
+        }
+      ],
+      "rhs": [
+        {
+          "carb": 0.1,
+          "optden": 0.086,
+          "X": 1,
+          "Y": "Two"
+        },
+        {
+          "carb": 0.3,
+          "optden": 0.269,
+          "X": 1,
+          "Y": "Two"
+        },
+        {
+          "carb": 0.5,
+          "optden": 0.446,
+          "X": 1,
+          "Y": "Two"
+        },
+        {
+          "carb": 0.6,
+          "optden": 0.538,
+          "X": 1,
+          "Y": "Two"
+        },
+        {
+          "carb": 0.7,
+          "optden": 0.626,
+          "X": 1,
+          "Y": "Two"
+        },
+        {
+          "carb": 0.9,
+          "optden": 0.782,
+          "X": 1,
+          "Y": "Two"
+        }
+      ]
+    }
   },
   {
     "type": "mutate",
@@ -31,6 +97,90 @@
         "from": 4,
         "to": 5
       }
-    ]
+    ],
+    "data_frame": {
+      "lhs": [
+        {
+          "carb": 0.1,
+          "optden": 0.086,
+          "X": 1,
+          "Y": "Two"
+        },
+        {
+          "carb": 0.3,
+          "optden": 0.269,
+          "X": 1,
+          "Y": "Two"
+        },
+        {
+          "carb": 0.5,
+          "optden": 0.446,
+          "X": 1,
+          "Y": "Two"
+        },
+        {
+          "carb": 0.6,
+          "optden": 0.538,
+          "X": 1,
+          "Y": "Two"
+        },
+        {
+          "carb": 0.7,
+          "optden": 0.626,
+          "X": 1,
+          "Y": "Two"
+        },
+        {
+          "carb": 0.9,
+          "optden": 0.782,
+          "X": 1,
+          "Y": "Two"
+        }
+      ],
+      "rhs": [
+        {
+          "carb": 0.1,
+          "optden": 0.086,
+          "X": 1,
+          "Y": "Two",
+          "Z": "Two Three"
+        },
+        {
+          "carb": 0.3,
+          "optden": 0.269,
+          "X": 1,
+          "Y": "Two",
+          "Z": "Two Three"
+        },
+        {
+          "carb": 0.5,
+          "optden": 0.446,
+          "X": 1,
+          "Y": "Two",
+          "Z": "Two Three"
+        },
+        {
+          "carb": 0.6,
+          "optden": 0.538,
+          "X": 1,
+          "Y": "Two",
+          "Z": "Two Three"
+        },
+        {
+          "carb": 0.7,
+          "optden": 0.626,
+          "X": 1,
+          "Y": "Two",
+          "Z": "Two Three"
+        },
+        {
+          "carb": 0.9,
+          "optden": 0.782,
+          "X": 1,
+          "Y": "Two",
+          "Z": "Two Three"
+        }
+      ]
+    }
   }
 ]

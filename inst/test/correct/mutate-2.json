@@ -44,6 +44,84 @@
         "from_arg": 4,
         "to": 6
       }
-    ]
+    ],
+    "data_frame": {
+      "lhs": [
+        {
+          "carb": 0.1,
+          "optden": 0.086
+        },
+        {
+          "carb": 0.3,
+          "optden": 0.269
+        },
+        {
+          "carb": 0.5,
+          "optden": 0.446
+        },
+        {
+          "carb": 0.6,
+          "optden": 0.538
+        },
+        {
+          "carb": 0.7,
+          "optden": 0.626
+        },
+        {
+          "carb": 0.9,
+          "optden": 0.782
+        }
+      ],
+      "rhs": [
+        {
+          "carb": 0.1,
+          "optden": 0.086,
+          "Sum": 0.186,
+          "TripleSum": 0.558,
+          "Two": 2,
+          "Col": 1
+        },
+        {
+          "carb": 0.3,
+          "optden": 0.269,
+          "Sum": 0.569,
+          "TripleSum": 1.707,
+          "Two": 2,
+          "Col": 2
+        },
+        {
+          "carb": 0.5,
+          "optden": 0.446,
+          "Sum": 0.946,
+          "TripleSum": 2.838,
+          "Two": 2,
+          "Col": 3
+        },
+        {
+          "carb": 0.6,
+          "optden": 0.538,
+          "Sum": 1.138,
+          "TripleSum": 3.414,
+          "Two": 2,
+          "Col": 4
+        },
+        {
+          "carb": 0.7,
+          "optden": 0.626,
+          "Sum": 1.326,
+          "TripleSum": 3.978,
+          "Two": 2,
+          "Col": 5
+        },
+        {
+          "carb": 0.9,
+          "optden": 0.782,
+          "Sum": 1.682,
+          "TripleSum": 5.046,
+          "Two": 2,
+          "Col": 6
+        }
+      ]
+    }
   }
 ]

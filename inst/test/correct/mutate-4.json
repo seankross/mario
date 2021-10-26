@@ -26,6 +26,72 @@
         "from_arg": 1,
         "to": 3
       }
-    ]
+    ],
+    "data_frame": {
+      "lhs": [
+        {
+          "carb": 0.1,
+          "optden": 0.086
+        },
+        {
+          "carb": 0.3,
+          "optden": 0.269
+        },
+        {
+          "carb": 0.5,
+          "optden": 0.446
+        },
+        {
+          "carb": 0.6,
+          "optden": 0.538
+        },
+        {
+          "carb": 0.7,
+          "optden": 0.626
+        },
+        {
+          "carb": 0.9,
+          "optden": 0.782
+        }
+      ],
+      "rhs": [
+        {
+          "carb": 0.1,
+          "optden": 0.086,
+          "Two": 2,
+          "Last": 102.1
+        },
+        {
+          "carb": 0.3,
+          "optden": 0.269,
+          "Two": 2,
+          "Last": 102.3
+        },
+        {
+          "carb": 0.5,
+          "optden": 0.446,
+          "Two": 2,
+          "Last": 102.5
+        },
+        {
+          "carb": 0.6,
+          "optden": 0.538,
+          "Two": 2,
+          "Last": 102.6
+        },
+        {
+          "carb": 0.7,
+          "optden": 0.626,
+          "Two": 2,
+          "Last": 102.7
+        },
+        {
+          "carb": 0.9,
+          "optden": 0.782,
+          "Two": 2,
+          "Last": 102.9
+        }
+      ]
+    }
   }
 ]
