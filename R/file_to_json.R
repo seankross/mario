@@ -141,10 +141,10 @@ handle_select <- function(Name_Strings, Verb_Strings, DF, Verbs,
 # Formaldehyde %>% mutate(Quack = sapply(2:7, function(x){x - 1})) %>% parse_pipeline() -> call
 # Formaldehyde %>% mutate(DoubleCarb = carb * 2, TinyCarb = DoubleCarb / 200) %>% parse_pipeline() -> call
 # Formaldehyde %>% mutate(Sum = carb + optden, carb = carb * 2) %>% parse_pipeline() -> call
-Formaldehyde %>% mutate(Two = 2, Last = Two + carb + 100) %>% parse_pipeline() -> call
-ptbl <- pipeline_tbl(call)
-ptbl$BA <- c(NA, mario:::before_after_tbl_list(ptbl$DF))
-map2(colnames(ptbl), ptbl %>% slice(2) %>% purrr::flatten(), ~assign(.x, .y, envir = globalenv()))
+# Formaldehyde %>% mutate(Two = 2, Last = Two + carb + 100) %>% parse_pipeline() -> call
+# ptbl <- pipeline_tbl(call)
+# ptbl$BA <- c(NA, mario:::before_after_tbl_list(ptbl$DF))
+# map2(colnames(ptbl), ptbl %>% slice(2) %>% purrr::flatten(), ~assign(.x, .y, envir = globalenv()))
 
 #' @importFrom purrr flatten discard
 handle_mutate  <- function(Name_Strings, Verb_Strings, DF, Verbs,
@@ -189,7 +189,7 @@ handle_mutate  <- function(Name_Strings, Verb_Strings, DF, Verbs,
               select = "code-column",
               from = .x, to = new_col_index[.x]))
 
-  simple_mapping <- c(from_old_columns, from_inline_columns)#, from_values_columns)
+  simple_mapping <- c(from_old_columns, from_inline_columns)
   from_mapping <- list()
   to_mapping <- list()
 
@@ -201,12 +201,6 @@ handle_mutate  <- function(Name_Strings, Verb_Strings, DF, Verbs,
       from_mapping[[from]] <- to
     } else {
       from_mapping[[from]] <- c(from_mapping[[from]], to)
-    }
-
-    if (is.null(to_mapping[[to]])) {
-      to_mapping[[to]] <- from
-    } else {
-      to_mapping[[to]] <- c(to_mapping[[to]], from)
     }
 
     if (is.null(to_mapping[[to]])) {
@@ -234,8 +228,20 @@ handle_mutate  <- function(Name_Strings, Verb_Strings, DF, Verbs,
                               from = lhs, to = rhs)
                        })
 
-  result[["mapping"]] <- c(from_mapping, to_mapping, from_values_columns)
+  to_mapping_endpoints <- to_mapping %>% map_dbl(~ .x$to)
+  for (i in seq_along(from_values_columns)) {
+    x <- from_values_columns[[i]]
+    if(x$to %in% to_mapping_endpoints){
+      index <- which(x$to == to_mapping_endpoints)
+      to_mapping[[index]][["from_arg"]] <- x$from
+    } else {
+      to_mapping <- c(to_mapping, list(list(illustrate = "outline",
+                                       select = "column-rhs",
+                                       from_arg = x$from, to = x$to)))
+    }
+  }
 
+  result[["mapping"]] <- c(from_mapping, to_mapping)#, from_values_columns)
 
   result
 }
