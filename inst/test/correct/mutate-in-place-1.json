@@ -4,19 +4,25 @@
     "mapping": [
       {
         "illustrate": "outline",
-        "select": "column",
+        "select": "column-lhs",
         "from": 1,
-        "to": 3
+        "to": [3, 1]
       },
       {
         "illustrate": "outline",
-        "select": "column",
+        "select": "column-lhs",
         "from": 2,
         "to": 3
       },
       {
         "illustrate": "outline",
-        "select": "column",
+        "select": "column-rhs",
+        "from": [1, 2],
+        "to": 3
+      },
+      {
+        "illustrate": "outline",
+        "select": "column-rhs",
         "from": 1,
         "to": 1
       }

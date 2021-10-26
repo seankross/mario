@@ -4,8 +4,9 @@
 #' @importFrom rlang parse_exprs
 #' @export
 file_to_json <- function(path) {
-  exprs_ <- parse_exprs(file(path))
-  on.exit(close(file(path)))
+  con <- file(path, open = "r")
+  on.exit(close(con))
+  exprs_ <- parse_exprs(con)
   pipeline_call <- exprs_[[length(exprs_)]]
 
   pipeline_to_json(pipeline_call)
@@ -136,11 +137,6 @@ handle_select <- function(Name_Strings, Verb_Strings, DF, Verbs,
 }
 
 # # For debugging
-# Formaldehyde %>% mutate(Sum = carb + optden, TripleSum = Sum * 3, Two = 2, Col = sapply(2:7, function(x){x - 1})) %>% parse_pipeline() -> call
-# Formaldehyde %>% mutate(carb = carb * 2) %>% parse_pipeline() -> call
-# Formaldehyde %>% mutate(Quack = sapply(2:7, function(x){x - 1})) %>% parse_pipeline() -> call
-# Formaldehyde %>% mutate(DoubleCarb = carb * 2, TinyCarb = DoubleCarb / 200) %>% parse_pipeline() -> call
-# Formaldehyde %>% mutate(Sum = carb + optden, carb = carb * 2) %>% parse_pipeline() -> call
 # Formaldehyde %>% mutate(Two = 2, Last = Two + carb + 100) %>% parse_pipeline() -> call
 # ptbl <- pipeline_tbl(call)
 # ptbl$BA <- c(NA, mario:::before_after_tbl_list(ptbl$DF))
