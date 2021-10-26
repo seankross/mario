@@ -1,0 +1,19 @@
+[
+  {
+    "type": "rename",
+    "mapping": [
+      {
+        "illustrate": "outline",
+        "select": "column",
+        "from": 1,
+        "to": 1
+      },
+      {
+        "illustrate": "outline",
+        "select": "column",
+        "from": 2,
+        "to": 2
+      }
+    ]
+  }
+]

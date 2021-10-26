@@ -92,6 +92,8 @@ handle_pipeline_tbl_row <- function(Name_Strings, Verb_Strings, DF, Verbs,
     handle_select(Name_Strings, Verb_Strings, DF, Verbs, Names, Args, Values, BA)
   } else if(Name_Strings == "mutate"){
     handle_mutate(Name_Strings, Verb_Strings, DF, Verbs, Names, Args, Values, BA)
+  } else if(Name_Strings == "rename"){
+    handle_rename(Name_Strings, Verb_Strings, DF, Verbs, Names, Args, Values, BA)
   } else {
     list(type = "NA")
   }
@@ -239,5 +241,26 @@ handle_mutate  <- function(Name_Strings, Verb_Strings, DF, Verbs,
 
   result[["mapping"]] <- c(from_mapping, to_mapping)#, from_values_columns)
 
+  result
+}
+
+#' @importFrom purrr map2_lgl
+handle_rename  <- function(Name_Strings, Verb_Strings, DF, Verbs,
+                           Names, Args, Values, BA){
+  result <- list(type = "rename")
+  before_columns <- colnames(BA[[1]])
+  after_columns <- colnames(BA[[2]])
+  changed <- map2_lgl(before_columns, after_columns, ~ .x != .y) %>% which()
+
+  if(any(before_columns %in% Args)){
+    no_op <- which(before_columns %in% Args)
+    if(!(no_op %in% changed)){
+      changed <- c(changed, no_op)
+    }
+  }
+
+  result[["mapping"]] <- changed %>%
+    sort() %>%
+    map(~ list(illustrate = "outline", select = "column", from = .x, to = .x))
   result
 }

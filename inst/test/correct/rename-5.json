@@ -1,0 +1,13 @@
+[
+  {
+    "type": "rename",
+    "mapping": [
+      {
+        "illustrate": "outline",
+        "select": "column",
+        "from": 1,
+        "to": 1
+      }
+    ]
+  }
+]
