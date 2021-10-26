@@ -2,14 +2,24 @@
 #'
 #' @param path The path to an R code file.
 #' @importFrom rlang parse_exprs
-#' @importFrom jsonlite toJSON
 #' @export
 file_to_json <- function(path) {
-  exprs_ <- parse_exprs(file(path))
-  on.exit(close(file(path)))
-  pipeline <- exprs_[[length(exprs_)]]
+  con <- file(path, open = "r")
+  on.exit(close(con))
+  exprs_ <- parse_exprs(con)
+  pipeline_call <- exprs_[[length(exprs_)]]
 
-  ptbl <- pipeline_tbl(pipeline)
+  pipeline_to_json(pipeline_call)
+}
+
+#' Turn a pipeline call into JSON
+#'
+#' @param call A pipeline call, likely from either [parse_pipeline()]
+#' or [rlang::parse_expr()].
+#' @importFrom jsonlite toJSON
+#' @export
+pipeline_to_json <- function(call){
+  ptbl <- pipeline_tbl(call)
   ptbl$BA <- c(NA, before_after_tbl_list(ptbl$DF))
 
   (pipeline_tbl_to_list(ptbl)[-1]) %>% toJSON(auto_unbox = TRUE, pretty = TRUE)
@@ -18,13 +28,44 @@ file_to_json <- function(path) {
 # When you have the mario project open in RStudio, run this with
 # mario:::create_jsons()
 #' @importFrom purrr map2
-create_jsons <- function(r_files = list.files(system.file("test", "code", package = "mario"), full.names = TRUE),
-                         dest_path = file.path("inst", "test", "correct")){
-  file.path(dest_path, basename(r_files)) %>%
+create_jsons <- function(code_files = NULL, clobber = FALSE){
+  dest_path <- file.path("inst", "test", "correct")
+  if(clobber && is.null(code_files)){
+    code_files <- list.files(file.path("inst", "test", "code"), full.names = TRUE)
+  } else if(!is.null(code_files)) {
+    code_files <- file.path("inst", "test", "code", code_files)
+  } else {
+    code_files <- list.files(file.path("inst", "test", "code"), full.names = TRUE) %>%
+      basename() %>%
+      tools::file_path_sans_ext()
+    json_files <- list.files(file.path("inst", "test", "correct"), full.names = TRUE) %>%
+      basename() %>%
+      tools::file_path_sans_ext()
+    code_files <- setdiff(code_files, json_files)
+    stopifnot(length(code_files) > 0)
+    code_files <- file.path("inst", "test", "code", code_files) %>%
+      paste0(".R")
+  }
+
+  file.path(dest_path, basename(code_files)) %>%
     tools::file_path_sans_ext() %>%
     paste0(".json") %>%
-    map2(r_files, ~writeLines(file_to_json(.y), .x))
+    map2(code_files, ~writeLines(file_to_json(.y), .x))
   invisible()
+}
+
+#' @importFrom purrr walk2
+check_jsons <- function(){
+  code_files <- list.files(file.path("inst", "test", "code"), full.names = TRUE)
+  json_files <- list.files(file.path("inst", "test", "correct"), full.names = TRUE)
+  walk2(code_files, json_files, function(code, json){
+    temp_file <- tempfile()
+    file_to_json(code) %>% writeLines(temp_file)
+    pass <- all.equal(readLines(temp_file), readLines(json))
+    status <- ifelse(isTRUE(pass), "Passed", "FAILED")
+    test_name <- basename(code) %>% tools::file_path_sans_ext()
+    message(status, ": ", test_name)
+  })
 }
 
 
@@ -84,6 +125,7 @@ handle_filter <- function(Name_Strings, Verb_Strings, DF, Verbs,
   result
 }
 
+#' @importFrom dplyr contains
 handle_select <- function(Name_Strings, Verb_Strings, DF, Verbs,
                           Names, Args, Values, BA){
   result <- list(type = "select")
@@ -94,23 +136,108 @@ handle_select <- function(Name_Strings, Verb_Strings, DF, Verbs,
   result
 }
 
+# # For debugging
+# Formaldehyde %>% mutate(Two = 2, Last = Two + carb + 100) %>% parse_pipeline() -> call
+# ptbl <- pipeline_tbl(call)
+# ptbl$BA <- c(NA, mario:::before_after_tbl_list(ptbl$DF))
+# map2(colnames(ptbl), ptbl %>% slice(2) %>% purrr::flatten(), ~assign(.x, .y, envir = globalenv()))
+
+#' @importFrom purrr flatten discard
 handle_mutate  <- function(Name_Strings, Verb_Strings, DF, Verbs,
                            Names, Args, Values, BA){
   result <- list(type = "mutate")
   before_columns <- colnames(BA[[1]])
   after_columns <- colnames(BA[[2]])
-  source_args <- Values %>% as.character()
+  values <- Values %>%
+    as.character() %>%
+    strsplit("[^\\w\\d\\._]+", perl = TRUE)
   mutated_columns <- Args %>% as.character()
 
-  result[["mapping"]] <- after_columns %>% map(function(x){
-    mutated_columns[grep(x, source_args)]
+  # The goal is to map from the sources of data to the new columns
+  # There are three sources of data:
+  # - from existing columns: mutate(Sum = carb + optden)
+  # - from columns created inline in the mutate: mutate(Double = card * 2, Triple = Double * 1.5)
+  # - from "raw" values: mutate(Two = 2)
+
+  from_old_columns <- map2(Args, values, function(arg, value){
+    list(from = which(before_columns %in% value), to = which(arg == after_columns))
   }) %>%
-    map2(after_columns, function(to, from){
-      map2(rep(from, length(to)), to, ~list(from = .x, to = .y))
+    discard(~ length(.x$from) < 1) %>%
+    map(function(z){
+      map2(z$from, rep(z$to, length(z$from)), function(from, to){
+        list(illustrate = "outline", select = "column", from = from, to = to)
+      })
     }) %>%
-    flatten() %>%
-    map(~ list(illustrate = "outline", select = "column",
-               from = which(.x[["from"]] == after_columns),
-               to = which(.x[["to"]] == after_columns)))
+    flatten()
+
+  from_inline_columns <- intersect(unlist(values), Args) %>%
+    discard(~ any(.x == before_columns)) %>%
+    map(function(z){
+      list(from = which(after_columns == z),
+        to = which(Args[map_lgl(values, ~ z %in% .x)] == after_columns))
+    }) %>%
+    map(~ list(illustrate = "outline", select = "column", from = .x$from, to = .x$to))
+
+  new_col_index <- which(after_columns %in% Args)
+  from_values_columns <- map_lgl(values, ~ all(!(.x %in% after_columns))) %>%
+    which() %>%
+    map(~list(illustrate = "outline",
+              select = "code-column",
+              from = .x, to = new_col_index[.x]))
+
+  simple_mapping <- c(from_old_columns, from_inline_columns)
+  from_mapping <- list()
+  to_mapping <- list()
+
+  for (i in seq_along(simple_mapping)) {
+    from <- simple_mapping[[i]][["from"]] %>% as.character()
+    to <- simple_mapping[[i]][["to"]] %>% as.character()
+
+    if (is.null(from_mapping[[from]])) {
+      from_mapping[[from]] <- to
+    } else {
+      from_mapping[[from]] <- c(from_mapping[[from]], to)
+    }
+
+    if (is.null(to_mapping[[to]])) {
+      to_mapping[[to]] <- from
+    } else {
+      to_mapping[[to]] <- c(to_mapping[[to]], from)
+    }
+  }
+
+  from_mapping <- map2(names(from_mapping),
+                       unname(from_mapping),
+                       function(lhs, rhs){
+                         lhs <- lhs %>% as.numeric()
+                         rhs <- rhs %>% as.numeric()
+                         list(illustrate = "outline", select = "column-lhs",
+                              from = lhs, to = rhs)
+                       })
+
+  to_mapping <- map2(names(to_mapping),
+                       unname(to_mapping),
+                       function(rhs, lhs){
+                         lhs <- lhs %>% as.numeric()
+                         rhs <- rhs %>% as.numeric()
+                         list(illustrate = "outline", select = "column-rhs",
+                              from = lhs, to = rhs)
+                       })
+
+  to_mapping_endpoints <- to_mapping %>% map_dbl(~ .x$to)
+  for (i in seq_along(from_values_columns)) {
+    x <- from_values_columns[[i]]
+    if(x$to %in% to_mapping_endpoints){
+      index <- which(x$to == to_mapping_endpoints)
+      to_mapping[[index]][["from_arg"]] <- x$from
+    } else {
+      to_mapping <- c(to_mapping, list(list(illustrate = "outline",
+                                       select = "column-rhs",
+                                       from_arg = x$from, to = x$to)))
+    }
+  }
+
+  result[["mapping"]] <- c(from_mapping, to_mapping)#, from_values_columns)
+
   result
 }

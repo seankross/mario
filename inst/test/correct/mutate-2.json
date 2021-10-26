@@ -12,19 +12,37 @@
         "illustrate": "outline",
         "select": "column-lhs",
         "from": 2,
+        "to": 3
+      },
+      {
+        "illustrate": "outline",
+        "select": "column-lhs",
+        "from": 3,
         "to": 4
       },
       {
         "illustrate": "outline",
         "select": "column-rhs",
-        "from": 1,
+        "from": [1, 2],
         "to": 3
       },
       {
         "illustrate": "outline",
         "select": "column-rhs",
-        "from": 2,
+        "from": 3,
         "to": 4
+      },
+      {
+        "illustrate": "outline",
+        "select": "column-rhs",
+        "from_arg": 3,
+        "to": 5
+      },
+      {
+        "illustrate": "outline",
+        "select": "column-rhs",
+        "from_arg": 4,
+        "to": 6
       }
     ]
   }

@@ -4,27 +4,32 @@
     "mapping": [
       {
         "illustrate": "outline",
-        "select": "column-lhs",
-        "from": 1,
-        "to": 3
-      },
-      {
-        "illustrate": "outline",
-        "select": "column-lhs",
-        "from": 2,
-        "to": 4
-      },
-      {
-        "illustrate": "outline",
         "select": "column-rhs",
-        "from": 1,
+        "from_arg": 1,
         "to": 3
       },
       {
         "illustrate": "outline",
         "select": "column-rhs",
-        "from": 2,
+        "from_arg": 2,
         "to": 4
+      }
+    ]
+  },
+  {
+    "type": "mutate",
+    "mapping": [
+      {
+        "illustrate": "outline",
+        "select": "column-lhs",
+        "from": 4,
+        "to": 5
+      },
+      {
+        "illustrate": "outline",
+        "select": "column-rhs",
+        "from": 4,
+        "to": 5
       }
     ]
   }
