@@ -27,13 +27,44 @@ pipeline_to_json <- function(call){
 # When you have the mario project open in RStudio, run this with
 # mario:::create_jsons()
 #' @importFrom purrr map2
-create_jsons <- function(r_files = list.files(system.file("test", "code", package = "mario"), full.names = TRUE),
-                         dest_path = file.path("inst", "test", "correct")){
-  file.path(dest_path, basename(r_files)) %>%
+create_jsons <- function(code_files = NULL, clobber = FALSE){
+  dest_path <- file.path("inst", "test", "correct")
+  if(clobber && is.null(code_files)){
+    code_files <- list.files(file.path("inst", "test", "code"), full.names = TRUE)
+  } else if(!is.null(code_files)) {
+    code_files <- file.path("inst", "test", "code", code_files)
+  } else {
+    code_files <- list.files(file.path("inst", "test", "code"), full.names = TRUE) %>%
+      basename() %>%
+      tools::file_path_sans_ext()
+    json_files <- list.files(file.path("inst", "test", "correct"), full.names = TRUE) %>%
+      basename() %>%
+      tools::file_path_sans_ext()
+    code_files <- setdiff(code_files, json_files)
+    stopifnot(length(code_files) > 0)
+    code_files <- file.path("inst", "test", "code", code_files) %>%
+      paste0(".R")
+  }
+
+  file.path(dest_path, basename(code_files)) %>%
     tools::file_path_sans_ext() %>%
     paste0(".json") %>%
-    map2(r_files, ~writeLines(file_to_json(.y), .x))
+    map2(code_files, ~writeLines(file_to_json(.y), .x))
   invisible()
+}
+
+#' @importFrom purrr walk2
+check_jsons <- function(){
+  code_files <- list.files(file.path("inst", "test", "code"), full.names = TRUE)
+  json_files <- list.files(file.path("inst", "test", "correct"), full.names = TRUE)
+  walk2(code_files, json_files, function(code, json){
+    temp_file <- tempfile()
+    file_to_json(code) %>% writeLines(temp_file)
+    pass <- all.equal(readLines(temp_file), readLines(json))
+    status <- ifelse(isTRUE(pass), "Passed", "FAILED")
+    test_name <- basename(code) %>% tools::file_path_sans_ext()
+    message(status, ": ", test_name)
+  })
 }
 
 
@@ -110,9 +141,10 @@ handle_select <- function(Name_Strings, Verb_Strings, DF, Verbs,
 # Formaldehyde %>% mutate(Quack = sapply(2:7, function(x){x - 1})) %>% parse_pipeline() -> call
 # Formaldehyde %>% mutate(DoubleCarb = carb * 2, TinyCarb = DoubleCarb / 200) %>% parse_pipeline() -> call
 # Formaldehyde %>% mutate(Sum = carb + optden, carb = carb * 2) %>% parse_pipeline() -> call
-# ptbl <- pipeline_tbl(call)
-# ptbl$BA <- c(NA, mario:::before_after_tbl_list(ptbl$DF))
-# map2(colnames(ptbl), ptbl %>% slice(2) %>% purrr::flatten(), ~assign(.x, .y, envir = globalenv()))
+Formaldehyde %>% mutate(Two = 2, Last = Two + carb + 100) %>% parse_pipeline() -> call
+ptbl <- pipeline_tbl(call)
+ptbl$BA <- c(NA, mario:::before_after_tbl_list(ptbl$DF))
+map2(colnames(ptbl), ptbl %>% slice(2) %>% purrr::flatten(), ~assign(.x, .y, envir = globalenv()))
 
 #' @importFrom purrr flatten discard
 handle_mutate  <- function(Name_Strings, Verb_Strings, DF, Verbs,
@@ -132,7 +164,7 @@ handle_mutate  <- function(Name_Strings, Verb_Strings, DF, Verbs,
   # - from "raw" values: mutate(Two = 2)
 
   from_old_columns <- map2(Args, values, function(arg, value){
-    list(from = which(value %in% before_columns), to = which(arg == after_columns))
+    list(from = which(before_columns %in% value), to = which(arg == after_columns))
   }) %>%
     discard(~ length(.x$from) < 1) %>%
     map(function(z){
@@ -157,9 +189,53 @@ handle_mutate  <- function(Name_Strings, Verb_Strings, DF, Verbs,
               select = "code-column",
               from = .x, to = new_col_index[.x]))
 
-  result[["mapping"]] <- c(from_old_columns,
-                           from_inline_columns,
-                           from_values_columns)
+  simple_mapping <- c(from_old_columns, from_inline_columns)#, from_values_columns)
+  from_mapping <- list()
+  to_mapping <- list()
+
+  for (i in seq_along(simple_mapping)) {
+    from <- simple_mapping[[i]][["from"]] %>% as.character()
+    to <- simple_mapping[[i]][["to"]] %>% as.character()
+
+    if (is.null(from_mapping[[from]])) {
+      from_mapping[[from]] <- to
+    } else {
+      from_mapping[[from]] <- c(from_mapping[[from]], to)
+    }
+
+    if (is.null(to_mapping[[to]])) {
+      to_mapping[[to]] <- from
+    } else {
+      to_mapping[[to]] <- c(to_mapping[[to]], from)
+    }
+
+    if (is.null(to_mapping[[to]])) {
+      to_mapping[[to]] <- from
+    } else {
+      to_mapping[[to]] <- c(to_mapping[[to]], from)
+    }
+  }
+
+  from_mapping <- map2(names(from_mapping),
+                       unname(from_mapping),
+                       function(lhs, rhs){
+                         lhs <- lhs %>% as.numeric()
+                         rhs <- rhs %>% as.numeric()
+                         list(illustrate = "outline", select = "column-lhs",
+                              from = lhs, to = rhs)
+                       })
+
+  to_mapping <- map2(names(to_mapping),
+                       unname(to_mapping),
+                       function(rhs, lhs){
+                         lhs <- lhs %>% as.numeric()
+                         rhs <- rhs %>% as.numeric()
+                         list(illustrate = "outline", select = "column-rhs",
+                              from = lhs, to = rhs)
+                       })
+
+  result[["mapping"]] <- c(from_mapping, to_mapping, from_values_columns)
+
 
   result
 }
