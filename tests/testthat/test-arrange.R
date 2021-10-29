@@ -1,5 +1,5 @@
 test_that("arrange works", {
-  verb <- "arrange"
+  verb <- "^arrange"
   temp_dir <- tempdir()
 
   code_path <- system.file("test", "code", package = "mario") %>%

@@ -1,5 +1,5 @@
 test_that("slice works", {
-  verb <- "slice"
+  verb <- "^slice"
   temp_dir <- tempdir()
 
   code_path <- system.file("test", "code", package = "mario") %>%

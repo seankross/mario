@@ -54,18 +54,18 @@ create_jsons <- function(code_files = NULL, clobber = FALSE){
   invisible()
 }
 
-#' @importFrom purrr walk2
+#' @importFrom purrr walk2 safely
 check_jsons <- function(){
   code_files <- list.files(file.path("inst", "test", "code"), full.names = TRUE)
   json_files <- list.files(file.path("inst", "test", "correct"), full.names = TRUE)
-  walk2(code_files, json_files, function(code, json){
+  x = map2(code_files, json_files, safely(function(code, json){
     temp_file <- tempfile()
     file_to_json(code) %>% writeLines(temp_file)
     pass <- all.equal(readLines(temp_file), readLines(json))
     status <- ifelse(isTRUE(pass), "Passed", "FAILED")
     test_name <- basename(code) %>% tools::file_path_sans_ext()
-    message(status, ": ", test_name)
-  })
+    list(status, ": ", test_name)
+  }))
 }
 
 
@@ -85,9 +85,15 @@ handle <- function(Name_Strings, Verb_Strings, DF, Verbs,
   result <- handle_pipeline_tbl_row(Name_Strings, Verb_Strings, DF, Verbs,
                                     Names, Args, Values, BA)
   if(length(BA) > 1){
-    result[["data_frame"]] <- list(lhs = BA[[1]], rhs = BA[[2]])
+    result[["data_frame"]] <- list(
+      lhs = list(col_names = colnames(BA[[1]]),
+                 data = BA[[1]]),
+      rhs = list(col_names = colnames(BA[[2]]),
+                 data = BA[[2]])
+      )
   }
-  result
+  result[["code_step"]] <- Verb_Strings
+  result[c("type", "code_step", "mapping", "data_frame")]
 }
 
 handle_pipeline_tbl_row <- function(Name_Strings, Verb_Strings, DF, Verbs,
@@ -114,7 +120,12 @@ handle_slice <- function(Name_Strings, Verb_Strings, DF, Verbs,
          Names, Args, Values, BA){
   result <- list(type = "slice")
   suppressMessages(tbl_diff <- tibble_diff(BA[[1]], BA[[2]]))
-  result[["mapping"]] <- pmap(tbl_diff$Row_Position, ~ list(illustrate = "outline", select = "row", from = .x, to = .y))
+  result[["mapping"]] <- pmap(tbl_diff$Row_Position,
+                              ~ list(illustrate = "outline", select = "row",
+                                     from = list(anchor = "lhs", index = .x),
+                                     to = list(anchor = "rhs", index = .y)
+                                )
+                          )
   result
 }
 
@@ -125,7 +136,8 @@ handle_arrange <- function(Name_Strings, Verb_Strings, DF, Verbs,
   result[["type"]] <- "arrange"
   colnames_in_call <- map_lgl(colnames(DF), ~grepl(.x, Verb_Strings)) %>% which()
   result[["mapping"]] <- map(colnames_in_call,
-       ~list(illustrate = "highlight", select = "column", index = .x)) %>%
+       ~list(illustrate = "highlight", select = "column",
+             anchor = "lhs", index = .x)) %>%
     c(result[["mapping"]])
   result
 }
@@ -141,15 +153,25 @@ handle_filter <- function(Name_Strings, Verb_Strings, DF, Verbs,
 handle_select <- function(Name_Strings, Verb_Strings, DF, Verbs,
                           Names, Args, Values, BA){
   result <- list(type = "select")
-  #suppressMessages(tbl_diff <- tibble_diff(ptbl$BA[[2]][[1]], ptbl$BA[[2]][[2]]))
   suppressMessages(tbl_diff <- tibble_diff(BA[[1]], BA[[2]]))
   result[["mapping"]] <- pmap(tbl_diff$Col_Names_Position %>% select(contains("Position")),
-                              ~ list(illustrate = "outline", select = "column", from = .x, to = .y))
+                              ~ list(illustrate = "outline",
+                                     select = "column",
+                                     from = list(anchor = "lhs", index = .x),
+                                     to = list(anchor = "rhs", index = .y)
+                                     ))
   result
 }
 
-# # For debugging
+# For debugging
 # Formaldehyde %>% mutate(Two = 2, Last = Two + carb + 100) %>% parse_pipeline() -> call
+#
+# Formaldehyde %>% mutate(Sum = carb + optden) %>% parse_pipeline() -> call
+#
+# Formaldehyde %>% mutate(Sum = carb + optden, DSum = Sum * 2,
+#                         Two = 2, Col = sapply(1:6, function(x){x+1}),  3) %>% parse_pipeline() -> call
+
+# Formaldehyde %>% mutate(3, Sum = carb + optden, Two = 2, DSum = Sum * 2) %>% parse_pipeline() -> call
 # ptbl <- pipeline_tbl(call)
 # ptbl$BA <- c(NA, mario:::before_after_tbl_list(ptbl$DF))
 # map2(colnames(ptbl), ptbl %>% slice(2) %>% purrr::flatten(), ~assign(.x, .y, envir = globalenv()))
@@ -177,7 +199,16 @@ handle_mutate  <- function(Name_Strings, Verb_Strings, DF, Verbs,
     discard(~ length(.x$from) < 1) %>%
     map(function(z){
       map2(z$from, rep(z$to, length(z$from)), function(from, to){
-        list(illustrate = "outline", select = "column", from = from, to = to)
+        if(from > length(before_columns)){
+          from_anchor <- "rhs"
+        } else {
+          from_anchor <- "lhs"
+        }
+
+        list(illustrate = "outline",
+             select = "column",
+             from = list(anchor = from_anchor, index = from),
+             to = list(anchor = "rhs", index = to))
       })
     }) %>%
     flatten()
@@ -188,69 +219,94 @@ handle_mutate  <- function(Name_Strings, Verb_Strings, DF, Verbs,
       list(from = which(after_columns == z),
         to = which(Args[map_lgl(values, ~ z %in% .x)] == after_columns))
     }) %>%
-    map(~ list(illustrate = "outline", select = "column", from = .x$from, to = .x$to))
+    map(function(x){
+      if(x$from > length(before_columns)){
+        from_anchor <- "rhs"
+      } else {
+        from_anchor <- "lhs"
+      }
 
-  new_col_index <- which(after_columns %in% Args)
+      list(illustrate = "outline",
+           select = "column",
+           from = list(anchor = from_anchor, index = x$from),
+           to = list(anchor = "rhs", index = x$to))
+    })
+
+  new_col_index <- setdiff(seq_along(after_columns), seq_along(before_columns))#which(after_columns %in% Args)
   from_values_columns <- map_lgl(values, ~ all(!(.x %in% after_columns))) %>%
     which() %>%
-    map(~list(illustrate = "outline",
-              select = "code-column",
-              from = .x, to = new_col_index[.x]))
+    map(function(x){
+      list(illustrate = "outline",
+           select = "column",
+           from = list(anchor = "arg", index = x),
+           to = list(anchor = "rhs", index = new_col_index[x]))
+    })
 
-  simple_mapping <- c(from_old_columns, from_inline_columns)
-  from_mapping <- list()
-  to_mapping <- list()
+  simple_mapping <- c(from_old_columns, from_inline_columns, from_values_columns)
 
-  for (i in seq_along(simple_mapping)) {
-    from <- simple_mapping[[i]][["from"]] %>% as.character()
-    to <- simple_mapping[[i]][["to"]] %>% as.character()
+  # from_mapping <- list()
+  # to_mapping <- list()
+  #
+  # for (i in seq_along(simple_mapping)) {
+  #   from <- simple_mapping[[i]][["from"]] %>% as.character()
+  #   to <- simple_mapping[[i]][["to"]] %>% as.character()
+  #
+  #   if (is.null(from_mapping[[from]])) {
+  #     from_mapping[[from]] <- to
+  #   } else {
+  #     from_mapping[[from]] <- c(from_mapping[[from]], to)
+  #   }
+  #
+  #   if (is.null(to_mapping[[to]])) {
+  #     to_mapping[[to]] <- from
+  #   } else {
+  #     to_mapping[[to]] <- c(to_mapping[[to]], from)
+  #   }
+  # }
+  #
+  # from_mapping <- map2(names(from_mapping),
+  #                      unname(from_mapping),
+  #                      function(lhs, rhs){
+  #                        lhs <- lhs %>% as.numeric()
+  #                        rhs <- rhs %>% as.numeric()
+  #                        list(illustrate = "outline", select = "column-lhs",
+  #                             from = lhs, to = rhs)
+  #                      })
+  #
+  # to_mapping <- map2(names(to_mapping),
+  #                      unname(to_mapping),
+  #                      function(rhs, lhs){
+  #                        lhs <- lhs %>% as.numeric()
+  #                        rhs <- rhs %>% as.numeric()
+  #                        list(illustrate = "outline", select = "column-rhs",
+  #                             from = lhs, to = rhs)
+  #                      })
 
-    if (is.null(from_mapping[[from]])) {
-      from_mapping[[from]] <- to
-    } else {
-      from_mapping[[from]] <- c(from_mapping[[from]], to)
-    }
+  # to_mapping_endpoints <- to_mapping %>% map_dbl(~ .x$to)
+  # for (i in seq_along(from_values_columns)) {
+  #   x <- from_values_columns[[i]]
+  #   if(x$to %in% to_mapping_endpoints){
+  #     index <- which(x$to == to_mapping_endpoints)
+  #     to_mapping[[index]][["from_arg"]] <- x$from
+  #   } else {
+  #     to_mapping <- c(to_mapping, list(list(illustrate = "outline",
+  #                                      select = "column-rhs",
+  #                                      from_arg = x$from, to = x$to)))
+  #   }
+  # }
+  #
+  # result[["mapping"]] <- c(from_mapping, to_mapping)#, from_values_columns)
 
-    if (is.null(to_mapping[[to]])) {
-      to_mapping[[to]] <- from
-    } else {
-      to_mapping[[to]] <- c(to_mapping[[to]], from)
-    }
-  }
+  to_col_index <- simple_mapping %>% map_dbl(~ .x$to$index)
+  raw_cols <- setdiff(new_col_index, to_col_index) %>%
+    map(function(x){
+      list(illustrate = "outline",
+           select = "column",
+           from = list(anchor = "arg", index = x - length(before_columns)),
+           to = list(anchor = "rhs", index = x))
+    })
 
-  from_mapping <- map2(names(from_mapping),
-                       unname(from_mapping),
-                       function(lhs, rhs){
-                         lhs <- lhs %>% as.numeric()
-                         rhs <- rhs %>% as.numeric()
-                         list(illustrate = "outline", select = "column-lhs",
-                              from = lhs, to = rhs)
-                       })
-
-  to_mapping <- map2(names(to_mapping),
-                       unname(to_mapping),
-                       function(rhs, lhs){
-                         lhs <- lhs %>% as.numeric()
-                         rhs <- rhs %>% as.numeric()
-                         list(illustrate = "outline", select = "column-rhs",
-                              from = lhs, to = rhs)
-                       })
-
-  to_mapping_endpoints <- to_mapping %>% map_dbl(~ .x$to)
-  for (i in seq_along(from_values_columns)) {
-    x <- from_values_columns[[i]]
-    if(x$to %in% to_mapping_endpoints){
-      index <- which(x$to == to_mapping_endpoints)
-      to_mapping[[index]][["from_arg"]] <- x$from
-    } else {
-      to_mapping <- c(to_mapping, list(list(illustrate = "outline",
-                                       select = "column-rhs",
-                                       from_arg = x$from, to = x$to)))
-    }
-  }
-
-  result[["mapping"]] <- c(from_mapping, to_mapping)#, from_values_columns)
-
+  result[["mapping"]] <- c(simple_mapping, raw_cols)
   result
 }
 
@@ -271,6 +327,56 @@ handle_rename  <- function(Name_Strings, Verb_Strings, DF, Verbs,
 
   result[["mapping"]] <- changed %>%
     sort() %>%
-    map(~ list(illustrate = "outline", select = "column", from = .x, to = .x))
+    map(~ list(illustrate = "outline", select = "column",
+               from = list(anchor = "lhs", index = .x),
+               to = list(anchor = "rhs", index = .x)))
+  result
+}
+
+# df = mtcars %>%
+#   group_by(cyl, gear)
+
+#' @importFrom scales hue_pal
+decorate_groups <- function(df, where = "row"){
+  group_id <- df %>% group_indices()
+  color_hex_codes <- hue_pal()(max(group_id))
+  color_tbl <- tibble(Color = color_hex_codes,
+                      Group_Index = 1:length(color_hex_codes))
+  row_tbl <- tibble(Row_Index = 1:nrow(df),
+         Group_Index = group_id)
+  left_join(row_tbl, color_tbl, by = "Group_Index") %>%
+    pmap(~ list(illustrate = "highlight", select = where,
+                index = ..1, group_id = ..2, color = ..3))
+}
+
+# handle_left_grouping <- function(result, df){
+#   if(is_grouped_df(df)){
+#     result[["mapping"]] <- decorate_groups(BA[[1]], "row-left")
+    #   }
+# }
+
+# mtcars %>% group_by(cyl) %>% group_by(cyl, gear) %>% parse_pipeline() -> call
+
+# Formaldehyde %>% group_by(carb > 0.5) %>% parse_pipeline() -> call
+# ptbl <- pipeline_tbl(call)
+# ptbl$BA <- c(NA, mario:::before_after_tbl_list(ptbl$DF))
+# map2(colnames(ptbl), ptbl %>% slice(2) %>% purrr::flatten(), ~assign(.x, .y, envir = globalenv()))
+#
+# result %>% jsonlite::toJSON(pretty = TRUE, auto_unbox = TRUE)
+
+handle_group_by <- function(Name_Strings, Verb_Strings, DF, Verbs,
+                           Names, Args, Values, BA){
+
+
+  result <- list(type = "group_by")
+  if(is_grouped_df(BA[[1]])){
+    result[["mapping"]] <- decorate_groups(BA[[1]], "row-left")
+  }
+  result[["mapping"]] <- decorate_groups(BA[[2]], "row-right") %>%
+    c(result[["mapping"]])
+  result[["mapping"]] <- which(colnames(BA[[2]]) %in% (group_vars(BA[[2]]))) %>%
+    map(~ list(illustrate = "outline", select = "column",
+              from = .x, to = .x)) %>%
+  c(result[["mapping"]])
   result
 }

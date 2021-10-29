@@ -1,7 +1,7 @@
 [
   {
-    "type": "mutate",
-    "code_step": "mutate(Two = 2, Last = Two + carb + 100)",
+    "type": "select",
+    "code_step": "select(-optden)",
     "mapping": [
       {
         "illustrate": "outline",
@@ -12,31 +12,19 @@
         },
         "to": {
           "anchor": "rhs",
-          "index": 4
-        }
-      },
-      {
-        "illustrate": "outline",
-        "select": "column",
-        "from": {
-          "anchor": "rhs",
-          "index": 3
-        },
-        "to": {
-          "anchor": "rhs",
-          "index": 4
-        }
-      },
-      {
-        "illustrate": "outline",
-        "select": "column",
-        "from": {
-          "anchor": "arg",
           "index": 1
+        }
+      },
+      {
+        "illustrate": "outline",
+        "select": "column",
+        "from": {
+          "anchor": "lhs",
+          "index": 2
         },
         "to": {
           "anchor": "rhs",
-          "index": 3
+          "index": "NA"
         }
       }
     ],
@@ -71,43 +59,25 @@
         ]
       },
       "rhs": {
-        "col_names": ["carb", "optden", "Two", "Last"],
+        "col_names": "carb",
         "data": [
           {
-            "carb": 0.1,
-            "optden": 0.086,
-            "Two": 2,
-            "Last": 102.1
+            "carb": 0.1
           },
           {
-            "carb": 0.3,
-            "optden": 0.269,
-            "Two": 2,
-            "Last": 102.3
+            "carb": 0.3
           },
           {
-            "carb": 0.5,
-            "optden": 0.446,
-            "Two": 2,
-            "Last": 102.5
+            "carb": 0.5
           },
           {
-            "carb": 0.6,
-            "optden": 0.538,
-            "Two": 2,
-            "Last": 102.6
+            "carb": 0.6
           },
           {
-            "carb": 0.7,
-            "optden": 0.626,
-            "Two": 2,
-            "Last": 102.7
+            "carb": 0.7
           },
           {
-            "carb": 0.9,
-            "optden": 0.782,
-            "Two": 2,
-            "Last": 102.9
+            "carb": 0.9
           }
         ]
       }

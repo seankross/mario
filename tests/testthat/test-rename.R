@@ -1,5 +1,5 @@
 test_that("rename works", {
-  verb <- "rename"
+  verb <- "^rename"
   temp_dir <- tempdir()
 
   code_path <- system.file("test", "code", package = "mario") %>%

@@ -1,7 +1,7 @@
 [
   {
     "type": "mutate",
-    "code_step": "mutate(Two = 2, Last = Two + carb + 100)",
+    "code_step": "mutate(Sum = carb + optden, DoubleSum = Sum * 2, Two = 2, 1 + 3)",
     "mapping": [
       {
         "illustrate": "outline",
@@ -12,7 +12,19 @@
         },
         "to": {
           "anchor": "rhs",
-          "index": 4
+          "index": 3
+        }
+      },
+      {
+        "illustrate": "outline",
+        "select": "column",
+        "from": {
+          "anchor": "lhs",
+          "index": 2
+        },
+        "to": {
+          "anchor": "rhs",
+          "index": 3
         }
       },
       {
@@ -32,11 +44,23 @@
         "select": "column",
         "from": {
           "anchor": "arg",
-          "index": 1
+          "index": 3
         },
         "to": {
           "anchor": "rhs",
-          "index": 3
+          "index": 5
+        }
+      },
+      {
+        "illustrate": "outline",
+        "select": "column",
+        "from": {
+          "anchor": "arg",
+          "index": 4
+        },
+        "to": {
+          "anchor": "rhs",
+          "index": 6
         }
       }
     ],
@@ -71,43 +95,55 @@
         ]
       },
       "rhs": {
-        "col_names": ["carb", "optden", "Two", "Last"],
+        "col_names": ["carb", "optden", "Sum", "DoubleSum", "Two", "1 + 3"],
         "data": [
           {
             "carb": 0.1,
             "optden": 0.086,
+            "Sum": 0.186,
+            "DoubleSum": 0.372,
             "Two": 2,
-            "Last": 102.1
+            "1 + 3": 4
           },
           {
             "carb": 0.3,
             "optden": 0.269,
+            "Sum": 0.569,
+            "DoubleSum": 1.138,
             "Two": 2,
-            "Last": 102.3
+            "1 + 3": 4
           },
           {
             "carb": 0.5,
             "optden": 0.446,
+            "Sum": 0.946,
+            "DoubleSum": 1.892,
             "Two": 2,
-            "Last": 102.5
+            "1 + 3": 4
           },
           {
             "carb": 0.6,
             "optden": 0.538,
+            "Sum": 1.138,
+            "DoubleSum": 2.276,
             "Two": 2,
-            "Last": 102.6
+            "1 + 3": 4
           },
           {
             "carb": 0.7,
             "optden": 0.626,
+            "Sum": 1.326,
+            "DoubleSum": 2.652,
             "Two": 2,
-            "Last": 102.7
+            "1 + 3": 4
           },
           {
             "carb": 0.9,
             "optden": 0.782,
+            "Sum": 1.682,
+            "DoubleSum": 3.364,
             "Two": 2,
-            "Last": 102.9
+            "1 + 3": 4
           }
         ]
       }

@@ -1,102 +1,146 @@
 [
   {
     "type": "arrange",
+    "code_step": "arrange(demand)",
     "mapping": [
       {
         "illustrate": "highlight",
         "select": "column",
+        "anchor": "lhs",
         "index": 2
       },
       {
         "illustrate": "outline",
         "select": "row",
-        "from": 1,
-        "to": 1
+        "from": {
+          "anchor": "lhs",
+          "index": 1
+        },
+        "to": {
+          "anchor": "rhs",
+          "index": 1
+        }
       },
       {
         "illustrate": "outline",
         "select": "row",
-        "from": 2,
-        "to": 2
+        "from": {
+          "anchor": "lhs",
+          "index": 2
+        },
+        "to": {
+          "anchor": "rhs",
+          "index": 2
+        }
       },
       {
         "illustrate": "outline",
         "select": "row",
-        "from": 3,
-        "to": 5
+        "from": {
+          "anchor": "lhs",
+          "index": 3
+        },
+        "to": {
+          "anchor": "rhs",
+          "index": 5
+        }
       },
       {
         "illustrate": "outline",
         "select": "row",
-        "from": 4,
-        "to": 4
+        "from": {
+          "anchor": "lhs",
+          "index": 4
+        },
+        "to": {
+          "anchor": "rhs",
+          "index": 4
+        }
       },
       {
         "illustrate": "outline",
         "select": "row",
-        "from": 5,
-        "to": 3
+        "from": {
+          "anchor": "lhs",
+          "index": 5
+        },
+        "to": {
+          "anchor": "rhs",
+          "index": 3
+        }
       },
       {
         "illustrate": "outline",
         "select": "row",
-        "from": 6,
-        "to": 6
+        "from": {
+          "anchor": "lhs",
+          "index": 6
+        },
+        "to": {
+          "anchor": "rhs",
+          "index": 6
+        }
       }
     ],
     "data_frame": {
-      "lhs": [
-        {
-          "Time": 1,
-          "demand": 8.3
-        },
-        {
-          "Time": 2,
-          "demand": 10.3
-        },
-        {
-          "Time": 3,
-          "demand": 19
-        },
-        {
-          "Time": 4,
-          "demand": 16
-        },
-        {
-          "Time": 5,
-          "demand": 15.6
-        },
-        {
-          "Time": 7,
-          "demand": 19.8
-        }
-      ],
-      "rhs": [
-        {
-          "Time": 1,
-          "demand": 8.3
-        },
-        {
-          "Time": 2,
-          "demand": 10.3
-        },
-        {
-          "Time": 5,
-          "demand": 15.6
-        },
-        {
-          "Time": 4,
-          "demand": 16
-        },
-        {
-          "Time": 3,
-          "demand": 19
-        },
-        {
-          "Time": 7,
-          "demand": 19.8
-        }
-      ]
+      "lhs": {
+        "col_names": ["Time", "demand"],
+        "data": [
+          {
+            "Time": 1,
+            "demand": 8.3
+          },
+          {
+            "Time": 2,
+            "demand": 10.3
+          },
+          {
+            "Time": 3,
+            "demand": 19
+          },
+          {
+            "Time": 4,
+            "demand": 16
+          },
+          {
+            "Time": 5,
+            "demand": 15.6
+          },
+          {
+            "Time": 7,
+            "demand": 19.8
+          }
+        ]
+      },
+      "rhs": {
+        "col_names": ["Time", "demand"],
+        "data": [
+          {
+            "Time": 1,
+            "demand": 8.3
+          },
+          {
+            "Time": 2,
+            "demand": 10.3
+          },
+          {
+            "Time": 5,
+            "demand": 15.6
+          },
+          {
+            "Time": 4,
+            "demand": 16
+          },
+          {
+            "Time": 3,
+            "demand": 19
+          },
+          {
+            "Time": 7,
+            "demand": 19.8
+          }
+        ]
+      }
     }
   }
 ]

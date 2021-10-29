@@ -1,5 +1,5 @@
 test_that("mutate works", {
-  verb <- "mutate"
+  verb <- "^mutate"
   temp_dir <- tempdir()
 
   code_path <- system.file("test", "code", package = "mario") %>%

@@ -1,5 +1,5 @@
 test_that("filter works", {
-  verb <- "filter"
+  verb <- "^filter"
   temp_dir <- tempdir()
 
   code_path <- system.file("test", "code", package = "mario") %>%
