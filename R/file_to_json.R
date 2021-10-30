@@ -57,15 +57,28 @@ create_jsons <- function(code_files = NULL, clobber = FALSE){
 #' @importFrom purrr walk2 safely
 check_jsons <- function(){
   code_files <- list.files(file.path("inst", "test", "code"), full.names = TRUE)
-  json_files <- list.files(file.path("inst", "test", "correct"), full.names = TRUE)
-  x = map2(code_files, json_files, safely(function(code, json){
+  json_files <- file.path("inst", "test", "correct",
+                          basename(code_files) %>%
+                            tools::file_path_sans_ext() %>%
+                            paste0(".json"))
+
+  test_results = map2(code_files, json_files, safely(function(code, json){
     temp_file <- tempfile()
     file_to_json(code) %>% writeLines(temp_file)
     pass <- all.equal(readLines(temp_file), readLines(json))
     status <- ifelse(isTRUE(pass), "Passed", "FAILED")
-    test_name <- basename(code) %>% tools::file_path_sans_ext()
-    list(status, ": ", test_name)
+    list(status = status)
   }))
+
+  walk2(code_files, test_results, function(code, tr){
+    test_name <- basename(code) %>% tools::file_path_sans_ext()
+
+    if(!is.null(tr$error)){
+      message("ERROR : ", test_name)
+    } else {
+      message(tr$result$status, ": ", test_name)
+    }
+  })
 }
 
 
@@ -337,6 +350,7 @@ handle_rename  <- function(Name_Strings, Verb_Strings, DF, Verbs,
 #   group_by(cyl, gear)
 
 #' @importFrom scales hue_pal
+#' @importFrom dplyr group_indices group_vars left_join
 decorate_groups <- function(df, where = "row"){
   group_id <- df %>% group_indices()
   color_hex_codes <- hue_pal()(max(group_id))
