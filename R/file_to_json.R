@@ -25,6 +25,18 @@ pipeline_to_json <- function(call){
   (pipeline_tbl_to_list(ptbl)[-1]) %>% toJSON(auto_unbox = TRUE, pretty = TRUE)
 }
 
+#' Turn a string of a pipeline into a JSON
+#'
+#' @param code A string of R code.
+#' @importFrom rlang parse_exprs
+#' @export
+string_to_json <- function(code) {
+  exprs_ <- parse_exprs(code)
+  pipeline_call <- exprs_[[length(exprs_)]]
+
+  pipeline_to_json(pipeline_call)
+}
+
 # When you have the mario project open in RStudio, run this with
 # mario:::create_jsons()
 #' @importFrom purrr map2
