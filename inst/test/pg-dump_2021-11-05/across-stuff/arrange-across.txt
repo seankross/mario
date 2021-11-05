@@ -1,0 +1,7 @@
+# https://dplyr.tidyverse.org/reference/arrange.html
+library(dplyr)
+
+# note: frontend should abbreviate by displaying fewer rows
+
+# use across() access select()-style semantics
+iris %>% arrange(across(starts_with("Sepal")))

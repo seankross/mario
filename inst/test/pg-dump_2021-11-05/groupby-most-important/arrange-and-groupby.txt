@@ -1,0 +1,7 @@
+# https://dplyr.tidyverse.org/reference/arrange.html
+library(dplyr)
+
+# grouped arrange ignores groups
+by_cyl <- mtcars %>% group_by(cyl)
+by_cyl %>% arrange(desc(wt))
+

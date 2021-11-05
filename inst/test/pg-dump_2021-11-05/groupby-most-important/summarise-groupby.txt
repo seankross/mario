@@ -1,0 +1,7 @@
+# https://dplyr.tidyverse.org/reference/summarise.html
+library(dplyr)
+
+# Usually, you'll want to group first
+mtcars %>%
+  group_by(cyl) %>%
+  summarise(mean = mean(disp), n = n())

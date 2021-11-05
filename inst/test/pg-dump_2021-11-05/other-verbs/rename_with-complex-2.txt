@@ -1,0 +1,10 @@
+# https://dplyr.tidyverse.org/reference/rename.html
+library(dplyr)
+
+iris <- as_tibble(iris) # so it prints a little nicer
+
+# it would be nice to show which columns actually changed ... but i
+# suppose the frontend can infer it if the backend JSON provides arrows
+# from *all* LHS columns to their corresponding RHS columns, and the
+# frontend can see which column names changed and only draw those
+iris %>% rename_with(~ tolower(gsub(".", "_", .x, fixed = TRUE)))

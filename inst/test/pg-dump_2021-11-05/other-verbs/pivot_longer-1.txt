@@ -1,0 +1,4 @@
+# actually from select docs:
+# https://dplyr.tidyverse.org/reference/select.html
+library(dplyr)
+iris %>% pivot_longer(Sepal.Length)

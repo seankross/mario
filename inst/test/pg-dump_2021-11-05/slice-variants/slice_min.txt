@@ -1,0 +1,5 @@
+# https://dplyr.tidyverse.org/reference/slice.html
+library(dplyr)
+
+# Rows with minimum and maximum values of a variable
+mtcars %>% slice_min(mpg, n = 5)

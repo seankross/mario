@@ -1,0 +1,8 @@
+# https://dplyr.tidyverse.org/reference/mutate.html
+library(dplyr)
+
+# Use across() with mutate() to apply a transformation
+# to multiple columns in a tibble.
+starwars %>%
+ select(name, homeworld, species) %>%
+ mutate(across(!name, as.factor))

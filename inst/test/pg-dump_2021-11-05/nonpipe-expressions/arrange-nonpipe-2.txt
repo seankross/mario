@@ -1,0 +1,6 @@
+# https://dplyr.tidyverse.org/reference/arrange.html
+library(dplyr)
+
+# some users will try to run it without pipe, so it must do something sensible
+# right now displays the wrong thing - 'desc(disp)' - which is misleading
+arrange(mtcars, desc(disp))

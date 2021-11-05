@@ -1,0 +1,7 @@
+# https://dplyr.tidyverse.org/reference/mutate.html
+library(dplyr)
+
+starwars %>%
+  select(name, mass, species) %>%
+  group_by(species) %>%
+  mutate(mass_norm = mass / mean(mass, na.rm = TRUE))

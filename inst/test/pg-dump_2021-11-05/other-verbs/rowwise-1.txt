@@ -1,0 +1,4 @@
+# https://github.com/rstudio/cheatsheets/blob/main/data-transformation.pdf
+library(dplyr)
+
+starwars %>% rowwise() %>% mutate(film_count=length(films))

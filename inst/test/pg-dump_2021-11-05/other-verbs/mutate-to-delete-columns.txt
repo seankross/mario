@@ -1,0 +1,11 @@
+# https://dplyr.tidyverse.org/reference/mutate.html
+library(dplyr)
+
+# json trace should show that mass and films columns are now NULL
+# so that we know to cross them out, etc.
+starwars %>%
+ mutate(
+  mass = NULL,
+  height = height * 0.0328084, # convert to feet
+  films = NULL
+)

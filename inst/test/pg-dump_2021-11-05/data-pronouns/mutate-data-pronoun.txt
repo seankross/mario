@@ -1,0 +1,8 @@
+# https://dplyr.tidyverse.org/reference/mutate.html
+library(dplyr)
+
+
+# Indirection ----------------------------------------
+# Refer to column names stored as strings with the `.data` pronoun:
+vars <- c("mass", "height")
+starwars %>% mutate(prod = .data[[vars[[1]]]] * .data[[vars[[2]]]])

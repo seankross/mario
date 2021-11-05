@@ -1,0 +1,4 @@
+# https://dplyr.tidyverse.org/reference/slice.html
+library(dplyr)
+
+mtcars %>% slice_tail(n=8)

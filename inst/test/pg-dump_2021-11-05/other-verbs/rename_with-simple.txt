@@ -1,0 +1,8 @@
+# https://dplyr.tidyverse.org/reference/rename.html
+library(dplyr)
+
+iris <- as_tibble(iris) # so it prints a little nicer
+
+# the backend can return arrows from each LHS column to the
+# corresponding RHS column
+iris %>% rename_with(toupper)

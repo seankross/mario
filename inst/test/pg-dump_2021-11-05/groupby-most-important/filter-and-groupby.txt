@@ -1,0 +1,5 @@
+# https://dplyr.tidyverse.org/reference/filter.html
+library(dplyr)
+
+# starwars data frame has values that are themselves LISTS, eeeeek!
+starwars %>% group_by(gender) %>% filter(mass > mean(mass, na.rm = TRUE))

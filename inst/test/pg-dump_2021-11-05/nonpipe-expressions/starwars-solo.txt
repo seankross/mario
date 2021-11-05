@@ -1,0 +1,6 @@
+# https://dplyr.tidyverse.org/reference/filter.html
+library(dplyr)
+
+# the first thing i try to do when seeing a new data frame is to simply print it out
+# starwars data frame has values that are themselves LISTS, eeeeek!
+starwars

@@ -1,0 +1,5 @@
+# https://dplyr.tidyverse.org/reference/filter.html
+library(dplyr)
+
+# not using a pipe
+filter(starwars, species == "Human")

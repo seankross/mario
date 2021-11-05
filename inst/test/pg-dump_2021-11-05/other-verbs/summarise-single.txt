@@ -1,0 +1,8 @@
+# https://dplyr.tidyverse.org/reference/summarise.html
+library(dplyr)
+
+# frontend should visualize what data goes into each summary row
+
+# A summary applied to ungrouped tbl returns a single row
+mtcars %>%
+  summarise(mean = mean(disp), n = n())

@@ -1,0 +1,4 @@
+# https://dplyr.tidyverse.org/reference/filter.html
+library(dplyr)
+# not using a pipe
+filter(starwars, hair_color == "none", eye_color == "black")

@@ -1,0 +1,6 @@
+# https://rstudio-education.github.io/tidyverse-cookbook/tidy.html
+library(dplyr)
+t <- tibble(number = c(1, 2, 3), 
+            letter = c("a", "b", "c"),
+            greek = c("alpha", "beta", "gamma"))
+t %>% select(letter)

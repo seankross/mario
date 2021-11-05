@@ -1,0 +1,7 @@
+# https://rstudio-education.github.io/tidyverse-cookbook/tidy.html
+library(dplyr)
+t <- tribble(~number, ~letter,   ~greek,
+              1,     "a",  "alpha",
+              2,     "b",   "beta",
+              3,     "c",  "gamma")
+t %>% select(letter)

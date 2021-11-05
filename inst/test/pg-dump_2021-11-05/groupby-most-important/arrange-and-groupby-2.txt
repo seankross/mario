@@ -1,0 +1,6 @@
+# https://dplyr.tidyverse.org/reference/arrange.html
+library(dplyr)
+
+# grouped arrange ignores groups ... Unless you specifically ask:
+by_cyl <- mtcars %>% group_by(cyl)
+by_cyl %>% arrange(desc(wt), .by_group = TRUE)

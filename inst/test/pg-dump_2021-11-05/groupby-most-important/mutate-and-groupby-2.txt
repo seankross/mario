@@ -1,0 +1,8 @@
+# https://dplyr.tidyverse.org/reference/mutate.html
+library(dplyr)
+
+# Window functions are useful for grouped mutates:
+starwars %>%
+ select(name, mass, homeworld) %>%
+ group_by(homeworld) %>%
+ mutate(rank = min_rank(desc(mass)))

@@ -1,0 +1,5 @@
+# https://dplyr.tidyverse.org/reference/slice.html
+library(dplyr)
+
+# slice_sample() allows you to random select with or without replacement
+mtcars %>% slice_sample(n = 5)

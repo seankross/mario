@@ -1,0 +1,7 @@
+# https://dplyr.tidyverse.org/reference/summarise.html
+library(dplyr)
+
+# dplyr 1.0.0 allows to summarise to more than one value:
+mtcars %>%
+   group_by(cyl) %>%
+   summarise(qs = quantile(disp, c(0.25, 0.75)), prob = c(0.25, 0.75))

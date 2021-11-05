@@ -1,0 +1,13 @@
+# https://dplyr.tidyverse.org/ (example on home page)
+library(dplyr)
+
+starwars %>%
+  group_by(species) %>%
+  summarise(
+    n = n(),
+    mass = mean(mass, na.rm = TRUE)
+  ) %>%
+  filter(
+    n > 1,
+    mass > 50
+  )

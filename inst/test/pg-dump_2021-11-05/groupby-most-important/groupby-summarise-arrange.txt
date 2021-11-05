@@ -1,0 +1,7 @@
+# https://rstudio-education.github.io/tidyverse-cookbook/program.html
+library(dplyr)
+
+starwars %>%
+  group_by(species) %>%
+  summarise(avg_height = mean(height, na.rm = TRUE)) %>%
+  arrange(avg_height)

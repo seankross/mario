@@ -1,0 +1,7 @@
+library(dplyr)
+
+starwars %>%
+ transmute(
+  blue_eyes = (eye_color == "blue"),
+  height = height * 0.0328084, # convert to feet
+)
