@@ -1,0 +1,43 @@
+[
+  {
+    "type": "error",
+    "code_step": "arrange(cyl)",
+    "mapping": {
+      "message": "Error: arrange() failed at implicit mutate() step. \n* Problem with `mutate()` column `..1`.\n\u001b[34mi\u001b[39m `..1 = cyl`.\n\u001b[31mx\u001b[39m object 'cyl' not found\n"
+    },
+    "data_frame": {
+      "lhs": {
+        "col_names": ["carb", "optden"],
+        "data": [
+          {
+            "carb": 0.1,
+            "optden": 0.086
+          },
+          {
+            "carb": 0.3,
+            "optden": 0.269
+          },
+          {
+            "carb": 0.5,
+            "optden": 0.446
+          },
+          {
+            "carb": 0.6,
+            "optden": 0.538
+          },
+          {
+            "carb": 0.7,
+            "optden": 0.626
+          },
+          {
+            "carb": 0.9,
+            "optden": 0.782
+          }
+        ]
+      },
+      "rhs": {
+        "data": "NA"
+      }
+    }
+  }
+]

@@ -38,11 +38,11 @@
         "select": "row",
         "from": {
           "anchor": "lhs",
-          "index": 3
+          "index": 5
         },
         "to": {
           "anchor": "rhs",
-          "index": 5
+          "index": 3
         }
       },
       {
@@ -62,11 +62,11 @@
         "select": "row",
         "from": {
           "anchor": "lhs",
-          "index": 5
+          "index": 3
         },
         "to": {
           "anchor": "rhs",
-          "index": 3
+          "index": 5
         }
       },
       {

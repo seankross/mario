@@ -1,12 +1,14 @@
 #' Turn a file that ends with a pipeline into JSON
 #'
 #' @param path The path to an R code file.
-#' @importFrom rlang parse_exprs
+#' @importFrom rlang parse_exprs global_env
+#' @importFrom purrr map
 #' @export
 file_to_json <- function(path) {
   con <- file(path, open = "r")
   on.exit(close(con))
   exprs_ <- parse_exprs(con)
+  map(exprs_[-length(exprs_)], eval, envir = global_env())
   pipeline_call <- exprs_[[length(exprs_)]]
 
   pipeline_to_json(pipeline_call)
@@ -32,6 +34,7 @@ pipeline_to_json <- function(call){
 #' @export
 string_to_json <- function(code) {
   exprs_ <- parse_exprs(code)
+  map(exprs_[-length(exprs_)], eval, envir = global_env())
   pipeline_call <- exprs_[[length(exprs_)]]
 
   pipeline_to_json(pipeline_call)
@@ -100,20 +103,21 @@ before_after_tbl_list <- function(tbl_list) {
   map2(tbl_list[-length(tbl_list)], tbl_list[-1], ~ list(.x, .y))
 }
 
-#' @importFrom purrr pmap
+#' @importFrom purrr pmap safely
 pipeline_tbl_to_list <- function(ptbl) {
   pmap(ptbl, handle)
+  #result <- pmap(ptbl, safely(handle))
 }
 
 handle <- function(Name_Strings, Verb_Strings, DF, Verbs,
                                     Names, Args, Values, BA){
   result <- handle_pipeline_tbl_row(Name_Strings, Verb_Strings, DF, Verbs,
                                     Names, Args, Values, BA)
-  if(length(BA) > 1){
+  if(length(BA) > 1 && is.data.frame(BA[[1]]) && is.data.frame(BA[[2]])){
     result[["data_frame"]] <- list(
-      lhs = list(col_names = colnames(BA[[1]]),
+      lhs = list(col_names = I(colnames(BA[[1]])),
                  data = BA[[1]]),
-      rhs = list(col_names = colnames(BA[[2]]),
+      rhs = list(col_names = I(colnames(BA[[2]])),
                  data = BA[[2]])
       )
   }
@@ -123,7 +127,9 @@ handle <- function(Name_Strings, Verb_Strings, DF, Verbs,
 
 handle_pipeline_tbl_row <- function(Name_Strings, Verb_Strings, DF, Verbs,
                                     Names, Args, Values, BA){
-  if(Name_Strings == "slice"){
+  if("mario-error" %in% class(DF)) {
+    handle_error(DF, BA)
+  } else if(Name_Strings == "slice"){
     handle_slice(Name_Strings, Verb_Strings, DF, Verbs, Names, Args, Values, BA)
   } else if(Name_Strings == "arrange"){
     handle_arrange(Name_Strings, Verb_Strings, DF, Verbs, Names, Args, Values, BA)
@@ -136,16 +142,73 @@ handle_pipeline_tbl_row <- function(Name_Strings, Verb_Strings, DF, Verbs,
   } else if(Name_Strings == "rename"){
     handle_rename(Name_Strings, Verb_Strings, DF, Verbs, Names, Args, Values, BA)
   } else {
-    list(type = "NA")
+    handle_unknown(Name_Strings, Verb_Strings, DF, Verbs, Names, Args, Values, BA)
   }
 }
 
+# mt <- mtcars %>%
+#   select(mpg, cyl, hp) %>%
+#   group_by(cyl) %>%
+#   slice(1:2) %>%
+#   ungroup()
+#
+# mt %>%
+#   slice(1:3) %>%
+#   parse_pipeline() -> call
+#
+# mtcars %>%
+#   slice(1:10) %>%
+#   slice(5:10) %>%
+#   slice(c(1, 3)) %>% parse_pipeline() -> call
+
+
+
+#
+# #Formaldehyde %>% mutate(3, Sum = carb + optden, Two = 2, DSum = Sum * 2) %>% parse_pipeline() -> call
+# ptbl <- pipeline_tbl(call)
+# ptbl$BA <- c(NA, mario:::before_after_tbl_list(ptbl$DF))
+# map2(colnames(ptbl), ptbl %>% slice(3) %>% purrr::flatten(), ~assign(.x, .y, envir = globalenv()))
+
+
+#' @importFrom dplyr slice
+#' @importFrom purrr flatten
+#' @importFrom rlang global_env
+load_vars <- function(call, where = 2){
+  ptbl <- mario::pipeline_tbl(call)
+  ptbl$BA <- c(NA, before_after_tbl_list(ptbl$DF))
+  map2(colnames(ptbl), ptbl %>% slice(where) %>% purrr::flatten(), ~assign(.x, .y, envir = global_env()))
+}
+
+handle_error <- function(DF, BA){
+  result <- list(type = "error",
+       mapping = list(message = DF[["message"]]))
+
+  if(is.data.frame(BA[[1]])){
+    result[["data_frame"]] <- list(
+      lhs = list(col_names = I(colnames(BA[[1]])), data = BA[[1]]),
+      rhs = list(data = "NA"))
+  } else {
+    result[["data_frame"]] <- list(
+      lhs = list(data = "NA"),
+      rhs = list(data = "NA"))
+  }
+  result
+}
+
 #' @importFrom purrr pmap
+#' @importFrom rlang parse_expr
+#' @importFrom dplyr pull
 handle_slice <- function(Name_Strings, Verb_Strings, DF, Verbs,
          Names, Args, Values, BA){
   result <- list(type = "slice")
-  suppressMessages(tbl_diff <- tibble_diff(BA[[1]], BA[[2]]))
-  result[["mapping"]] <- pmap(tbl_diff$Row_Position,
+
+  old_row_number_index <- paste0("BA[[1]] %>% mutate(row_number()) %>% ", Verb_Strings) %>%
+    parse_expr() %>%
+    eval() %>%
+    pull("row_number()")
+
+  #suppressMessages(tbl_diff <- tibble_diff(BA[[1]], BA[[2]]))
+  result[["mapping"]] <- map2(old_row_number_index, seq_along(old_row_number_index),
                               ~ list(illustrate = "outline", select = "row",
                                      from = list(anchor = "lhs", index = .x),
                                      to = list(anchor = "rhs", index = .y)
@@ -175,6 +238,7 @@ handle_filter <- function(Name_Strings, Verb_Strings, DF, Verbs,
 }
 
 #' @importFrom dplyr contains
+#' @importFrom purrr discard
 handle_select <- function(Name_Strings, Verb_Strings, DF, Verbs,
                           Names, Args, Values, BA){
   result <- list(type = "select")
@@ -184,7 +248,9 @@ handle_select <- function(Name_Strings, Verb_Strings, DF, Verbs,
                                      select = "column",
                                      from = list(anchor = "lhs", index = .x),
                                      to = list(anchor = "rhs", index = .y)
-                                     ))
+                                     )) %>%
+    discard(~ is.na(.x$to$index))
+
   result
 }
 
@@ -405,4 +471,11 @@ handle_group_by <- function(Name_Strings, Verb_Strings, DF, Verbs,
               from = .x, to = .x)) %>%
   c(result[["mapping"]])
   result
+}
+
+handle_unknown <- function(Name_Strings, Verb_Strings, DF, Verbs,
+                           Names, Args, Values, BA){
+  list(type = "unknown",
+       mapping = "NA",
+       data_frame = "NA")
 }

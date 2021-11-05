@@ -8,18 +8,6 @@
         "select": "column",
         "from": {
           "anchor": "lhs",
-          "index": 1
-        },
-        "to": {
-          "anchor": "rhs",
-          "index": "NA"
-        }
-      },
-      {
-        "illustrate": "outline",
-        "select": "column",
-        "from": {
-          "anchor": "lhs",
           "index": 2
         },
         "to": {
@@ -59,7 +47,7 @@
         ]
       },
       "rhs": {
-        "col_names": "optden",
+        "col_names": ["optden"],
         "data": [
           {
             "optden": 0.086

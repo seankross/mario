@@ -14,18 +14,6 @@
           "anchor": "rhs",
           "index": 1
         }
-      },
-      {
-        "illustrate": "outline",
-        "select": "column",
-        "from": {
-          "anchor": "lhs",
-          "index": 2
-        },
-        "to": {
-          "anchor": "rhs",
-          "index": "NA"
-        }
       }
     ],
     "data_frame": {
@@ -59,7 +47,7 @@
         ]
       },
       "rhs": {
-        "col_names": "carb",
+        "col_names": ["carb"],
         "data": [
           {
             "carb": 0.1

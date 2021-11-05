@@ -20,23 +20,11 @@
         "select": "row",
         "from": {
           "anchor": "lhs",
-          "index": 1
-        },
-        "to": {
-          "anchor": "rhs",
           "index": 6
-        }
-      },
-      {
-        "illustrate": "outline",
-        "select": "row",
-        "from": {
-          "anchor": "lhs",
-          "index": 2
         },
         "to": {
           "anchor": "rhs",
-          "index": 5
+          "index": 1
         }
       },
       {
@@ -80,11 +68,23 @@
         "select": "row",
         "from": {
           "anchor": "lhs",
-          "index": 6
+          "index": 2
         },
         "to": {
           "anchor": "rhs",
+          "index": 5
+        }
+      },
+      {
+        "illustrate": "outline",
+        "select": "row",
+        "from": {
+          "anchor": "lhs",
           "index": 1
+        },
+        "to": {
+          "anchor": "rhs",
+          "index": 6
         }
       }
     ],

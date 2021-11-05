@@ -38,42 +38,6 @@
           "anchor": "rhs",
           "index": 3
         }
-      },
-      {
-        "illustrate": "outline",
-        "select": "row",
-        "from": {
-          "anchor": "lhs",
-          "index": 4
-        },
-        "to": {
-          "anchor": "rhs",
-          "index": "NA"
-        }
-      },
-      {
-        "illustrate": "outline",
-        "select": "row",
-        "from": {
-          "anchor": "lhs",
-          "index": 5
-        },
-        "to": {
-          "anchor": "rhs",
-          "index": "NA"
-        }
-      },
-      {
-        "illustrate": "outline",
-        "select": "row",
-        "from": {
-          "anchor": "lhs",
-          "index": 6
-        },
-        "to": {
-          "anchor": "rhs",
-          "index": "NA"
-        }
       }
     ],
     "data_frame": {

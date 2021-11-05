@@ -1,20 +1,20 @@
 [
   {
-    "type": "filter",
-    "code_step": "filter(optden < 0.5)",
+    "type": "arrange",
+    "code_step": "arrange(desc(carb))",
     "mapping": [
       {
         "illustrate": "highlight",
         "select": "column",
         "anchor": "lhs",
-        "index": 2
+        "index": 1
       },
       {
         "illustrate": "outline",
         "select": "row",
         "from": {
           "anchor": "lhs",
-          "index": 1
+          "index": 6
         },
         "to": {
           "anchor": "rhs",
@@ -26,7 +26,7 @@
         "select": "row",
         "from": {
           "anchor": "lhs",
-          "index": 2
+          "index": 5
         },
         "to": {
           "anchor": "rhs",
@@ -38,11 +38,47 @@
         "select": "row",
         "from": {
           "anchor": "lhs",
-          "index": 3
+          "index": 4
         },
         "to": {
           "anchor": "rhs",
           "index": 3
+        }
+      },
+      {
+        "illustrate": "outline",
+        "select": "row",
+        "from": {
+          "anchor": "lhs",
+          "index": 3
+        },
+        "to": {
+          "anchor": "rhs",
+          "index": 4
+        }
+      },
+      {
+        "illustrate": "outline",
+        "select": "row",
+        "from": {
+          "anchor": "lhs",
+          "index": 2
+        },
+        "to": {
+          "anchor": "rhs",
+          "index": 5
+        }
+      },
+      {
+        "illustrate": "outline",
+        "select": "row",
+        "from": {
+          "anchor": "lhs",
+          "index": 1
+        },
+        "to": {
+          "anchor": "rhs",
+          "index": 6
         }
       }
     ],
@@ -80,89 +116,17 @@
         "col_names": ["carb", "optden"],
         "data": [
           {
-            "carb": 0.1,
-            "optden": 0.086
+            "carb": 0.9,
+            "optden": 0.782
           },
           {
-            "carb": 0.3,
-            "optden": 0.269
+            "carb": 0.7,
+            "optden": 0.626
           },
           {
-            "carb": 0.5,
-            "optden": 0.446
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "arrange",
-    "code_step": "arrange(desc(carb))",
-    "mapping": [
-      {
-        "illustrate": "highlight",
-        "select": "column",
-        "anchor": "lhs",
-        "index": 1
-      },
-      {
-        "illustrate": "outline",
-        "select": "row",
-        "from": {
-          "anchor": "lhs",
-          "index": 3
-        },
-        "to": {
-          "anchor": "rhs",
-          "index": 1
-        }
-      },
-      {
-        "illustrate": "outline",
-        "select": "row",
-        "from": {
-          "anchor": "lhs",
-          "index": 2
-        },
-        "to": {
-          "anchor": "rhs",
-          "index": 2
-        }
-      },
-      {
-        "illustrate": "outline",
-        "select": "row",
-        "from": {
-          "anchor": "lhs",
-          "index": 1
-        },
-        "to": {
-          "anchor": "rhs",
-          "index": 3
-        }
-      }
-    ],
-    "data_frame": {
-      "lhs": {
-        "col_names": ["carb", "optden"],
-        "data": [
-          {
-            "carb": 0.1,
-            "optden": 0.086
+            "carb": 0.6,
+            "optden": 0.538
           },
-          {
-            "carb": 0.3,
-            "optden": 0.269
-          },
-          {
-            "carb": 0.5,
-            "optden": 0.446
-          }
-        ]
-      },
-      "rhs": {
-        "col_names": ["carb", "optden"],
-        "data": [
           {
             "carb": 0.5,
             "optden": 0.446
@@ -181,7 +145,7 @@
   },
   {
     "type": "slice",
-    "code_step": "slice(1)",
+    "code_step": "slice(1:3)",
     "mapping": [
       {
         "illustrate": "outline",
@@ -194,12 +158,48 @@
           "anchor": "rhs",
           "index": 1
         }
+      },
+      {
+        "illustrate": "outline",
+        "select": "row",
+        "from": {
+          "anchor": "lhs",
+          "index": 2
+        },
+        "to": {
+          "anchor": "rhs",
+          "index": 2
+        }
+      },
+      {
+        "illustrate": "outline",
+        "select": "row",
+        "from": {
+          "anchor": "lhs",
+          "index": 3
+        },
+        "to": {
+          "anchor": "rhs",
+          "index": 3
+        }
       }
     ],
     "data_frame": {
       "lhs": {
         "col_names": ["carb", "optden"],
         "data": [
+          {
+            "carb": 0.9,
+            "optden": 0.782
+          },
+          {
+            "carb": 0.7,
+            "optden": 0.626
+          },
+          {
+            "carb": 0.6,
+            "optden": 0.538
+          },
           {
             "carb": 0.5,
             "optden": 0.446
@@ -218,10 +218,62 @@
         "col_names": ["carb", "optden"],
         "data": [
           {
-            "carb": 0.5,
-            "optden": 0.446
+            "carb": 0.9,
+            "optden": 0.782
+          },
+          {
+            "carb": 0.7,
+            "optden": 0.626
+          },
+          {
+            "carb": 0.6,
+            "optden": 0.538
           }
         ]
+      }
+    }
+  },
+  {
+    "type": "error",
+    "code_step": "mutate(Sum = cyl + mpg)",
+    "mapping": {
+      "message": "Error: Problem with `mutate()` column `Sum`.\n\u001b[34mi\u001b[39m `Sum = cyl + mpg`.\n\u001b[31mx\u001b[39m object 'cyl' not found\n"
+    },
+    "data_frame": {
+      "lhs": {
+        "col_names": ["carb", "optden"],
+        "data": [
+          {
+            "carb": 0.9,
+            "optden": 0.782
+          },
+          {
+            "carb": 0.7,
+            "optden": 0.626
+          },
+          {
+            "carb": 0.6,
+            "optden": 0.538
+          }
+        ]
+      },
+      "rhs": {
+        "data": "NA"
+      }
+    }
+  },
+  {
+    "type": "error",
+    "code_step": "select(optden)",
+    "mapping": {
+      "message": "Error: Problem with `mutate()` column `Sum`.\n\u001b[34mi\u001b[39m `Sum = cyl + mpg`.\n\u001b[31mx\u001b[39m object 'cyl' not found\n"
+    },
+    "data_frame": {
+      "lhs": {
+        "data": "NA"
+      },
+      "rhs": {
+        "data": "NA"
       }
     }
   }
