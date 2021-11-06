@@ -2,16 +2,12 @@
 #'
 #' @param path The path to an R code file.
 #' @importFrom rlang parse_exprs global_env
-#' @importFrom purrr map
+#' @importFrom purrr map safely
 #' @export
 file_to_json <- function(path) {
   con <- file(path, open = "r")
   on.exit(close(con))
-  exprs_ <- parse_exprs(con)
-  map(exprs_[-length(exprs_)], eval, envir = global_env())
-  pipeline_call <- exprs_[[length(exprs_)]]
-
-  pipeline_to_json(pipeline_call)
+  string_to_json(con)
 }
 
 #' Turn a pipeline call into JSON
@@ -33,6 +29,23 @@ pipeline_to_json <- function(call){
 #' @importFrom rlang parse_exprs
 #' @export
 string_to_json <- function(code) {
+  result <- safely(string_to_json_helper)(code)
+
+  if(!is.null(result[["error"]])){
+    list(list(
+      type = "error",
+      code_step = "NA",
+      mapping = list(
+        message = result[["error"]] %>% as.character()
+      ),
+      data_frame = "NA"
+    )) %>% toJSON(auto_unbox = TRUE, pretty = TRUE)
+  } else {
+    result[["result"]]
+  }
+}
+
+string_to_json_helper <- function(code) {
   exprs_ <- parse_exprs(code)
   map(exprs_[-length(exprs_)], eval, envir = global_env())
   pipeline_call <- exprs_[[length(exprs_)]]
