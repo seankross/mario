@@ -16,7 +16,7 @@ remotes::install_github("seankross/mario@main")
 ```
 
 ## Getting Started
-
+## It should have proper guidance
 ``` r
 library(tidyverse)
 library(mario)
