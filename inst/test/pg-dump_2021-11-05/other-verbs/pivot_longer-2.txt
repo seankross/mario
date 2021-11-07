@@ -1,4 +1,5 @@
 # actually from select docs:
 # https://dplyr.tidyverse.org/reference/select.html
 library(dplyr)
+library(tidyr)
 iris %>% pivot_longer(c(Sepal.Length, Petal.Length))
