@@ -3,7 +3,11 @@
     "type": "error",
     "code_step": "NA",
     "mapping": {
-      "message": "Error in library(ggplot3): there is no package called ‘ggplot3’\n"
+      "message": {
+        "header": "there is no package called â€˜ggplot3â€™",
+        "body": [],
+        "footer": []
+      }
     },
     "data_frame": "NA"
   }

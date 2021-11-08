@@ -3,7 +3,11 @@
     "type": "error",
     "code_step": "quack()",
     "mapping": {
-      "message": "Error in quack(.): could not find function \"quack\"\n"
+      "message": {
+        "header": "could not find function \"quack\"",
+        "body": [],
+        "footer": []
+      }
     },
     "data_frame": {
       "lhs": {

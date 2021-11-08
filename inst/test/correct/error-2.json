@@ -237,7 +237,11 @@
     "type": "error",
     "code_step": "mutate(Sum = cyl + mpg)",
     "mapping": {
-      "message": "Error: Problem with `mutate()` column `Sum`.\n\u001b[34mi\u001b[39m `Sum = cyl + mpg`.\n\u001b[31mx\u001b[39m object 'cyl' not found\n"
+      "message": {
+        "header": "Problem with `mutate()` column `Sum`.\ni `Sum = cyl + mpg`.\nx object 'cyl' not found",
+        "body": [],
+        "footer": []
+      }
     },
     "data_frame": {
       "lhs": {
@@ -266,7 +270,11 @@
     "type": "error",
     "code_step": "select(optden)",
     "mapping": {
-      "message": "Error: Problem with `mutate()` column `Sum`.\n\u001b[34mi\u001b[39m `Sum = cyl + mpg`.\n\u001b[31mx\u001b[39m object 'cyl' not found\n"
+      "message": {
+        "header": "Problem with `mutate()` column `Sum`.\ni `Sum = cyl + mpg`.\nx object 'cyl' not found",
+        "body": [],
+        "footer": []
+      }
     },
     "data_frame": {
       "lhs": {

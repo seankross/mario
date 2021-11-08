@@ -14,13 +14,20 @@ get_data_steps <- function(call, envir = parent.frame()) {
 }
 
 #' @importFrom purrr safely
+#' @importFrom rlang cnd_header cnd_body cnd_footer
+#' @importFrom crayon strip_style
 walk_pipeline <- function(pipeline, acc = list(), envir = parent.frame()){
   if(is.call(pipeline)){
     result <- safely(function(x){eval(x, envir = envir)})(pipeline)
     if(!is.null(result[["error"]])){
       result <- list(
         error = TRUE,
-        message = result[["error"]] %>% as.character()
+        message = list(header = cnd_header(result[["error"]]) %>%
+                         strip_style() %>% strip_i(),
+                       body = cnd_body(result[["error"]]) %>%
+                         strip_style() %>% strip_i(),
+                       footer = cnd_footer(result[["error"]]) %>%
+                         strip_style() %>% strip_i())
       )
       class(result) <- "mario-error"
     } else {
@@ -34,7 +41,12 @@ walk_pipeline <- function(pipeline, acc = list(), envir = parent.frame()){
     if(!is.null(result[["error"]])){
       result <- list(
         error = TRUE,
-        message = result[["error"]] %>% as.character()
+        message = list(header = cnd_header(result[["error"]]) %>%
+                         strip_style() %>% strip_i(),
+                       body = cnd_body(result[["error"]]) %>%
+                         strip_style() %>% strip_i(),
+                       footer = cnd_footer(result[["error"]]) %>%
+                         strip_style() %>% strip_i())
       )
       class(result) <- "mario-error"
     } else {

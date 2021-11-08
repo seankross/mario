@@ -3,7 +3,11 @@
     "type": "error",
     "code_step": "NA",
     "mapping": {
-      "message": "Error in parse(file = x): 4:4: unexpected symbol\n3: Formaldehyde %>%\n4:   2quack\n      ^\n"
+      "message": {
+        "header": "4:4: unexpected symbol\n3: Formaldehyde %>%\n4:   2quack\n      ^",
+        "body": [],
+        "footer": []
+      }
     },
     "data_frame": "NA"
   }

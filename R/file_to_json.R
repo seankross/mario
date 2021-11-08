@@ -27,6 +27,8 @@ pipeline_to_json <- function(call){
 #'
 #' @param code A string of R code.
 #' @importFrom rlang parse_exprs
+#' @importFrom rlang cnd_header cnd_body cnd_footer
+#' @importFrom crayon strip_style
 #' @export
 string_to_json <- function(code) {
   result <- safely(string_to_json_helper)(code)
@@ -36,7 +38,12 @@ string_to_json <- function(code) {
       type = "error",
       code_step = "NA",
       mapping = list(
-        message = result[["error"]] %>% as.character()
+        message = list(header = cnd_header(result[["error"]]) %>%
+                         strip_style() %>% strip_i(),
+                       body = cnd_body(result[["error"]]) %>%
+                         strip_style() %>% strip_i(),
+                       footer = cnd_footer(result[["error"]]) %>%
+                         strip_style() %>% strip_i())
       ),
       data_frame = "NA"
     )) %>% toJSON(auto_unbox = TRUE, pretty = TRUE)
@@ -154,34 +161,12 @@ handle_pipeline_tbl_row <- function(Name_Strings, Verb_Strings, DF, Verbs,
     handle_mutate(Name_Strings, Verb_Strings, DF, Verbs, Names, Args, Values, BA)
   } else if(Name_Strings == "rename"){
     handle_rename(Name_Strings, Verb_Strings, DF, Verbs, Names, Args, Values, BA)
+  } else if(Name_Strings == "rename"){
+
   } else {
     handle_unknown(Name_Strings, Verb_Strings, DF, Verbs, Names, Args, Values, BA)
   }
 }
-
-# mt <- mtcars %>%
-#   select(mpg, cyl, hp) %>%
-#   group_by(cyl) %>%
-#   slice(1:2) %>%
-#   ungroup()
-#
-# mt %>%
-#   slice(1:3) %>%
-#   parse_pipeline() -> call
-#
-# mtcars %>%
-#   slice(1:10) %>%
-#   slice(5:10) %>%
-#   slice(c(1, 3)) %>% parse_pipeline() -> call
-
-
-
-#
-# #Formaldehyde %>% mutate(3, Sum = carb + optden, Two = 2, DSum = Sum * 2) %>% parse_pipeline() -> call
-# ptbl <- pipeline_tbl(call)
-# ptbl$BA <- c(NA, mario:::before_after_tbl_list(ptbl$DF))
-# map2(colnames(ptbl), ptbl %>% slice(3) %>% purrr::flatten(), ~assign(.x, .y, envir = globalenv()))
-
 
 #' @importFrom dplyr slice
 #' @importFrom purrr flatten
@@ -220,7 +205,6 @@ handle_slice <- function(Name_Strings, Verb_Strings, DF, Verbs,
     eval() %>%
     pull("row_number()")
 
-  #suppressMessages(tbl_diff <- tibble_diff(BA[[1]], BA[[2]]))
   result[["mapping"]] <- map2(old_row_number_index, seq_along(old_row_number_index),
                               ~ list(illustrate = "outline", select = "row",
                                      from = list(anchor = "lhs", index = .x),
@@ -266,19 +250,6 @@ handle_select <- function(Name_Strings, Verb_Strings, DF, Verbs,
 
   result
 }
-
-# For debugging
-# Formaldehyde %>% mutate(Two = 2, Last = Two + carb + 100) %>% parse_pipeline() -> call
-#
-# Formaldehyde %>% mutate(Sum = carb + optden) %>% parse_pipeline() -> call
-#
-# Formaldehyde %>% mutate(Sum = carb + optden, DSum = Sum * 2,
-#                         Two = 2, Col = sapply(1:6, function(x){x+1}),  3) %>% parse_pipeline() -> call
-
-# Formaldehyde %>% mutate(3, Sum = carb + optden, Two = 2, DSum = Sum * 2) %>% parse_pipeline() -> call
-# ptbl <- pipeline_tbl(call)
-# ptbl$BA <- c(NA, mario:::before_after_tbl_list(ptbl$DF))
-# map2(colnames(ptbl), ptbl %>% slice(2) %>% purrr::flatten(), ~assign(.x, .y, envir = globalenv()))
 
 #' @importFrom purrr flatten discard
 handle_mutate  <- function(Name_Strings, Verb_Strings, DF, Verbs,
@@ -348,59 +319,6 @@ handle_mutate  <- function(Name_Strings, Verb_Strings, DF, Verbs,
 
   simple_mapping <- c(from_old_columns, from_inline_columns, from_values_columns)
 
-  # from_mapping <- list()
-  # to_mapping <- list()
-  #
-  # for (i in seq_along(simple_mapping)) {
-  #   from <- simple_mapping[[i]][["from"]] %>% as.character()
-  #   to <- simple_mapping[[i]][["to"]] %>% as.character()
-  #
-  #   if (is.null(from_mapping[[from]])) {
-  #     from_mapping[[from]] <- to
-  #   } else {
-  #     from_mapping[[from]] <- c(from_mapping[[from]], to)
-  #   }
-  #
-  #   if (is.null(to_mapping[[to]])) {
-  #     to_mapping[[to]] <- from
-  #   } else {
-  #     to_mapping[[to]] <- c(to_mapping[[to]], from)
-  #   }
-  # }
-  #
-  # from_mapping <- map2(names(from_mapping),
-  #                      unname(from_mapping),
-  #                      function(lhs, rhs){
-  #                        lhs <- lhs %>% as.numeric()
-  #                        rhs <- rhs %>% as.numeric()
-  #                        list(illustrate = "outline", select = "column-lhs",
-  #                             from = lhs, to = rhs)
-  #                      })
-  #
-  # to_mapping <- map2(names(to_mapping),
-  #                      unname(to_mapping),
-  #                      function(rhs, lhs){
-  #                        lhs <- lhs %>% as.numeric()
-  #                        rhs <- rhs %>% as.numeric()
-  #                        list(illustrate = "outline", select = "column-rhs",
-  #                             from = lhs, to = rhs)
-  #                      })
-
-  # to_mapping_endpoints <- to_mapping %>% map_dbl(~ .x$to)
-  # for (i in seq_along(from_values_columns)) {
-  #   x <- from_values_columns[[i]]
-  #   if(x$to %in% to_mapping_endpoints){
-  #     index <- which(x$to == to_mapping_endpoints)
-  #     to_mapping[[index]][["from_arg"]] <- x$from
-  #   } else {
-  #     to_mapping <- c(to_mapping, list(list(illustrate = "outline",
-  #                                      select = "column-rhs",
-  #                                      from_arg = x$from, to = x$to)))
-  #   }
-  # }
-  #
-  # result[["mapping"]] <- c(from_mapping, to_mapping)#, from_values_columns)
-
   to_col_index <- simple_mapping %>% map_dbl(~ .x$to$index)
   raw_cols <- setdiff(new_col_index, to_col_index) %>%
     map(function(x){
@@ -442,7 +360,7 @@ handle_rename  <- function(Name_Strings, Verb_Strings, DF, Verbs,
 
 #' @importFrom scales hue_pal
 #' @importFrom dplyr group_indices group_vars left_join
-decorate_groups <- function(df, where = "row"){
+decorate_groups <- function(df, anchor = "lhs"){
   group_id <- df %>% group_indices()
   color_hex_codes <- hue_pal()(max(group_id))
   color_tbl <- tibble(Color = color_hex_codes,
@@ -450,45 +368,29 @@ decorate_groups <- function(df, where = "row"){
   row_tbl <- tibble(Row_Index = 1:nrow(df),
          Group_Index = group_id)
   left_join(row_tbl, color_tbl, by = "Group_Index") %>%
-    pmap(~ list(illustrate = "highlight", select = where,
+    pmap(~ list(illustrate = "highlight", select = "row", anchor = anchor,
                 index = ..1, group_id = ..2, color = ..3))
 }
 
-# handle_left_grouping <- function(result, df){
-#   if(is_grouped_df(df)){
-#     result[["mapping"]] <- decorate_groups(BA[[1]], "row-left")
-    #   }
-# }
-
-# mtcars %>% group_by(cyl) %>% group_by(cyl, gear) %>% parse_pipeline() -> call
-
-# Formaldehyde %>% group_by(carb > 0.5) %>% parse_pipeline() -> call
-# ptbl <- pipeline_tbl(call)
-# ptbl$BA <- c(NA, mario:::before_after_tbl_list(ptbl$DF))
-# map2(colnames(ptbl), ptbl %>% slice(2) %>% purrr::flatten(), ~assign(.x, .y, envir = globalenv()))
-#
-# result %>% jsonlite::toJSON(pretty = TRUE, auto_unbox = TRUE)
-
 handle_group_by <- function(Name_Strings, Verb_Strings, DF, Verbs,
                            Names, Args, Values, BA){
-
-
   result <- list(type = "group_by")
   if(is_grouped_df(BA[[1]])){
-    result[["mapping"]] <- decorate_groups(BA[[1]], "row-left")
+    result[["mapping"]] <- decorate_groups(BA[[1]], "lhs")
   }
-  result[["mapping"]] <- decorate_groups(BA[[2]], "row-right") %>%
-    c(result[["mapping"]])
+  if(is_grouped_df(BA[[2]])){
+    result[["mapping"]] <- decorate_groups(BA[[2]], "rhs") %>%
+      c(result[["mapping"]])
+  }
+
   result[["mapping"]] <- which(colnames(BA[[2]]) %in% (group_vars(BA[[2]]))) %>%
-    map(~ list(illustrate = "outline", select = "column",
-              from = .x, to = .x)) %>%
+    map(~ list(illustrate = "outline", select = "column", anchor = "lhs",
+              index = .x)) %>%
   c(result[["mapping"]])
   result
 }
 
 handle_unknown <- function(Name_Strings, Verb_Strings, DF, Verbs,
                            Names, Args, Values, BA){
-  list(type = "unknown",
-       mapping = "NA",
-       data_frame = "NA")
+  list(type = "unknown", mapping = list())
 }

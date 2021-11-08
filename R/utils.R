@@ -6,3 +6,7 @@ which_ <- function(x) {
     result
   }
 }
+
+strip_i <- function(x){
+  gsub("\u2139", "i", x)
+}

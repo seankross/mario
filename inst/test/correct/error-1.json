@@ -3,7 +3,11 @@
     "type": "error",
     "code_step": "arrange(cyl)",
     "mapping": {
-      "message": "Error: arrange() failed at implicit mutate() step. \n* Problem with `mutate()` column `..1`.\n\u001b[34mi\u001b[39m `..1 = cyl`.\n\u001b[31mx\u001b[39m object 'cyl' not found\n"
+      "message": {
+        "header": "arrange() failed at implicit mutate() step. \n* Problem with `mutate()` column `..1`.\ni `..1 = cyl`.\nx object 'cyl' not found",
+        "body": [],
+        "footer": []
+      }
     },
     "data_frame": {
       "lhs": {
