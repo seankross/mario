@@ -161,8 +161,10 @@ handle_pipeline_tbl_row <- function(Name_Strings, Verb_Strings, DF, Verbs,
     handle_mutate(Name_Strings, Verb_Strings, DF, Verbs, Names, Args, Values, BA)
   } else if(Name_Strings == "rename"){
     handle_rename(Name_Strings, Verb_Strings, DF, Verbs, Names, Args, Values, BA)
-  } else if(Name_Strings == "rename"){
-
+  } else if(Name_Strings == "group_by"){
+    handle_group_by(Name_Strings, Verb_Strings, DF, Verbs, Names, Args, Values, BA)
+  } else if(Name_Strings == "ungroup"){
+    handle_ungroup(Name_Strings, Verb_Strings, DF, Verbs, Names, Args, Values, BA)
   } else {
     handle_unknown(Name_Strings, Verb_Strings, DF, Verbs, Names, Args, Values, BA)
   }
@@ -175,6 +177,24 @@ load_vars <- function(call, where = 2){
   ptbl <- mario::pipeline_tbl(call)
   ptbl$BA <- c(NA, before_after_tbl_list(ptbl$DF))
   map2(colnames(ptbl), ptbl %>% slice(where) %>% purrr::flatten(), ~assign(.x, .y, envir = global_env()))
+}
+
+result_setup <- function(type, BA, mapping = list()){
+  result <- list(type = type, mapping = mapping)
+  if(is_grouped_df(BA[[1]])){
+    result[["mapping"]] <- c(result[["mapping"]],
+                             decorate_groups(BA[[1]], "lhs"))
+  }
+  if(is_grouped_df(BA[[2]])){
+    result[["mapping"]] <- c(result[["mapping"]],
+                             decorate_groups(BA[[2]], "rhs"))
+  }
+  result
+}
+
+prepend_mapping <- function(new_mapping, result) {
+  result[["mapping"]] <- c(new_mapping, result[["mapping"]])
+  result
 }
 
 handle_error <- function(DF, BA){
@@ -355,9 +375,6 @@ handle_rename  <- function(Name_Strings, Verb_Strings, DF, Verbs,
   result
 }
 
-# df = mtcars %>%
-#   group_by(cyl, gear)
-
 #' @importFrom scales hue_pal
 #' @importFrom dplyr group_indices group_vars left_join
 decorate_groups <- function(df, anchor = "lhs"){
@@ -374,20 +391,25 @@ decorate_groups <- function(df, anchor = "lhs"){
 
 handle_group_by <- function(Name_Strings, Verb_Strings, DF, Verbs,
                            Names, Args, Values, BA){
-  result <- list(type = "group_by")
-  if(is_grouped_df(BA[[1]])){
-    result[["mapping"]] <- decorate_groups(BA[[1]], "lhs")
-  }
-  if(is_grouped_df(BA[[2]])){
-    result[["mapping"]] <- decorate_groups(BA[[2]], "rhs") %>%
-      c(result[["mapping"]])
-  }
+  result <- result_setup("group_by", BA)
 
-  result[["mapping"]] <- which(colnames(BA[[2]]) %in% (group_vars(BA[[2]]))) %>%
+  which(colnames(BA[[2]]) %in% (group_vars(BA[[2]]))) %>%
     map(~ list(illustrate = "outline", select = "column", anchor = "lhs",
               index = .x)) %>%
-  c(result[["mapping"]])
-  result
+    prepend_mapping(result)
+}
+
+handle_ungroup <- function(Name_Strings, Verb_Strings, DF, Verbs,
+                           Names, Args, Values, BA){
+  result <- result_setup("ungroup", BA)
+  values <- Values %>%
+    as.character() %>%
+    intersect(group_vars(BA[[1]]))
+
+  which(colnames(BA[[1]]) %in% values) %>%
+    map(~ list(illustrate = "outline", select = "column", anchor = "lhs",
+               index = .x)) %>%
+    prepend_mapping(result)
 }
 
 handle_unknown <- function(Name_Strings, Verb_Strings, DF, Verbs,
