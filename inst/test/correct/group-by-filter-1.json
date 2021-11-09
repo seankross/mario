@@ -1,0 +1,185 @@
+[
+  {
+    "type": "filter",
+    "code_step": "filter(mpg < avg_mpg)",
+    "mapping": [
+      {
+        "illustrate": "highlight",
+        "select": "column",
+        "anchor": "lhs",
+        "index": 1
+      },
+      {
+        "illustrate": "highlight",
+        "select": "column",
+        "anchor": "lhs",
+        "index": 3
+      },
+      {
+        "illustrate": "outline",
+        "select": "row",
+        "from": {
+          "anchor": "lhs",
+          "index": 1
+        },
+        "to": {
+          "anchor": "rhs",
+          "index": 1
+        }
+      },
+      {
+        "illustrate": "outline",
+        "select": "row",
+        "from": {
+          "anchor": "lhs",
+          "index": 4
+        },
+        "to": {
+          "anchor": "rhs",
+          "index": 2
+        }
+      },
+      {
+        "illustrate": "outline",
+        "select": "row",
+        "from": {
+          "anchor": "lhs",
+          "index": 5
+        },
+        "to": {
+          "anchor": "rhs",
+          "index": 3
+        }
+      },
+      {
+        "illustrate": "highlight",
+        "select": "row",
+        "anchor": "lhs",
+        "index": 1,
+        "group_id": 1,
+        "color": "#F8766D"
+      },
+      {
+        "illustrate": "highlight",
+        "select": "row",
+        "anchor": "lhs",
+        "index": 2,
+        "group_id": 1,
+        "color": "#F8766D"
+      },
+      {
+        "illustrate": "highlight",
+        "select": "row",
+        "anchor": "lhs",
+        "index": 3,
+        "group_id": 2,
+        "color": "#00BA38"
+      },
+      {
+        "illustrate": "highlight",
+        "select": "row",
+        "anchor": "lhs",
+        "index": 4,
+        "group_id": 2,
+        "color": "#00BA38"
+      },
+      {
+        "illustrate": "highlight",
+        "select": "row",
+        "anchor": "lhs",
+        "index": 5,
+        "group_id": 3,
+        "color": "#619CFF"
+      },
+      {
+        "illustrate": "highlight",
+        "select": "row",
+        "anchor": "lhs",
+        "index": 6,
+        "group_id": 3,
+        "color": "#619CFF"
+      },
+      {
+        "illustrate": "highlight",
+        "select": "row",
+        "anchor": "rhs",
+        "index": 1,
+        "group_id": 1,
+        "color": "#F8766D"
+      },
+      {
+        "illustrate": "highlight",
+        "select": "row",
+        "anchor": "rhs",
+        "index": 2,
+        "group_id": 2,
+        "color": "#00BA38"
+      },
+      {
+        "illustrate": "highlight",
+        "select": "row",
+        "anchor": "rhs",
+        "index": 3,
+        "group_id": 3,
+        "color": "#619CFF"
+      }
+    ],
+    "data_frame": {
+      "lhs": {
+        "col_names": ["mpg", "cyl", "avg_mpg"],
+        "data": [
+          {
+            "mpg": 22.8,
+            "cyl": 4,
+            "avg_mpg": 27.6
+          },
+          {
+            "mpg": 32.4,
+            "cyl": 4,
+            "avg_mpg": 27.6
+          },
+          {
+            "mpg": 21.4,
+            "cyl": 6,
+            "avg_mpg": 19.75
+          },
+          {
+            "mpg": 18.1,
+            "cyl": 6,
+            "avg_mpg": 19.75
+          },
+          {
+            "mpg": 16.4,
+            "cyl": 8,
+            "avg_mpg": 16.85
+          },
+          {
+            "mpg": 17.3,
+            "cyl": 8,
+            "avg_mpg": 16.85
+          }
+        ]
+      },
+      "rhs": {
+        "col_names": ["mpg", "cyl", "avg_mpg"],
+        "data": [
+          {
+            "mpg": 22.8,
+            "cyl": 4,
+            "avg_mpg": 27.6
+          },
+          {
+            "mpg": 18.1,
+            "cyl": 6,
+            "avg_mpg": 19.75
+          },
+          {
+            "mpg": 16.4,
+            "cyl": 8,
+            "avg_mpg": 16.85
+          }
+        ]
+      }
+    }
+  }
+]

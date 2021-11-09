@@ -215,23 +215,26 @@ handle_error <- function(DF, BA){
 
 #' @importFrom purrr pmap
 #' @importFrom rlang parse_expr
-#' @importFrom dplyr pull
+#' @importFrom dplyr pull ungroup group_by_at
 handle_slice <- function(Name_Strings, Verb_Strings, DF, Verbs,
          Names, Args, Values, BA){
-  result <- list(type = "slice")
+  result <- result_setup("slice", BA)
 
-  old_row_number_index <- paste0("BA[[1]] %>% mutate(row_number()) %>% ", Verb_Strings) %>%
+  BA[[1]] <- BA[[1]] %>%
+    ungroup() %>%
+    mutate(row_number()) %>%
+    group_by_at(group_vars(BA[[1]]))
+
+  old_row_number_index <- paste0("BA[[1]] %>% ", Verb_Strings) %>%
     parse_expr() %>%
     eval() %>%
     pull("row_number()")
 
-  result[["mapping"]] <- map2(old_row_number_index, seq_along(old_row_number_index),
-                              ~ list(illustrate = "outline", select = "row",
-                                     from = list(anchor = "lhs", index = .x),
-                                     to = list(anchor = "rhs", index = .y)
-                                )
-                          )
-  result
+  map2(old_row_number_index, seq_along(old_row_number_index),
+        ~ list(illustrate = "outline", select = "row",
+               from = list(anchor = "lhs", index = .x),
+               to = list(anchor = "rhs", index = .y))) %>%
+    prepend_mapping(result)
 }
 
 #' @importFrom purrr pmap map map_lgl
@@ -240,11 +243,10 @@ handle_arrange <- function(Name_Strings, Verb_Strings, DF, Verbs,
   result <- handle_slice(Name_Strings, Verb_Strings, DF, Verbs, Names, Args, Values, BA)
   result[["type"]] <- "arrange"
   colnames_in_call <- map_lgl(colnames(DF), ~grepl(.x, Verb_Strings)) %>% which()
-  result[["mapping"]] <- map(colnames_in_call,
+  map(colnames_in_call,
        ~list(illustrate = "highlight", select = "column",
              anchor = "lhs", index = .x)) %>%
-    c(result[["mapping"]])
-  result
+    prepend_mapping(result)
 }
 
 handle_filter <- function(Name_Strings, Verb_Strings, DF, Verbs,
