@@ -12,7 +12,7 @@ get_args <- function(verbs){
       arg <- names(arg_list)
       value <- unname(arg_list)
       if(is.null(arg)){
-        arg <- rep(NA, length(value))
+        arg <- rep("", length(value))
       }
       list(Arg = arg, Value = value)
     })

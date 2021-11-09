@@ -129,11 +129,11 @@
         "select": "column",
         "from": {
           "anchor": "lhs",
-          "index": 2
+          "index": 3
         },
         "to": {
           "anchor": "rhs",
-          "index": 3
+          "index": 2
         }
       },
       {
@@ -141,11 +141,11 @@
         "select": "column",
         "from": {
           "anchor": "lhs",
-          "index": 3
+          "index": 2
         },
         "to": {
           "anchor": "rhs",
-          "index": 2
+          "index": 3
         }
       }
     ],

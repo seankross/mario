@@ -7,6 +7,12 @@ which_ <- function(x) {
   }
 }
 
+gsub_ <- function(x, pattern, replacement, ...){
+  gsub(pattern = pattern, replacement = replacement, x = x, ...)
+}
+
 strip_i <- function(x){
-  gsub("\u2139", "i", x)
+  gsub_(x, "\u2139", "i") %>%
+    gsub_("\u2018", "'") %>%
+    gsub_("\u2019", "'")
 }

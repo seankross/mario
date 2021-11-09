@@ -4,7 +4,7 @@
     "code_step": "NA",
     "mapping": {
       "message": {
-        "header": "there is no package called ‘ggplot3’",
+        "header": "there is no package called 'ggplot3'",
         "body": [],
         "footer": []
       }

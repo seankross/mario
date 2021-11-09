@@ -97,13 +97,16 @@ check_jsons <- function(){
                             tools::file_path_sans_ext() %>%
                             paste0(".json"))
 
+  suppressMessages({
   test_results = map2(code_files, json_files, safely(function(code, json){
+    if(!file.exists(json)){ return(list(status = "NONE  ")) }
     temp_file <- tempfile()
     file_to_json(code) %>% writeLines(temp_file)
     pass <- all.equal(readLines(temp_file), readLines(json))
     status <- ifelse(isTRUE(pass), "Passed", "FAILED")
     list(status = status)
   }))
+  })
 
   walk2(code_files, test_results, function(code, tr){
     test_name <- basename(code) %>% tools::file_path_sans_ext()
@@ -260,17 +263,28 @@ handle_filter <- function(Name_Strings, Verb_Strings, DF, Verbs,
 #' @importFrom purrr discard
 handle_select <- function(Name_Strings, Verb_Strings, DF, Verbs,
                           Names, Args, Values, BA){
-  result <- list(type = "select")
-  suppressMessages(tbl_diff <- tibble_diff(BA[[1]], BA[[2]]))
-  result[["mapping"]] <- pmap(tbl_diff$Col_Names_Position %>% select(contains("Position")),
+  result <- result_setup("select", BA)
+  cn1 <- colnames(BA[[1]])
+  cn2 <- colnames(BA[[2]])
+
+  # Did any names get changed?
+  if(any(nzchar(Args))){
+    names(Values) <- Args
+    new_names <- Args %>% discard(Negate(nzchar))
+    for(i in new_names){
+      # Assign old name to same position as new name
+      cn2[which(cn2 == i)] <- Values[[i]] %>% as.character()
+    }
+  }
+
+  map2(map_dbl(cn2, ~ which(.x == cn1)), seq_along(cn2),
                               ~ list(illustrate = "outline",
                                      select = "column",
                                      from = list(anchor = "lhs", index = .x),
                                      to = list(anchor = "rhs", index = .y)
                                      )) %>%
-    discard(~ is.na(.x$to$index))
-
-  result
+    discard(~ is.na(.x$to$index)) %>%
+    prepend_mapping(result)
 }
 
 #' @importFrom purrr flatten discard
