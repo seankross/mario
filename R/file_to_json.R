@@ -185,12 +185,12 @@ load_vars <- function(call, where = 2){
 result_setup <- function(type, BA, mapping = list()){
   result <- list(type = type, mapping = mapping)
   if(is_grouped_df(BA[[1]])){
-    result <- decorate_groups(BA[[1]], "lhs") %>%
-      prepend_mapping(result)
+    result[["mapping"]] <- c(result[["mapping"]],
+                             decorate_groups(BA[[1]], "lhs"))
   }
   if(is_grouped_df(BA[[2]])){
-    result <- decorate_groups(BA[[2]], "rhs") %>%
-      prepend_mapping(result)
+    result[["mapping"]] <- c(result[["mapping"]],
+                             decorate_groups(BA[[2]], "rhs"))
   }
   result
 }
@@ -287,16 +287,6 @@ handle_select <- function(Name_Strings, Verb_Strings, DF, Verbs,
     prepend_mapping(result)
 }
 
-walk_values <- function(x){
-  x %>% map(function(y){
-    if(!is.call(y)){
-      y
-    } else {
-      walk_values(y)
-    }
-  })
-}
-
 #' @importFrom purrr flatten discard
 #' @importFrom dplyr select_at
 handle_mutate  <- function(Name_Strings, Verb_Strings, DF, Verbs,
@@ -305,10 +295,7 @@ handle_mutate  <- function(Name_Strings, Verb_Strings, DF, Verbs,
   before_columns <- colnames(BA[[1]])
   after_columns <- colnames(BA[[2]])
   new_columns <- setdiff(after_columns, before_columns)
-  values <- Values %>%
-    as.character() %>%
-    strsplit("[^\\w\\d\\._]+", perl = TRUE)
-  mutated_columns <- Args %>% as.character()
+  value_s <- Values %>% as.character()
 
   values_ <- Values %>%
     map(~ .x %>%
@@ -317,7 +304,13 @@ handle_mutate  <- function(Name_Strings, Verb_Strings, DF, Verbs,
           unlist() %>%
           discard(Negate(nzchar)))
 
-  pmap(list(Args, values_, seq_along(Args)), function(a, v, i){
+  # The goal is to map from the sources of data to the new columns
+  # There are three sources of data:
+  # - from existing columns: mutate(Sum = carb + optden)
+  # - from columns created inline in the mutate: mutate(Double = card * 2, Triple = Double * 1.5)
+  # - from "raw" values: mutate(Two = 2)
+
+  pmap(list(Args, values_, seq_along(Args), value_s), function(a, v, i, vs){
     mapping <- list()
     visited <- FALSE
     # is it null? (we do not draw columns created and nulled inline)
@@ -326,7 +319,7 @@ handle_mutate  <- function(Name_Strings, Verb_Strings, DF, Verbs,
         illustrate = "crossout",
         select = "column",
         from = list(
-          achor = "arg",
+          anchor = "arg",
           index = i
         ),
         to = list(
@@ -345,7 +338,7 @@ handle_mutate  <- function(Name_Strings, Verb_Strings, DF, Verbs,
           illustrate = "outline",
           select = "column",
           from = list(
-            achor = "lhs",
+            anchor = "lhs",
             index = which(.x == before_columns)
           ),
           to = list(
@@ -363,7 +356,7 @@ handle_mutate  <- function(Name_Strings, Verb_Strings, DF, Verbs,
           illustrate = "outline",
           select = "column",
           from = list(
-            achor = "rhs",
+            anchor = "rhs",
             index = which(.x == after_columns)
           ),
           to = list(
@@ -374,17 +367,21 @@ handle_mutate  <- function(Name_Strings, Verb_Strings, DF, Verbs,
     }
 
     # Assume it's from a value
-    if(!visited && (a %in% after_columns)) {
+    if(!visited && ((a %in% after_columns) || vs %in% after_columns)) {
+      to_index <- ifelse(a %in% after_columns,
+                         which(a == after_columns),
+                         which(vs == after_columns))
+
       mapping <- list(
         illustrate = "outline",
         select = "column",
         from = list(
-          achor = "arg",
+          anchor = "arg",
           index = i
         ),
         to = list(
           anchor = "rhs",
-          index = which(a == after_columns)
+          index = to_index
         )
       ) %>% la(mapping) %>% list()
     }
@@ -398,116 +395,29 @@ handle_mutate  <- function(Name_Strings, Verb_Strings, DF, Verbs,
     flatten() %>%
     discard(~ .x[["illustrate"]] == "skip") %>%
     prepend_mapping(result)
+}
 
-  # The goal is to map from the sources of data to the new columns
-  # There are three sources of data:
-  # - from existing columns: mutate(Sum = carb + optden)
-  # - from columns created inline in the mutate: mutate(Double = card * 2, Triple = Double * 1.5)
-  # - from "raw" values: mutate(Two = 2)
+#' @importFrom purrr map2_lgl
+handle_rename  <- function(Name_Strings, Verb_Strings, DF, Verbs,
+                           Names, Args, Values, BA){
+  result <- list(type = "rename")
+  before_columns <- colnames(BA[[1]])
+  after_columns <- colnames(BA[[2]])
+  changed <- map2_lgl(before_columns, after_columns, ~ .x != .y) %>% which()
 
-#'   from_old_columns <- map2(Args, values, function(arg, value){
-#'     list(from = which(before_columns %in% value), to = which(arg == after_columns))
-#'   }) %>%
-#'     discard(~ length(.x$from) < 1) %>%
-#'     map(function(z){
-#'       map2(z$from, rep(z$to, length(z$from)), function(from, to){
-#'         if(from > length(before_columns)){
-#'           from_anchor <- "rhs"
-#'         } else {
-#'           from_anchor <- "lhs"
-#'         }
-#'
-#'         list(illustrate = "outline",
-#'              select = "column",
-#'              from = list(anchor = from_anchor, index = from),
-#'              to = list(anchor = "rhs", index = to))
-#'       })
-#'     }) %>%
-#'     flatten()
-#'
-#'   from_inline_columns <- intersect(unlist(values), Args) %>%
-#'     discard(~ any(.x == before_columns)) %>%
-#'     map(function(z){
-#'       list(from = which(after_columns == z),
-#'         to = which(Args[map_lgl(values, ~ z %in% .x)] == after_columns))
-#'     }) %>%
-#'     map(function(x){
-#'       if(x$from > length(before_columns)){
-#'         from_anchor <- "rhs"
-#'       } else {
-#'         from_anchor <- "lhs"
-#'       }
-#'
-#'       list(illustrate = "outline",
-#'            select = "column",
-#'            from = list(anchor = from_anchor, index = x$from),
-#'            to = list(anchor = "rhs", index = x$to))
-#'     })
-#'
-#'   crossout <- list()
-#'   if(!all(before_columns %in% after_columns)){
-#'     null_arg_index <- which(map_lgl(Values, is.null))
-#'     nulled_column_index <- which(Args[null_arg_index] == before_columns)
-#'     crossout <- map2(null_arg_index, nulled_column_index,
-#'                      ~list(illustrate = "crossout",
-#'                            select = "column",
-#'                            from = list(anchor = "arg", index = .x),
-#'                            to = list(anchor = "lhs", index = .y)))
-#'   }
-#'
-#'   new_col_index <- setdiff(seq_along(after_columns), seq_along(before_columns))
-#'   remaining_before_columns <- intersect(before_columns, after_columns)
-#'   if(length(new_col_index) < 1){
-#'     new_col_index <- map2_lgl(BA[[1]] %>% select_at(remaining_before_columns),
-#'                               BA[[2]] %>% select_at(remaining_before_columns),
-#'          ~ !isTRUE(all.equal(.x, .y))) %>% which()
-#'   }
-#'
-#'   from_values_columns <- map_lgl(values, ~ all(!(.x %in% after_columns))) %>%
-#'     which() %>%
-#'     map(function(x){
-#'       list(illustrate = "outline",
-#'            select = "column",
-#'            from = list(anchor = "arg", index = x),
-#'            to = list(anchor = "rhs", index = new_col_index[x]))
-#'     })
-#'
-#'   simple_mapping <- c(from_old_columns, from_inline_columns, from_values_columns)
-#'
-#'   to_col_index <- simple_mapping %>% map_dbl(~ .x$to$index)
-#'   raw_cols <- setdiff(new_col_index, to_col_index) %>%
-#'     map(function(x){
-#'       list(illustrate = "outline",
-#'            select = "column",
-#'            from = list(anchor = "arg", index = x - length(before_columns)),
-#'            to = list(anchor = "rhs", index = x))
-#'     })
-#'
-#'   c(simple_mapping, raw_cols, crossout) %>%
-#'     prepend_mapping(result)
-#' }
-#'
-#' #' @importFrom purrr map2_lgl
-#' handle_rename  <- function(Name_Strings, Verb_Strings, DF, Verbs,
-#'                            Names, Args, Values, BA){
-#'   result <- list(type = "rename")
-#'   before_columns <- colnames(BA[[1]])
-#'   after_columns <- colnames(BA[[2]])
-#'   changed <- map2_lgl(before_columns, after_columns, ~ .x != .y) %>% which()
-#'
-#'   if(any(before_columns %in% Args)){
-#'     no_op <- which(before_columns %in% Args)
-#'     if(!(no_op %in% changed)){
-#'       changed <- c(changed, no_op)
-#'     }
-#'   }
-#'
-#'   result[["mapping"]] <- changed %>%
-#'     sort() %>%
-#'     map(~ list(illustrate = "outline", select = "column",
-#'                from = list(anchor = "lhs", index = .x),
-#'                to = list(anchor = "rhs", index = .x)))
-#'   result
+  if(any(before_columns %in% Args)){
+    no_op <- which(before_columns %in% Args)
+    if(!(no_op %in% changed)){
+      changed <- c(changed, no_op)
+    }
+  }
+
+  result[["mapping"]] <- changed %>%
+    sort() %>%
+    map(~ list(illustrate = "outline", select = "column",
+               from = list(anchor = "lhs", index = .x),
+               to = list(anchor = "rhs", index = .x)))
+  result
 }
 
 #' @importFrom dplyr group_indices group_vars left_join
