@@ -288,15 +288,21 @@ handle_select <- function(Name_Strings, Verb_Strings, DF, Verbs,
 }
 
 #' @importFrom purrr flatten discard
+#' @importFrom dplyr select_at
 handle_mutate  <- function(Name_Strings, Verb_Strings, DF, Verbs,
                            Names, Args, Values, BA){
-  result <- list(type = "mutate")
+  result <- result_setup("mutate", BA)
   before_columns <- colnames(BA[[1]])
   after_columns <- colnames(BA[[2]])
-  values <- Values %>%
-    as.character() %>%
-    strsplit("[^\\w\\d\\._]+", perl = TRUE)
-  mutated_columns <- Args %>% as.character()
+  new_columns <- setdiff(after_columns, before_columns)
+  value_s <- Values %>% as.character()
+
+  values_ <- Values %>%
+    map(~ .x %>%
+          as.character() %>%
+          strsplit("[^\\w\\d\\._]+", perl = TRUE) %>%
+          unlist() %>%
+          discard(Negate(nzchar)))
 
   # The goal is to map from the sources of data to the new columns
   # There are three sources of data:
@@ -304,68 +310,91 @@ handle_mutate  <- function(Name_Strings, Verb_Strings, DF, Verbs,
   # - from columns created inline in the mutate: mutate(Double = card * 2, Triple = Double * 1.5)
   # - from "raw" values: mutate(Two = 2)
 
-  from_old_columns <- map2(Args, values, function(arg, value){
-    list(from = which(before_columns %in% value), to = which(arg == after_columns))
+  pmap(list(Args, values_, seq_along(Args), value_s), function(a, v, i, vs){
+    mapping <- list()
+    visited <- FALSE
+    # is it null? (we do not draw columns created and nulled inline)
+    if(is.null(v) && (a %in% before_columns)) {
+      mapping <- list(
+        illustrate = "crossout",
+        select = "column",
+        from = list(
+          anchor = "arg",
+          index = i
+        ),
+        to = list(
+          anchor = "lhs",
+          index = which(a == before_columns)
+        )
+      ) %>% list()
+      return(mapping)
+    }
+
+    # is it from an old column?
+    if(any(v %in% before_columns)) {
+      visited <- TRUE
+      mapping <- intersect(v, before_columns) %>%
+        map(~list(
+          illustrate = "outline",
+          select = "column",
+          from = list(
+            anchor = "lhs",
+            index = which(.x == before_columns)
+          ),
+          to = list(
+            anchor = "rhs",
+            index = which(a == after_columns)
+          )
+        )) %>% la(mapping)
+    }
+
+    # is it from a new column?
+    if(any(v %in% new_columns)) {
+      visited <- TRUE
+      mapping <- intersect(v, new_columns) %>%
+        map(~list(
+          illustrate = "outline",
+          select = "column",
+          from = list(
+            anchor = "rhs",
+            index = which(.x == after_columns)
+          ),
+          to = list(
+            anchor = "rhs",
+            index = which(a == after_columns)
+          )
+        )) %>% la(mapping)
+    }
+
+    # Assume it's from a value
+    if(!visited && ((a %in% after_columns) || vs %in% after_columns)) {
+      to_index <- ifelse(a %in% after_columns,
+                         which(a == after_columns),
+                         which(vs == after_columns))
+
+      mapping <- list(
+        illustrate = "outline",
+        select = "column",
+        from = list(
+          anchor = "arg",
+          index = i
+        ),
+        to = list(
+          anchor = "rhs",
+          index = to_index
+        )
+      ) %>% la(mapping) %>% list()
+    }
+
+    if(length(mapping) < 1) {
+      mapping <- list(illustrate = "skip") %>% list()
+    }
+
+    mapping
   }) %>%
-    discard(~ length(.x$from) < 1) %>%
-    map(function(z){
-      map2(z$from, rep(z$to, length(z$from)), function(from, to){
-        if(from > length(before_columns)){
-          from_anchor <- "rhs"
-        } else {
-          from_anchor <- "lhs"
-        }
-
-        list(illustrate = "outline",
-             select = "column",
-             from = list(anchor = from_anchor, index = from),
-             to = list(anchor = "rhs", index = to))
-      })
-    }) %>%
-    flatten()
-
-  from_inline_columns <- intersect(unlist(values), Args) %>%
-    discard(~ any(.x == before_columns)) %>%
-    map(function(z){
-      list(from = which(after_columns == z),
-        to = which(Args[map_lgl(values, ~ z %in% .x)] == after_columns))
-    }) %>%
-    map(function(x){
-      if(x$from > length(before_columns)){
-        from_anchor <- "rhs"
-      } else {
-        from_anchor <- "lhs"
-      }
-
-      list(illustrate = "outline",
-           select = "column",
-           from = list(anchor = from_anchor, index = x$from),
-           to = list(anchor = "rhs", index = x$to))
-    })
-
-  new_col_index <- setdiff(seq_along(after_columns), seq_along(before_columns))#which(after_columns %in% Args)
-  from_values_columns <- map_lgl(values, ~ all(!(.x %in% after_columns))) %>%
-    which() %>%
-    map(function(x){
-      list(illustrate = "outline",
-           select = "column",
-           from = list(anchor = "arg", index = x),
-           to = list(anchor = "rhs", index = new_col_index[x]))
-    })
-
-  simple_mapping <- c(from_old_columns, from_inline_columns, from_values_columns)
-
-  to_col_index <- simple_mapping %>% map_dbl(~ .x$to$index)
-  raw_cols <- setdiff(new_col_index, to_col_index) %>%
-    map(function(x){
-      list(illustrate = "outline",
-           select = "column",
-           from = list(anchor = "arg", index = x - length(before_columns)),
-           to = list(anchor = "rhs", index = x))
-    })
-
-  result[["mapping"]] <- c(simple_mapping, raw_cols)
-  result
+    flatten() %>%
+    discard(~ .x[["illustrate"]] == "skip") %>%
+    prepend_mapping(result)
 }
 
 #' @importFrom purrr map2_lgl
@@ -391,18 +420,14 @@ handle_rename  <- function(Name_Strings, Verb_Strings, DF, Verbs,
   result
 }
 
-#' @importFrom scales hue_pal
 #' @importFrom dplyr group_indices group_vars left_join
 decorate_groups <- function(df, anchor = "lhs"){
   group_id <- df %>% group_indices()
-  color_hex_codes <- hue_pal()(max(group_id))
-  color_tbl <- tibble(Color = color_hex_codes,
-                      Group_Index = 1:length(color_hex_codes))
   row_tbl <- tibble(Row_Index = 1:nrow(df),
          Group_Index = group_id)
-  left_join(row_tbl, color_tbl, by = "Group_Index") %>%
+  row_tbl %>%
     pmap(~ list(illustrate = "highlight", select = "row", anchor = anchor,
-                index = ..1, group_id = ..2, color = ..3))
+                index = ..1, group_id = ..2))
 }
 
 handle_group_by <- function(Name_Strings, Verb_Strings, DF, Verbs,

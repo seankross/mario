@@ -20,48 +20,42 @@
         "select": "row",
         "anchor": "rhs",
         "index": 1,
-        "group_id": 2,
-        "color": "#A3A500"
+        "group_id": 2
       },
       {
         "illustrate": "highlight",
         "select": "row",
         "anchor": "rhs",
         "index": 2,
-        "group_id": 1,
-        "color": "#F8766D"
+        "group_id": 1
       },
       {
         "illustrate": "highlight",
         "select": "row",
         "anchor": "rhs",
         "index": 3,
-        "group_id": 3,
-        "color": "#00BF7D"
+        "group_id": 3
       },
       {
         "illustrate": "highlight",
         "select": "row",
         "anchor": "rhs",
         "index": 4,
-        "group_id": 3,
-        "color": "#00BF7D"
+        "group_id": 3
       },
       {
         "illustrate": "highlight",
         "select": "row",
         "anchor": "rhs",
         "index": 5,
-        "group_id": 4,
-        "color": "#00B0F6"
+        "group_id": 4
       },
       {
         "illustrate": "highlight",
         "select": "row",
         "anchor": "rhs",
         "index": 6,
-        "group_id": 5,
-        "color": "#E76BF3"
+        "group_id": 5
       }
     ],
     "data_frame": {
@@ -152,96 +146,84 @@
         "select": "row",
         "anchor": "lhs",
         "index": 1,
-        "group_id": 2,
-        "color": "#A3A500"
+        "group_id": 2
       },
       {
         "illustrate": "highlight",
         "select": "row",
         "anchor": "lhs",
         "index": 2,
-        "group_id": 1,
-        "color": "#F8766D"
+        "group_id": 1
       },
       {
         "illustrate": "highlight",
         "select": "row",
         "anchor": "lhs",
         "index": 3,
-        "group_id": 3,
-        "color": "#00BF7D"
+        "group_id": 3
       },
       {
         "illustrate": "highlight",
         "select": "row",
         "anchor": "lhs",
         "index": 4,
-        "group_id": 3,
-        "color": "#00BF7D"
+        "group_id": 3
       },
       {
         "illustrate": "highlight",
         "select": "row",
         "anchor": "lhs",
         "index": 5,
-        "group_id": 4,
-        "color": "#00B0F6"
+        "group_id": 4
       },
       {
         "illustrate": "highlight",
         "select": "row",
         "anchor": "lhs",
         "index": 6,
-        "group_id": 5,
-        "color": "#E76BF3"
+        "group_id": 5
       },
       {
         "illustrate": "highlight",
         "select": "row",
         "anchor": "rhs",
         "index": 1,
-        "group_id": 1,
-        "color": "#F8766D"
+        "group_id": 1
       },
       {
         "illustrate": "highlight",
         "select": "row",
         "anchor": "rhs",
         "index": 2,
-        "group_id": 1,
-        "color": "#F8766D"
+        "group_id": 1
       },
       {
         "illustrate": "highlight",
         "select": "row",
         "anchor": "rhs",
         "index": 3,
-        "group_id": 2,
-        "color": "#00BA38"
+        "group_id": 2
       },
       {
         "illustrate": "highlight",
         "select": "row",
         "anchor": "rhs",
         "index": 4,
-        "group_id": 2,
-        "color": "#00BA38"
+        "group_id": 2
       },
       {
         "illustrate": "highlight",
         "select": "row",
         "anchor": "rhs",
         "index": 5,
-        "group_id": 3,
-        "color": "#619CFF"
+        "group_id": 3
       },
       {
         "illustrate": "highlight",
         "select": "row",
         "anchor": "rhs",
         "index": 6,
-        "group_id": 3,
-        "color": "#619CFF"
+        "group_id": 3
       }
     ],
     "data_frame": {

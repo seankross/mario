@@ -6,7 +6,7 @@
 get_args <- function(verbs){
   result <- verbs %>%
     map(~ if(is.name(.x) || length(as.list(.x)) <= 1) {
-      list(Arg = NA, Value = NA)
+      list(Arg = "", Value = "")
     } else {
       arg_list <- as.list(.x)[-1]
       arg <- names(arg_list)
