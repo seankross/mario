@@ -16,3 +16,7 @@ strip_i <- function(x){
     gsub_("\u2018", "'") %>%
     gsub_("\u2019", "'")
 }
+
+la <- function(x, y){
+  c(y, x)
+}
