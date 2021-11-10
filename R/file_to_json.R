@@ -400,7 +400,7 @@ handle_mutate  <- function(Name_Strings, Verb_Strings, DF, Verbs,
 #' @importFrom purrr map2_lgl
 handle_rename  <- function(Name_Strings, Verb_Strings, DF, Verbs,
                            Names, Args, Values, BA){
-  result <- list(type = "rename")
+  result <- result_setup("rename", BA)
   before_columns <- colnames(BA[[1]])
   after_columns <- colnames(BA[[2]])
   changed <- map2_lgl(before_columns, after_columns, ~ .x != .y) %>% which()
@@ -412,12 +412,12 @@ handle_rename  <- function(Name_Strings, Verb_Strings, DF, Verbs,
     }
   }
 
-  result[["mapping"]] <- changed %>%
+  changed %>%
     sort() %>%
     map(~ list(illustrate = "outline", select = "column",
                from = list(anchor = "lhs", index = .x),
-               to = list(anchor = "rhs", index = .x)))
-  result
+               to = list(anchor = "rhs", index = .x))) %>%
+    prepend_mapping(result)
 }
 
 #' @importFrom dplyr group_indices group_vars left_join
