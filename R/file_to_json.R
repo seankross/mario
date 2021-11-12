@@ -129,21 +129,57 @@ before_after_tbl_list <- function(tbl_list) {
 #' @importFrom purrr pmap safely
 pipeline_tbl_to_list <- function(ptbl) {
   pmap(ptbl, handle)
-  #result <- pmap(ptbl, safely(handle))
 }
 
 handle <- function(Name_Strings, Verb_Strings, DF, Verbs,
                                     Names, Args, Values, BA){
   result <- handle_pipeline_tbl_row(Name_Strings, Verb_Strings, DF, Verbs,
                                     Names, Args, Values, BA)
-  if(length(BA) > 1 && is.data.frame(BA[[1]]) && is.data.frame(BA[[2]])){
+
+  if(length(BA) > 0 &&
+     is.data.frame(BA[[1]]) &&
+     is.null(result[["data_frame"]][["lhs"]])){
     result[["data_frame"]] <- list(
       lhs = list(col_names = I(colnames(BA[[1]])),
-                 data = BA[[1]]),
-      rhs = list(col_names = I(colnames(BA[[2]])),
-                 data = BA[[2]])
-      )
+                 data = BA[[1]])) %>% la(result[["data_frame"]])
   }
+
+  if(length(BA) > 1 &&
+     is.data.frame(BA[[2]]) &&
+     is.null(result[["data_frame"]][["rhs"]])){
+    result[["data_frame"]] <- list(
+      rhs = list(col_names = I(colnames(BA[[2]])),
+                 data = BA[[2]])) %>% la(result[["data_frame"]])
+  }
+
+  if(length(BA) > 0 && is_grouped_df(BA[[1]])){
+    result[["data_frame"]][["lhs"]][["group_data"]] <- list(
+      col_names = BA[[1]] %>% group_keys() %>% colnames() %>% I(),
+      group_indices = BA[[1]] %>% group_indices(),
+      group_keys = BA[[1]] %>% group_keys() %>%
+        group_by_at(group_vars(BA[[1]])) %>%
+        group_split() %>% map2(BA[[1]] %>%
+                                 group_keys() %>%
+                                 group_by_at(group_vars(BA[[1]])) %>%
+                                 group_indices(),
+                               ~list(group_id = .y, key = .x %>% as.list()))
+    )
+  }
+
+  if(length(BA) > 1 && is_grouped_df(BA[[2]])){
+    result[["data_frame"]][["rhs"]][["group_data"]] <- list(
+      col_names = BA[[2]] %>% group_keys() %>% colnames() %>% I(),
+      group_indices = BA[[2]] %>% group_indices(),
+      group_keys = BA[[2]] %>% group_keys() %>%
+        group_by_at(group_vars(BA[[2]])) %>%
+        group_split() %>% map2(BA[[2]] %>%
+                                 group_keys() %>%
+                                 group_by_at(group_vars(BA[[2]])) %>%
+                                 group_indices(),
+                               ~list(group_id = .y, key = .x %>% as.list()))
+    )
+  }
+
   result[["code_step"]] <- Verb_Strings
   result[c("type", "code_step", "mapping", "data_frame")]
 }
@@ -168,6 +204,8 @@ handle_pipeline_tbl_row <- function(Name_Strings, Verb_Strings, DF, Verbs,
     handle_group_by(Name_Strings, Verb_Strings, DF, Verbs, Names, Args, Values, BA)
   } else if(Name_Strings == "ungroup"){
     handle_ungroup(Name_Strings, Verb_Strings, DF, Verbs, Names, Args, Values, BA)
+  } else if(Name_Strings %in% c("summarize", "summarise")){
+    handle_summarize(Name_Strings, Verb_Strings, DF, Verbs, Names, Args, Values, BA)
   } else {
     handle_unknown(Name_Strings, Verb_Strings, DF, Verbs, Names, Args, Values, BA)
   }
@@ -184,11 +222,11 @@ load_vars <- function(call, where = 2){
 
 result_setup <- function(type, BA, mapping = list()){
   result <- list(type = type, mapping = mapping)
-  if(is_grouped_df(BA[[1]])){
+  if(length(BA) > 0 && is_grouped_df(BA[[1]])){
     result[["mapping"]] <- c(result[["mapping"]],
                              decorate_groups(BA[[1]], "lhs"))
   }
-  if(is_grouped_df(BA[[2]])){
+  if(length(BA) > 1 && is_grouped_df(BA[[2]])){
     result[["mapping"]] <- c(result[["mapping"]],
                              decorate_groups(BA[[2]], "rhs"))
   }
@@ -297,7 +335,7 @@ handle_mutate  <- function(Name_Strings, Verb_Strings, DF, Verbs,
   new_columns <- setdiff(after_columns, before_columns)
   value_s <- Values %>% as.character()
 
-  values_ <- Values %>%
+  values <- Values %>%
     map(~ .x %>%
           as.character() %>%
           strsplit("[^\\w\\d\\._]+", perl = TRUE) %>%
@@ -310,7 +348,7 @@ handle_mutate  <- function(Name_Strings, Verb_Strings, DF, Verbs,
   # - from columns created inline in the mutate: mutate(Double = card * 2, Triple = Double * 1.5)
   # - from "raw" values: mutate(Two = 2)
 
-  pmap(list(Args, values_, seq_along(Args), value_s), function(a, v, i, vs){
+  pmap(list(Args, values, seq_along(Args), value_s), function(a, v, i, vs){
     mapping <- list()
     visited <- FALSE
     # is it null? (we do not draw columns created and nulled inline)
@@ -453,7 +491,54 @@ handle_ungroup <- function(Name_Strings, Verb_Strings, DF, Verbs,
     prepend_mapping(result)
 }
 
+handle_summarize <- function(Name_Strings, Verb_Strings, DF, Verbs,
+                             Names, Args, Values, BA){
+  result <- result_setup("summarize", BA)
+  before_columns <- colnames(BA[[1]])
+  after_columns <- colnames(BA[[2]])
+  value_s <- Values %>% as.character()
+
+  values <- Values %>%
+    map(~ .x %>%
+          as.character() %>%
+          strsplit("[^\\w\\d\\._]+", perl = TRUE) %>%
+          unlist() %>%
+          discard(Negate(nzchar)))
+
+  result <- map2(1:nrow(BA[[1]]), group_indices(BA[[1]]),
+    function(row, group){
+      map(setdiff(group_vars(BA[[1]]), Args), function(col){
+        list(illustrate = "outline",
+           select = "cell",
+           from = list(
+             anchor = "lhs",
+             index = c(row, which(col == before_columns))
+           ),
+           to = list(
+             anchor = "rhs",
+             index = c(group, which(col == after_columns))
+           ))
+      })
+    }) %>%
+    flatten() %>%
+    prepend_mapping(result)
+
+  # BA[[1]] %>% group_indices()
+  # BA[[2]] %>% group_by_at(group_vars(BA[[1]])) %>% group_indices()
+  #
+  # group_vars(BA[[1]])
+  # group_indices(BA[[1]])
+  # group_data(BA[[1]])
+  # group_keys(BA[[1]])
+  #
+  # pmap(list(Args, values, seq_along(Args), value_s), function(a, v, i, vs){
+  #
+  # })
+
+  result
+}
+
 handle_unknown <- function(Name_Strings, Verb_Strings, DF, Verbs,
                            Names, Args, Values, BA){
-  list(type = "unknown", mapping = list())
+  result_setup("unknown", BA)
 }

@@ -4,7 +4,7 @@
     "code_step": "NA",
     "mapping": {
       "message": {
-        "header": "Mapped vectors must have consistent lengths:\n* `.x` has length 3\n* `.y` has length 6",
+        "header": "Mapped vectors must have consistent lengths:\n* `.x` has length 4\n* `.y` has length 6",
         "body": [],
         "footer": []
       }

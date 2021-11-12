@@ -139,7 +139,55 @@
             "hp": 245,
             "Airbags": 1
           }
-        ]
+        ],
+        "group_data": {
+          "col_names": ["cyl", "Airbags"],
+          "group_indices": [2, 1, 3, 4, 5, 6],
+          "group_keys": [
+            {
+              "group_id": 2,
+              "key": {
+                "cyl": 4,
+                "Airbags": 1
+              }
+            },
+            {
+              "group_id": 1,
+              "key": {
+                "cyl": 4,
+                "Airbags": 2
+              }
+            },
+            {
+              "group_id": 3,
+              "key": {
+                "cyl": 6,
+                "Airbags": 0
+              }
+            },
+            {
+              "group_id": 4,
+              "key": {
+                "cyl": 6,
+                "Airbags": 2
+              }
+            },
+            {
+              "group_id": 5,
+              "key": {
+                "cyl": 8,
+                "Airbags": 0
+              }
+            },
+            {
+              "group_id": 6,
+              "key": {
+                "cyl": 8,
+                "Airbags": 1
+              }
+            }
+          ]
+        }
       }
     }
   }
