@@ -43,8 +43,8 @@
         "illustrate": "outline",
         "select": "column",
         "from": {
-          "anchor": "lhs",
-          "index": 2
+          "anchor": "rhs",
+          "index": 3
         },
         "to": {
           "anchor": "rhs",

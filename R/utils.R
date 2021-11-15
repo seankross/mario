@@ -32,3 +32,8 @@ csl <- function(x){
     paste(x, collapse = ", ")
   }
 }
+
+# from Hmisc::escapeRegex
+er <- function(x) {
+  gsub("([.|()\\^{}+$*?]|\\[|\\])", "\\\\\\1", x)
+}

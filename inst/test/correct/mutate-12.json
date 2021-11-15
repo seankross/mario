@@ -1,7 +1,7 @@
 [
   {
     "type": "mutate",
-    "code_step": "mutate(Sum = carb + optden, carb = NULL)",
+    "code_step": "mutate(`Carb + Optden` = carb + optden, Sum = `Carb + Optden`)",
     "mapping": [
       {
         "illustrate": "outline",
@@ -12,7 +12,7 @@
         },
         "to": {
           "anchor": "rhs",
-          "index": 2
+          "index": 3
         }
       },
       {
@@ -24,19 +24,19 @@
         },
         "to": {
           "anchor": "rhs",
-          "index": 2
+          "index": 3
         }
       },
       {
-        "illustrate": "crossout",
+        "illustrate": "outline",
         "select": "column",
         "from": {
-          "anchor": "arg",
-          "index": 2
+          "anchor": "rhs",
+          "index": 3
         },
         "to": {
-          "anchor": "lhs",
-          "index": 1
+          "anchor": "rhs",
+          "index": 4
         }
       }
     ],
@@ -71,30 +71,42 @@
         ]
       },
       "rhs": {
-        "col_names": ["optden", "Sum"],
+        "col_names": ["carb", "optden", "Carb + Optden", "Sum"],
         "data": [
           {
+            "carb": 0.1,
             "optden": 0.086,
+            "Carb + Optden": 0.186,
             "Sum": 0.186
           },
           {
+            "carb": 0.3,
             "optden": 0.269,
+            "Carb + Optden": 0.569,
             "Sum": 0.569
           },
           {
+            "carb": 0.5,
             "optden": 0.446,
+            "Carb + Optden": 0.946,
             "Sum": 0.946
           },
           {
+            "carb": 0.6,
             "optden": 0.538,
+            "Carb + Optden": 1.138,
             "Sum": 1.138
           },
           {
+            "carb": 0.7,
             "optden": 0.626,
+            "Carb + Optden": 1.326,
             "Sum": 1.326
           },
           {
+            "carb": 0.9,
             "optden": 0.782,
+            "Carb + Optden": 1.682,
             "Sum": 1.682
           }
         ]

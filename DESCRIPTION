@@ -18,6 +18,7 @@ Imports:
     magrittr,
     purrr,
     rlang,
+    stringr,
     tibble
 Suggests: 
     rmarkdown,
