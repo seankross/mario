@@ -20,3 +20,15 @@ strip_i <- function(x){
 la <- function(x, y){
   c(y, x)
 }
+
+right_pad_string <- function(x, len){
+  paste0(x, paste0(rep(" ", len - nchar(x)), collapse = ""))
+}
+
+csl <- function(x){
+  if(length(x) < 2){
+    x
+  } else {
+    paste(x, collapse = ", ")
+  }
+}

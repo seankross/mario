@@ -90,12 +90,18 @@ create_jsons <- function(code_files = NULL, clobber = FALSE){
 }
 
 #' @importFrom purrr walk2 safely
+#' @importFrom jsonlite fromJSON
 check_jsons <- function(){
   code_files <- list.files(file.path("inst", "test", "code"), full.names = TRUE)
   json_files <- file.path("inst", "test", "correct",
                           basename(code_files) %>%
                             tools::file_path_sans_ext() %>%
                             paste0(".json"))
+
+  longest_name <- basename(code_files) %>%
+    tools::file_path_sans_ext() %>%
+    nchar() %>%
+    max()
 
   suppressMessages({
   test_results = map2(code_files, json_files, safely(function(code, json){
@@ -104,7 +110,7 @@ check_jsons <- function(){
     file_to_json(code) %>% writeLines(temp_file)
     pass <- all.equal(readLines(temp_file), readLines(json))
     status <- ifelse(isTRUE(pass), "Passed", "FAILED")
-    list(status = status)
+    list(status = status, type = csl(fromJSON(json)[["type"]]))
   }))
   })
 
@@ -114,11 +120,11 @@ check_jsons <- function(){
     if(!is.null(tr$error)){
       message("ERROR : ", test_name)
     } else {
-      message(tr$result$status, ": ", test_name)
+      message(tr$result$status, ": ", right_pad_string(test_name, longest_name),
+              " | ", tr$result$type)
     }
   })
 }
-
 
 #' @importFrom purrr map2
 before_after_tbl_list <- function(tbl_list) {
@@ -131,6 +137,7 @@ pipeline_tbl_to_list <- function(ptbl) {
   pmap(ptbl, handle)
 }
 
+#' @importFrom dplyr group_keys group_split
 handle <- function(Name_Strings, Verb_Strings, DF, Verbs,
                                     Names, Args, Values, BA){
   result <- handle_pipeline_tbl_row(Name_Strings, Verb_Strings, DF, Verbs,
@@ -349,6 +356,7 @@ handle_mutate  <- function(Name_Strings, Verb_Strings, DF, Verbs,
   # - from "raw" values: mutate(Two = 2)
 
   pmap(list(Args, values, seq_along(Args), value_s), function(a, v, i, vs){
+    #a = Args[1]; v = values[[1]]; i = 1; vs = value_s[1]
     mapping <- list()
     visited <- FALSE
     # is it null? (we do not draw columns created and nulled inline)
@@ -371,6 +379,13 @@ handle_mutate  <- function(Name_Strings, Verb_Strings, DF, Verbs,
     # is it from an old column?
     if(any(v %in% before_columns)) {
       visited <- TRUE
+
+      if (a == "" && (vs %in% after_columns)) {
+        to_index <- which(vs == after_columns)
+      } else {
+        to_index <- which(a == after_columns)
+      }
+
       mapping <- intersect(v, before_columns) %>%
         map(~list(
           illustrate = "outline",
@@ -381,7 +396,7 @@ handle_mutate  <- function(Name_Strings, Verb_Strings, DF, Verbs,
           ),
           to = list(
             anchor = "rhs",
-            index = which(a == after_columns)
+            index = to_index
           )
         )) %>% la(mapping)
     }

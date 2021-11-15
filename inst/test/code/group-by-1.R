@@ -8,4 +8,4 @@ mt <- mtcars %>%
   ungroup()
 
 mt %>%
-  group_by(cyl) %>% parse_pipeline() %>% mario:::load_vars()
+  group_by(cyl)
