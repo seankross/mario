@@ -1,54 +1,18 @@
 [
   {
     "type": "mutate",
-    "code_step": "mutate(carb + optden, `carb + optden`/carb)",
+    "code_step": "mutate(5)",
     "mapping": [
       {
         "illustrate": "outline",
         "select": "column",
         "from": {
-          "anchor": "lhs",
+          "anchor": "arg",
           "index": 1
         },
         "to": {
           "anchor": "rhs",
           "index": 3
-        }
-      },
-      {
-        "illustrate": "outline",
-        "select": "column",
-        "from": {
-          "anchor": "lhs",
-          "index": 2
-        },
-        "to": {
-          "anchor": "rhs",
-          "index": 3
-        }
-      },
-      {
-        "illustrate": "outline",
-        "select": "column",
-        "from": {
-          "anchor": "lhs",
-          "index": 1
-        },
-        "to": {
-          "anchor": "rhs",
-          "index": 4
-        }
-      },
-      {
-        "illustrate": "outline",
-        "select": "column",
-        "from": {
-          "anchor": "lhs",
-          "index": 2
-        },
-        "to": {
-          "anchor": "rhs",
-          "index": 4
         }
       }
     ],
@@ -83,43 +47,37 @@
         ]
       },
       "rhs": {
-        "col_names": ["carb", "optden", "carb + optden", "`carb + optden`/carb"],
+        "col_names": ["carb", "optden", "5"],
         "data": [
           {
             "carb": 0.1,
             "optden": 0.086,
-            "carb + optden": 0.186,
-            "`carb + optden`/carb": 1.86
+            "5": 5
           },
           {
             "carb": 0.3,
             "optden": 0.269,
-            "carb + optden": 0.569,
-            "`carb + optden`/carb": 1.8967
+            "5": 5
           },
           {
             "carb": 0.5,
             "optden": 0.446,
-            "carb + optden": 0.946,
-            "`carb + optden`/carb": 1.892
+            "5": 5
           },
           {
             "carb": 0.6,
             "optden": 0.538,
-            "carb + optden": 1.138,
-            "`carb + optden`/carb": 1.8967
+            "5": 5
           },
           {
             "carb": 0.7,
             "optden": 0.626,
-            "carb + optden": 1.326,
-            "`carb + optden`/carb": 1.8943
+            "5": 5
           },
           {
             "carb": 0.9,
             "optden": 0.782,
-            "carb + optden": 1.682,
-            "`carb + optden`/carb": 1.8689
+            "5": 5
           }
         ]
       }

@@ -356,7 +356,7 @@ handle_mutate  <- function(Name_Strings, Verb_Strings, DF, Verbs,
   # - from "raw" values: mutate(Two = 2)
 
   pmap(list(Args, values, seq_along(Args), value_s), function(a, v, i, vs){
-    #a = Args[1]; v = values[[1]]; i = 1; vs = value_s[1]
+    #i = 2; a = Args[i]; v = values[[i]]; vs = value_s[i]
     mapping <- list()
     visited <- FALSE
     # is it null? (we do not draw columns created and nulled inline)
@@ -402,8 +402,15 @@ handle_mutate  <- function(Name_Strings, Verb_Strings, DF, Verbs,
     }
 
     # is it from a new column?
-    if(any(v %in% new_columns)) {
+    if(any(v %in% new_columns) && !(a == "" && (vs %in% after_columns) && !any(v %in% Args))) {
       visited <- TRUE
+
+      if (a == "" && (vs %in% after_columns)) {
+        to_index <- which(vs == after_columns)
+      } else {
+        to_index <- which(a == after_columns)
+      }
+
       mapping <- intersect(v, new_columns) %>%
         map(~list(
           illustrate = "outline",
@@ -414,7 +421,7 @@ handle_mutate  <- function(Name_Strings, Verb_Strings, DF, Verbs,
           ),
           to = list(
             anchor = "rhs",
-            index = which(a == after_columns)
+            index = to_index
           )
         )) %>% la(mapping)
     }
