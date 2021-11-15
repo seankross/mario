@@ -1,7 +1,7 @@
 [
   {
     "type": "group_by",
-    "code_step": "group_by(cyl, Airbags)",
+    "code_step": "group_by(cyl, am)",
     "mapping": [
       {
         "illustrate": "outline",
@@ -13,14 +13,14 @@
         "illustrate": "outline",
         "select": "column",
         "anchor": "lhs",
-        "index": 4
+        "index": 3
       },
       {
         "illustrate": "highlight",
         "select": "row",
         "anchor": "rhs",
         "index": 1,
-        "group_id": 2
+        "group_id": 1
       },
       {
         "illustrate": "highlight",
@@ -34,156 +34,130 @@
         "select": "row",
         "anchor": "rhs",
         "index": 3,
-        "group_id": 3
+        "group_id": 2
       },
       {
         "illustrate": "highlight",
         "select": "row",
         "anchor": "rhs",
         "index": 4,
-        "group_id": 4
+        "group_id": 3
       },
       {
         "illustrate": "highlight",
         "select": "row",
         "anchor": "rhs",
         "index": 5,
-        "group_id": 5
+        "group_id": 4
       },
       {
         "illustrate": "highlight",
         "select": "row",
         "anchor": "rhs",
         "index": 6,
-        "group_id": 6
+        "group_id": 4
       }
     ],
     "data_frame": {
       "lhs": {
-        "col_names": ["mpg", "cyl", "hp", "Airbags"],
+        "col_names": ["mpg", "cyl", "am"],
         "data": [
-          {
-            "mpg": 22.8,
-            "cyl": 4,
-            "hp": 93,
-            "Airbags": 2
-          },
           {
             "mpg": 24.4,
             "cyl": 4,
-            "hp": 62,
-            "Airbags": 1
+            "am": 0
+          },
+          {
+            "mpg": 22.8,
+            "cyl": 4,
+            "am": 0
+          },
+          {
+            "mpg": 32.4,
+            "cyl": 4,
+            "am": 1
+          },
+          {
+            "mpg": 21.4,
+            "cyl": 6,
+            "am": 0
           },
           {
             "mpg": 21,
             "cyl": 6,
-            "hp": 110,
-            "Airbags": 0
+            "am": 1
           },
           {
-            "mpg": 21,
+            "mpg": 19.7,
             "cyl": 6,
-            "hp": 110,
-            "Airbags": 2
-          },
-          {
-            "mpg": 18.7,
-            "cyl": 8,
-            "hp": 175,
-            "Airbags": 0
-          },
-          {
-            "mpg": 14.3,
-            "cyl": 8,
-            "hp": 245,
-            "Airbags": 1
+            "am": 1
           }
         ]
       },
       "rhs": {
-        "col_names": ["mpg", "cyl", "hp", "Airbags"],
+        "col_names": ["mpg", "cyl", "am"],
         "data": [
-          {
-            "mpg": 22.8,
-            "cyl": 4,
-            "hp": 93,
-            "Airbags": 2
-          },
           {
             "mpg": 24.4,
             "cyl": 4,
-            "hp": 62,
-            "Airbags": 1
+            "am": 0
+          },
+          {
+            "mpg": 22.8,
+            "cyl": 4,
+            "am": 0
+          },
+          {
+            "mpg": 32.4,
+            "cyl": 4,
+            "am": 1
+          },
+          {
+            "mpg": 21.4,
+            "cyl": 6,
+            "am": 0
           },
           {
             "mpg": 21,
             "cyl": 6,
-            "hp": 110,
-            "Airbags": 0
+            "am": 1
           },
           {
-            "mpg": 21,
+            "mpg": 19.7,
             "cyl": 6,
-            "hp": 110,
-            "Airbags": 2
-          },
-          {
-            "mpg": 18.7,
-            "cyl": 8,
-            "hp": 175,
-            "Airbags": 0
-          },
-          {
-            "mpg": 14.3,
-            "cyl": 8,
-            "hp": 245,
-            "Airbags": 1
+            "am": 1
           }
         ],
         "group_data": {
-          "col_names": ["cyl", "Airbags"],
-          "group_indices": [2, 1, 3, 4, 5, 6],
+          "col_names": ["cyl", "am"],
+          "group_indices": [1, 1, 2, 3, 4, 4],
           "group_keys": [
             {
               "group_id": 1,
               "key": {
                 "cyl": 4,
-                "Airbags": 1
+                "am": 0
               }
             },
             {
               "group_id": 2,
               "key": {
                 "cyl": 4,
-                "Airbags": 2
+                "am": 1
               }
             },
             {
               "group_id": 3,
               "key": {
                 "cyl": 6,
-                "Airbags": 0
+                "am": 0
               }
             },
             {
               "group_id": 4,
               "key": {
                 "cyl": 6,
-                "Airbags": 2
-              }
-            },
-            {
-              "group_id": 5,
-              "key": {
-                "cyl": 8,
-                "Airbags": 0
-              }
-            },
-            {
-              "group_id": 6,
-              "key": {
-                "cyl": 8,
-                "Airbags": 1
+                "am": 1
               }
             }
           ]

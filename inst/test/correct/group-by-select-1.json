@@ -152,7 +152,31 @@
             "hp": 245,
             "wt": 3.57
           }
-        ]
+        ],
+        "group_data": {
+          "col_names": ["cyl"],
+          "group_indices": [1, 1, 2, 2, 3, 3],
+          "group_keys": [
+            {
+              "group_id": 1,
+              "key": {
+                "cyl": 4
+              }
+            },
+            {
+              "group_id": 2,
+              "key": {
+                "cyl": 6
+              }
+            },
+            {
+              "group_id": 3,
+              "key": {
+                "cyl": 8
+              }
+            }
+          ]
+        }
       },
       "rhs": {
         "col_names": ["wt", "cyl"],
@@ -181,7 +205,31 @@
             "wt": 3.57,
             "cyl": 8
           }
-        ]
+        ],
+        "group_data": {
+          "col_names": ["cyl"],
+          "group_indices": [1, 1, 2, 2, 3, 3],
+          "group_keys": [
+            {
+              "group_id": 1,
+              "key": {
+                "cyl": 4
+              }
+            },
+            {
+              "group_id": 2,
+              "key": {
+                "cyl": 6
+              }
+            },
+            {
+              "group_id": 3,
+              "key": {
+                "cyl": 8
+              }
+            }
+          ]
+        }
       }
     }
   }
