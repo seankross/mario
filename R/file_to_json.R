@@ -124,6 +124,13 @@ check_jsons <- function(){
               " | ", tr$result$type)
     }
   })
+
+  summary_ <- paste0("Passed: ", test_results %>% map_lgl(~ .x$result$status == "Passed") %>% sum(),
+          " | FAILED: ", test_results %>% map_lgl(~ .x$result$status == "FAILED") %>% sum(),
+          " | ERROR: ", test_results %>% map_lgl(~ !is.null(.x$result$error)) %>% sum(),
+          " | NONE: ", test_results %>% map_lgl(~ .x$result$status == "NONE  ") %>% sum())
+  message(paste0(rep("-", nchar(summary_)), collapse = ""))
+  message(summary_)
 }
 
 #' @importFrom purrr map2
