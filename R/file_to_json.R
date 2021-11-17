@@ -537,14 +537,39 @@ handle_summarize <- function(Name_Strings, Verb_Strings, DF, Verbs,
   result <- result_setup("summarize", BA)
   before_columns <- colnames(BA[[1]])
   after_columns <- colnames(BA[[2]])
+  new_columns <- setdiff(after_columns, before_columns)
   value_s <- Values %>% as.character()
 
+  quoted_values <- Values %>%
+    as.character() %>%
+    map(function(x){
+      str_extract_all(x, "`.+`") %>% unlist() %>% gsub_("`", "")
+    }) %>%
+    map(~ifelse(length(.x) > 0, .x, NA))
+
   values <- Values %>%
-    map(~ .x %>%
-          as.character() %>%
-          strsplit("[^\\w\\d\\._]+", perl = TRUE) %>%
-          unlist() %>%
-          discard(Negate(nzchar)))
+    map2(quoted_values, function(v, qv){
+      if(is.null(v)){
+        return(v)
+      } else if(is.na(qv)){
+        v_ <- v %>% as.character()
+      } else {
+        v_ <- v %>% as.character() %>% map_chr(~ gsub(er(qv), "", .x))
+      }
+
+      v_ <- v_ %>%
+        strsplit("[^\\w\\d\\._]+", perl = TRUE) %>%
+        unlist() %>%
+        discard(Negate(nzchar))
+
+      c(v_, qv) %>% discard(~ is.na(.x))
+    })
+
+  pmap(list(Args, values, seq_along(Args), value_s), function(a, v, i, vs){
+    #i = 2; a = Args[i]; v = values[[i]]; vs = value_s[i]
+    mapping <- list()
+    visited <- FALSE
+  })
 
   result <- map2(1:nrow(BA[[1]]), group_indices(BA[[1]]),
     function(row, group){

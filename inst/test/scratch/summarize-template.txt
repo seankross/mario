@@ -1,0 +1,39 @@
+{
+  "illustrate": "outline",
+  "select": "cell",
+  "from": {
+    "anchor": "lhs",
+    "index": [row index in ba 1, column index in ba 1]
+  },
+  "to": {
+    "anchor": "rhs",
+    "index": [group indices from ba 1, column index in ba 2]
+  }
+}
+
+# A tibble: 6 × 3
+# Groups:   cyl, am [4]
+    mpg   cyl    am
+  <dbl> <dbl> <dbl>
+1  24.4     4     0
+2  22.8     4     0
+3  32.4     4     1
+4  21.4     6     0
+5  21       6     1
+6  19.7     6     1
+
+# A tibble: 4 × 3
+# Groups:   cyl [2]
+    cyl    am Avg_MPG
+  <dbl> <dbl>   <dbl>
+1     4     0    23.6
+2     4     1    32.4
+3     6     0    21.4
+4     6     1    20.4
+
+
+
+
+
+
+
