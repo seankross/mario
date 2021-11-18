@@ -586,12 +586,17 @@ handle_summarize <- function(Name_Strings, Verb_Strings, DF, Verbs,
     mapping <- list()
     visited <- FALSE
 
-    # Named args provided &&
     # Named args are not group vars &&
     # Values are not group vars &&
     # Some values are in before columns
-    if(a != "" && !(a %in% gvb) && !any(v %in% gvb) && any(v %in% before_columns)){
+    if(!(a %in% gvb) && !any(v %in% gvb) && any(v %in% before_columns)){
       visited <- TRUE
+
+      if(a != "") {
+        to_index <- which(a == after_columns)
+      } else {
+        to_index <- which(vs == after_columns)
+      }
 
       mapping <- intersect(v, before_columns) %>%
         map(function(col){
@@ -604,7 +609,7 @@ handle_summarize <- function(Name_Strings, Verb_Strings, DF, Verbs,
                  ),
                  to = list(
                    anchor = "rhs",
-                   index = c(to, which(a == after_columns))
+                   index = c(to, to_index)
                  )
             )
           })

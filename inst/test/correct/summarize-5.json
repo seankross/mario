@@ -1,0 +1,204 @@
+[
+  {
+    "type": "summarize",
+    "code_step": "summarize(Avg_MPG = mean(mpg), Avg_HP = mean(hp))",
+    "mapping": [
+      {
+        "illustrate": "outline",
+        "select": "cell",
+        "from": {
+          "anchor": "lhs",
+          "index": [1, 1]
+        },
+        "to": {
+          "anchor": "rhs",
+          "index": [1, 1]
+        }
+      },
+      {
+        "illustrate": "outline",
+        "select": "cell",
+        "from": {
+          "anchor": "lhs",
+          "index": [2, 1]
+        },
+        "to": {
+          "anchor": "rhs",
+          "index": [1, 1]
+        }
+      },
+      {
+        "illustrate": "outline",
+        "select": "cell",
+        "from": {
+          "anchor": "lhs",
+          "index": [3, 1]
+        },
+        "to": {
+          "anchor": "rhs",
+          "index": [1, 1]
+        }
+      },
+      {
+        "illustrate": "outline",
+        "select": "cell",
+        "from": {
+          "anchor": "lhs",
+          "index": [4, 1]
+        },
+        "to": {
+          "anchor": "rhs",
+          "index": [1, 1]
+        }
+      },
+      {
+        "illustrate": "outline",
+        "select": "cell",
+        "from": {
+          "anchor": "lhs",
+          "index": [5, 1]
+        },
+        "to": {
+          "anchor": "rhs",
+          "index": [1, 1]
+        }
+      },
+      {
+        "illustrate": "outline",
+        "select": "cell",
+        "from": {
+          "anchor": "lhs",
+          "index": [6, 1]
+        },
+        "to": {
+          "anchor": "rhs",
+          "index": [1, 1]
+        }
+      },
+      {
+        "illustrate": "outline",
+        "select": "cell",
+        "from": {
+          "anchor": "lhs",
+          "index": [1, 2]
+        },
+        "to": {
+          "anchor": "rhs",
+          "index": [1, 2]
+        }
+      },
+      {
+        "illustrate": "outline",
+        "select": "cell",
+        "from": {
+          "anchor": "lhs",
+          "index": [2, 2]
+        },
+        "to": {
+          "anchor": "rhs",
+          "index": [1, 2]
+        }
+      },
+      {
+        "illustrate": "outline",
+        "select": "cell",
+        "from": {
+          "anchor": "lhs",
+          "index": [3, 2]
+        },
+        "to": {
+          "anchor": "rhs",
+          "index": [1, 2]
+        }
+      },
+      {
+        "illustrate": "outline",
+        "select": "cell",
+        "from": {
+          "anchor": "lhs",
+          "index": [4, 2]
+        },
+        "to": {
+          "anchor": "rhs",
+          "index": [1, 2]
+        }
+      },
+      {
+        "illustrate": "outline",
+        "select": "cell",
+        "from": {
+          "anchor": "lhs",
+          "index": [5, 2]
+        },
+        "to": {
+          "anchor": "rhs",
+          "index": [1, 2]
+        }
+      },
+      {
+        "illustrate": "outline",
+        "select": "cell",
+        "from": {
+          "anchor": "lhs",
+          "index": [6, 2]
+        },
+        "to": {
+          "anchor": "rhs",
+          "index": [1, 2]
+        }
+      }
+    ],
+    "data_frame": {
+      "lhs": {
+        "col_names": ["mpg", "hp", "cyl", "am"],
+        "data": [
+          {
+            "mpg": 24.4,
+            "hp": 62,
+            "cyl": 4,
+            "am": 0
+          },
+          {
+            "mpg": 22.8,
+            "hp": 95,
+            "cyl": 4,
+            "am": 0
+          },
+          {
+            "mpg": 32.4,
+            "hp": 66,
+            "cyl": 4,
+            "am": 1
+          },
+          {
+            "mpg": 21.4,
+            "hp": 110,
+            "cyl": 6,
+            "am": 0
+          },
+          {
+            "mpg": 21,
+            "hp": 110,
+            "cyl": 6,
+            "am": 1
+          },
+          {
+            "mpg": 19.7,
+            "hp": 175,
+            "cyl": 6,
+            "am": 1
+          }
+        ]
+      },
+      "rhs": {
+        "col_names": ["Avg_MPG", "Avg_HP"],
+        "data": [
+          {
+            "Avg_MPG": 23.6167,
+            "Avg_HP": 103
+          }
+        ]
+      }
+    }
+  }
+]
