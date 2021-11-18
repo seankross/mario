@@ -546,6 +546,8 @@ handle_summarize <- function(Name_Strings, Verb_Strings, DF, Verbs,
   after_columns <- colnames(BA[[2]])
   new_columns <- setdiff(after_columns, before_columns)
   value_s <- Values %>% as.character()
+  gvb <- group_vars(BA[[1]])
+  gva <- group_vars(BA[[2]])
 
   quoted_values <- Values %>%
     as.character() %>%
@@ -572,29 +574,94 @@ handle_summarize <- function(Name_Strings, Verb_Strings, DF, Verbs,
       c(v_, qv) %>% discard(~ is.na(.x))
     })
 
+  after_group <- BA[[2]] %>% group_by_at(gvb) %>% group_indices()
+  after_row <- BA[[2]] %>% ungroup() %>% mutate(row_number()) %>% pull("row_number()")
+  to_rows <- BA[[1]] %>%
+    group_indices() %>%
+    map_dbl(~ after_row[which(.x == after_group)])
+  from_rows <- 1:nrow(BA[[1]])
+
   pmap(list(Args, values, seq_along(Args), value_s), function(a, v, i, vs){
-    #i = 2; a = Args[i]; v = values[[i]]; vs = value_s[i]
+    #i = 1; a = Args[i]; v = values[[i]]; vs = value_s[i]
     mapping <- list()
     visited <- FALSE
-  })
 
-  result <- map2(1:nrow(BA[[1]]), group_indices(BA[[1]]),
-    function(row, group){
-      map(setdiff(group_vars(BA[[1]]), Args), function(col){
-        list(illustrate = "outline",
-           select = "cell",
-           from = list(
-             anchor = "lhs",
-             index = c(row, which(col == before_columns))
-           ),
-           to = list(
-             anchor = "rhs",
-             index = c(group, which(col == after_columns))
-           ))
-      })
-    }) %>%
+    # Named args provided &&
+    # Named args are not group vars &&
+    # Values are not group vars &&
+    # Some values are in before columns
+    if(a != "" && !(a %in% gvb) && !any(v %in% gvb) && any(v %in% before_columns)){
+      visited <- TRUE
+
+      mapping <- intersect(v, before_columns) %>%
+        map(function(col){
+          map2(from_rows, to_rows, function(from, to){
+            list(illustrate = "outline",
+                 select = "cell",
+                 from = list(
+                   anchor = "lhs",
+                   index = c(from, which(col == before_columns))
+                 ),
+                 to = list(
+                   anchor = "rhs",
+                   index = c(to, which(a == after_columns))
+                 )
+            )
+          })
+        }) %>% flatten() %>%  la(mapping)
+    }
+
+    # Named args are not group vars &&
+    # Values are not group vars
+    if(!(a %in% gvb) && !any(v %in% gvb)){
+      mapping <- intersect(gvb, before_columns) %>%
+        map(function(col){
+          map2(from_rows, to_rows, function(from, to){
+            list(illustrate = "outline",
+                 select = "cell",
+                 from = list(
+                   anchor = "lhs",
+                   index = c(from, which(col == before_columns))
+                 ),
+                 to = list(
+                   anchor = "rhs",
+                   index = c(to, which(col == after_columns))
+                 )
+            )
+          })
+        }) %>% flatten() %>%  la(mapping)
+    }
+    mapping
+  }) %>%
     flatten() %>%
+    discard(~ .x[["illustrate"]] == "skip") %>%
     prepend_mapping(result)
+
+  # map(~list(
+  #   lhs_col = which(.x == before_columns),
+  #   lhs_rows = 1:nrow(BA[[1]]),
+  #   lhs_row_groups = BA[[1]] %>% group_indices(),
+  #   rhs_col = which(a == after_columns),
+  #   rhs_rows = BA[[1]] %>% group_by_at(gvb) %>% group_indices()
+  # ))
+
+  # result <- map2(1:nrow(BA[[1]]), group_indices(BA[[1]]),
+  #   function(row, group){
+  #     map(setdiff(group_vars(BA[[1]]), Args), function(col){
+  #       list(illustrate = "outline",
+  #          select = "cell",
+  #          from = list(
+  #            anchor = "lhs",
+  #            index = c(row, which(col == before_columns))
+  #          ),
+  #          to = list(
+  #            anchor = "rhs",
+  #            index = c(group, which(col == after_columns))
+  #          ))
+  #     })
+  #   }) %>%
+  #   flatten() %>%
+  #   prepend_mapping(result)
 
   # BA[[1]] %>% group_indices()
   # BA[[2]] %>% group_by_at(group_vars(BA[[1]])) %>% group_indices()
@@ -608,7 +675,7 @@ handle_summarize <- function(Name_Strings, Verb_Strings, DF, Verbs,
   #
   # })
 
-  result
+  # result
 }
 
 handle_unknown <- function(Name_Strings, Verb_Strings, DF, Verbs,

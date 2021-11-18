@@ -1,7 +1,7 @@
 [
   {
     "type": "summarize",
-    "code_step": "summarize(Min_MPG = min(mpg))",
+    "code_step": "summarize(Min_MPG = min(mpg), Max_MPG = max(mpg))",
     "mapping": [
       {
         "illustrate": "outline",
@@ -73,6 +73,222 @@
         "to": {
           "anchor": "rhs",
           "index": [4, 3]
+        }
+      },
+      {
+        "illustrate": "outline",
+        "select": "cell",
+        "from": {
+          "anchor": "lhs",
+          "index": [1, 2]
+        },
+        "to": {
+          "anchor": "rhs",
+          "index": [1, 1]
+        }
+      },
+      {
+        "illustrate": "outline",
+        "select": "cell",
+        "from": {
+          "anchor": "lhs",
+          "index": [2, 2]
+        },
+        "to": {
+          "anchor": "rhs",
+          "index": [1, 1]
+        }
+      },
+      {
+        "illustrate": "outline",
+        "select": "cell",
+        "from": {
+          "anchor": "lhs",
+          "index": [3, 2]
+        },
+        "to": {
+          "anchor": "rhs",
+          "index": [2, 1]
+        }
+      },
+      {
+        "illustrate": "outline",
+        "select": "cell",
+        "from": {
+          "anchor": "lhs",
+          "index": [4, 2]
+        },
+        "to": {
+          "anchor": "rhs",
+          "index": [3, 1]
+        }
+      },
+      {
+        "illustrate": "outline",
+        "select": "cell",
+        "from": {
+          "anchor": "lhs",
+          "index": [5, 2]
+        },
+        "to": {
+          "anchor": "rhs",
+          "index": [4, 1]
+        }
+      },
+      {
+        "illustrate": "outline",
+        "select": "cell",
+        "from": {
+          "anchor": "lhs",
+          "index": [6, 2]
+        },
+        "to": {
+          "anchor": "rhs",
+          "index": [4, 1]
+        }
+      },
+      {
+        "illustrate": "outline",
+        "select": "cell",
+        "from": {
+          "anchor": "lhs",
+          "index": [1, 3]
+        },
+        "to": {
+          "anchor": "rhs",
+          "index": [1, 2]
+        }
+      },
+      {
+        "illustrate": "outline",
+        "select": "cell",
+        "from": {
+          "anchor": "lhs",
+          "index": [2, 3]
+        },
+        "to": {
+          "anchor": "rhs",
+          "index": [1, 2]
+        }
+      },
+      {
+        "illustrate": "outline",
+        "select": "cell",
+        "from": {
+          "anchor": "lhs",
+          "index": [3, 3]
+        },
+        "to": {
+          "anchor": "rhs",
+          "index": [2, 2]
+        }
+      },
+      {
+        "illustrate": "outline",
+        "select": "cell",
+        "from": {
+          "anchor": "lhs",
+          "index": [4, 3]
+        },
+        "to": {
+          "anchor": "rhs",
+          "index": [3, 2]
+        }
+      },
+      {
+        "illustrate": "outline",
+        "select": "cell",
+        "from": {
+          "anchor": "lhs",
+          "index": [5, 3]
+        },
+        "to": {
+          "anchor": "rhs",
+          "index": [4, 2]
+        }
+      },
+      {
+        "illustrate": "outline",
+        "select": "cell",
+        "from": {
+          "anchor": "lhs",
+          "index": [6, 3]
+        },
+        "to": {
+          "anchor": "rhs",
+          "index": [4, 2]
+        }
+      },
+      {
+        "illustrate": "outline",
+        "select": "cell",
+        "from": {
+          "anchor": "lhs",
+          "index": [1, 1]
+        },
+        "to": {
+          "anchor": "rhs",
+          "index": [1, 4]
+        }
+      },
+      {
+        "illustrate": "outline",
+        "select": "cell",
+        "from": {
+          "anchor": "lhs",
+          "index": [2, 1]
+        },
+        "to": {
+          "anchor": "rhs",
+          "index": [1, 4]
+        }
+      },
+      {
+        "illustrate": "outline",
+        "select": "cell",
+        "from": {
+          "anchor": "lhs",
+          "index": [3, 1]
+        },
+        "to": {
+          "anchor": "rhs",
+          "index": [2, 4]
+        }
+      },
+      {
+        "illustrate": "outline",
+        "select": "cell",
+        "from": {
+          "anchor": "lhs",
+          "index": [4, 1]
+        },
+        "to": {
+          "anchor": "rhs",
+          "index": [3, 4]
+        }
+      },
+      {
+        "illustrate": "outline",
+        "select": "cell",
+        "from": {
+          "anchor": "lhs",
+          "index": [5, 1]
+        },
+        "to": {
+          "anchor": "rhs",
+          "index": [4, 4]
+        }
+      },
+      {
+        "illustrate": "outline",
+        "select": "cell",
+        "from": {
+          "anchor": "lhs",
+          "index": [6, 1]
+        },
+        "to": {
+          "anchor": "rhs",
+          "index": [4, 4]
         }
       },
       {
@@ -361,27 +577,31 @@
         }
       },
       "rhs": {
-        "col_names": ["cyl", "am", "Min_MPG"],
+        "col_names": ["cyl", "am", "Min_MPG", "Max_MPG"],
         "data": [
           {
             "cyl": 4,
             "am": 0,
-            "Min_MPG": 22.8
+            "Min_MPG": 22.8,
+            "Max_MPG": 24.4
           },
           {
             "cyl": 4,
             "am": 1,
-            "Min_MPG": 32.4
+            "Min_MPG": 32.4,
+            "Max_MPG": 32.4
           },
           {
             "cyl": 6,
             "am": 0,
-            "Min_MPG": 21.4
+            "Min_MPG": 21.4,
+            "Max_MPG": 21.4
           },
           {
             "cyl": 6,
             "am": 1,
-            "Min_MPG": 19.7
+            "Min_MPG": 19.7,
+            "Max_MPG": 21
           }
         ],
         "group_data": {

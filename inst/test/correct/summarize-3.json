@@ -1,7 +1,7 @@
 [
   {
     "type": "summarize",
-    "code_step": "summarize(Min_MPG = min(mpg))",
+    "code_step": "summarize(Sum = sum(mpg, hp))",
     "mapping": [
       {
         "illustrate": "outline",
@@ -84,7 +84,7 @@
         },
         "to": {
           "anchor": "rhs",
-          "index": [1, 1]
+          "index": [1, 3]
         }
       },
       {
@@ -96,7 +96,7 @@
         },
         "to": {
           "anchor": "rhs",
-          "index": [1, 1]
+          "index": [1, 3]
         }
       },
       {
@@ -108,7 +108,7 @@
         },
         "to": {
           "anchor": "rhs",
-          "index": [2, 1]
+          "index": [2, 3]
         }
       },
       {
@@ -120,7 +120,7 @@
         },
         "to": {
           "anchor": "rhs",
-          "index": [3, 1]
+          "index": [3, 3]
         }
       },
       {
@@ -132,7 +132,7 @@
         },
         "to": {
           "anchor": "rhs",
-          "index": [4, 1]
+          "index": [4, 3]
         }
       },
       {
@@ -144,7 +144,7 @@
         },
         "to": {
           "anchor": "rhs",
-          "index": [4, 1]
+          "index": [4, 3]
         }
       },
       {
@@ -156,7 +156,7 @@
         },
         "to": {
           "anchor": "rhs",
-          "index": [1, 2]
+          "index": [1, 1]
         }
       },
       {
@@ -168,7 +168,7 @@
         },
         "to": {
           "anchor": "rhs",
-          "index": [1, 2]
+          "index": [1, 1]
         }
       },
       {
@@ -180,7 +180,7 @@
         },
         "to": {
           "anchor": "rhs",
-          "index": [2, 2]
+          "index": [2, 1]
         }
       },
       {
@@ -192,7 +192,7 @@
         },
         "to": {
           "anchor": "rhs",
-          "index": [3, 2]
+          "index": [3, 1]
         }
       },
       {
@@ -204,7 +204,7 @@
         },
         "to": {
           "anchor": "rhs",
-          "index": [4, 2]
+          "index": [4, 1]
         }
       },
       {
@@ -213,6 +213,78 @@
         "from": {
           "anchor": "lhs",
           "index": [6, 3]
+        },
+        "to": {
+          "anchor": "rhs",
+          "index": [4, 1]
+        }
+      },
+      {
+        "illustrate": "outline",
+        "select": "cell",
+        "from": {
+          "anchor": "lhs",
+          "index": [1, 4]
+        },
+        "to": {
+          "anchor": "rhs",
+          "index": [1, 2]
+        }
+      },
+      {
+        "illustrate": "outline",
+        "select": "cell",
+        "from": {
+          "anchor": "lhs",
+          "index": [2, 4]
+        },
+        "to": {
+          "anchor": "rhs",
+          "index": [1, 2]
+        }
+      },
+      {
+        "illustrate": "outline",
+        "select": "cell",
+        "from": {
+          "anchor": "lhs",
+          "index": [3, 4]
+        },
+        "to": {
+          "anchor": "rhs",
+          "index": [2, 2]
+        }
+      },
+      {
+        "illustrate": "outline",
+        "select": "cell",
+        "from": {
+          "anchor": "lhs",
+          "index": [4, 4]
+        },
+        "to": {
+          "anchor": "rhs",
+          "index": [3, 2]
+        }
+      },
+      {
+        "illustrate": "outline",
+        "select": "cell",
+        "from": {
+          "anchor": "lhs",
+          "index": [5, 4]
+        },
+        "to": {
+          "anchor": "rhs",
+          "index": [4, 2]
+        }
+      },
+      {
+        "illustrate": "outline",
+        "select": "cell",
+        "from": {
+          "anchor": "lhs",
+          "index": [6, 4]
         },
         "to": {
           "anchor": "rhs",
@@ -292,35 +364,41 @@
     ],
     "data_frame": {
       "lhs": {
-        "col_names": ["mpg", "cyl", "am"],
+        "col_names": ["mpg", "hp", "cyl", "am"],
         "data": [
           {
             "mpg": 24.4,
+            "hp": 62,
             "cyl": 4,
             "am": 0
           },
           {
             "mpg": 22.8,
+            "hp": 95,
             "cyl": 4,
             "am": 0
           },
           {
             "mpg": 32.4,
+            "hp": 66,
             "cyl": 4,
             "am": 1
           },
           {
             "mpg": 21.4,
+            "hp": 110,
             "cyl": 6,
             "am": 0
           },
           {
             "mpg": 21,
+            "hp": 110,
             "cyl": 6,
             "am": 1
           },
           {
             "mpg": 19.7,
+            "hp": 175,
             "cyl": 6,
             "am": 1
           }
@@ -361,27 +439,27 @@
         }
       },
       "rhs": {
-        "col_names": ["cyl", "am", "Min_MPG"],
+        "col_names": ["cyl", "am", "Sum"],
         "data": [
           {
             "cyl": 4,
             "am": 0,
-            "Min_MPG": 22.8
+            "Sum": 204.2
           },
           {
             "cyl": 4,
             "am": 1,
-            "Min_MPG": 32.4
+            "Sum": 98.4
           },
           {
             "cyl": 6,
             "am": 0,
-            "Min_MPG": 21.4
+            "Sum": 131.4
           },
           {
             "cyl": 6,
             "am": 1,
-            "Min_MPG": 19.7
+            "Sum": 325.7
           }
         ],
         "group_data": {
