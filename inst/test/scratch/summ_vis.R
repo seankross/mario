@@ -1,5 +1,5 @@
-# json <- "inst/test/correct/summarize-1.json"
-json <- "e.json"
+json <- "inst/test/correct/summarize-6.json"
+#json <- "e.json"
 
 trace_ <- fromJSON(json) %>% as.list()
 mapping <- trace_$mapping[[1]] %>% as_tibble() %>% tidyr::unnest(cols = where(~length(.x) > 1),

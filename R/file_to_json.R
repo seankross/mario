@@ -578,10 +578,10 @@ handle_summarize <- function(Name_Strings, Verb_Strings, DF, Verbs,
   after_row <- BA[[2]] %>% ungroup() %>% mutate(row_number()) %>% pull("row_number()")
   to_rows <- BA[[1]] %>%
     group_indices() %>%
-    map_dbl(~ after_row[which(.x == after_group)])
+    map(~ after_row[which(.x == after_group)])
   from_rows <- 1:nrow(BA[[1]])
 
-  pmap(list(Args, values, seq_along(Args), value_s), function(a, v, i, vs){
+  result <- pmap(list(Args, values, seq_along(Args), value_s), function(a, v, i, vs){
     #i = 1; a = Args[i]; v = values[[i]]; vs = value_s[i]
     mapping <- list()
     visited <- FALSE
@@ -601,86 +601,74 @@ handle_summarize <- function(Name_Strings, Verb_Strings, DF, Verbs,
       mapping <- intersect(v, before_columns) %>%
         map(function(col){
           map2(from_rows, to_rows, function(from, to){
-            list(illustrate = "outline",
-                 select = "cell",
-                 from = list(
-                   anchor = "lhs",
-                   index = c(from, which(col == before_columns))
-                 ),
-                 to = list(
-                   anchor = "rhs",
-                   index = c(to, to_index)
-                 )
-            )
+            map(to, ~list(illustrate = "outline",
+                          select = "cell",
+                          from = list(
+                            anchor = "lhs",
+                            index = c(from, which(col == before_columns))
+                          ),
+                          to = list(
+                            anchor = "rhs",
+                            index = c(.x, to_index)
+                          )
+            ))
           })
-        }) %>% flatten() %>%  la(mapping)
+        }) %>% flatten() %>% flatten() %>%  la(mapping)
     }
 
-    # Named args are not group vars &&
-    # Values are not group vars
-    if(!(a %in% gvb) && !any(v %in% gvb)){
-      mapping <- intersect(gvb, before_columns) %>%
-        map(function(col){
-          map2(from_rows, to_rows, function(from, to){
-            list(illustrate = "outline",
-                 select = "cell",
-                 from = list(
-                   anchor = "lhs",
-                   index = c(from, which(col == before_columns))
-                 ),
-                 to = list(
-                   anchor = "rhs",
-                   index = c(to, which(col == after_columns))
-                 )
-            )
-          })
-        }) %>% flatten() %>%  la(mapping)
+    # Assume it's from a value
+    if(!visited && ((a %in% after_columns) || vs %in% after_columns)) {
+      to_index <- ifelse(a %in% after_columns,
+                         which(a == after_columns),
+                         which(vs == after_columns))
+
+      mapping <- list(
+        illustrate = "outline",
+        select = "column",
+        from = list(
+          anchor = "arg",
+          index = i
+        ),
+        to = list(
+          anchor = "rhs",
+          index = to_index
+        )
+      ) %>% la(mapping) %>% list()
     }
+
+    if(length(mapping) < 1) {
+      mapping <- list(illustrate = "skip") %>% list()
+    }
+
     mapping
   }) %>%
     flatten() %>%
     discard(~ .x[["illustrate"]] == "skip") %>%
     prepend_mapping(result)
 
-  # map(~list(
-  #   lhs_col = which(.x == before_columns),
-  #   lhs_rows = 1:nrow(BA[[1]]),
-  #   lhs_row_groups = BA[[1]] %>% group_indices(),
-  #   rhs_col = which(a == after_columns),
-  #   rhs_rows = BA[[1]] %>% group_by_at(gvb) %>% group_indices()
-  # ))
+  result <- map(gvb, function(group){
+    if(!(group %in% Args) && !(group %in% unlist(values))){
+      intersect(group, before_columns) %>%
+        map(function(col){
+          map2(from_rows, to_rows, function(from, to){
+            map(to, ~list(illustrate = "outline",
+                          select = "cell",
+                          from = list(
+                            anchor = "lhs",
+                            index = c(from, which(col == before_columns))
+                          ),
+                          to = list(
+                            anchor = "rhs",
+                            index = c(.x, which(col == after_columns))
+                          )
+            ))
+          })
+        })
+    }
+  }) %>% flatten() %>% flatten() %>% flatten() %>%
+    prepend_mapping(result)
 
-  # result <- map2(1:nrow(BA[[1]]), group_indices(BA[[1]]),
-  #   function(row, group){
-  #     map(setdiff(group_vars(BA[[1]]), Args), function(col){
-  #       list(illustrate = "outline",
-  #          select = "cell",
-  #          from = list(
-  #            anchor = "lhs",
-  #            index = c(row, which(col == before_columns))
-  #          ),
-  #          to = list(
-  #            anchor = "rhs",
-  #            index = c(group, which(col == after_columns))
-  #          ))
-  #     })
-  #   }) %>%
-  #   flatten() %>%
-  #   prepend_mapping(result)
-
-  # BA[[1]] %>% group_indices()
-  # BA[[2]] %>% group_by_at(group_vars(BA[[1]])) %>% group_indices()
-  #
-  # group_vars(BA[[1]])
-  # group_indices(BA[[1]])
-  # group_data(BA[[1]])
-  # group_keys(BA[[1]])
-  #
-  # pmap(list(Args, values, seq_along(Args), value_s), function(a, v, i, vs){
-  #
-  # })
-
-  # result
+  result
 }
 
 handle_unknown <- function(Name_Strings, Verb_Strings, DF, Verbs,
