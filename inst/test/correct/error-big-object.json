@@ -1,0 +1,17 @@
+{
+  "code": "library(dplyr)\nlibrary(ggplot2)\n\ndiamonds %>%\n  arrange(carat)\n",
+  "trace": [
+    {
+      "type": "error",
+      "code_step": "NA",
+      "mapping": {
+        "message": {
+          "header": "Your total data is 6916512 bytes, which is over the maximum of 1MB that this tool currently supports.",
+          "body": [],
+          "footer": []
+        }
+      },
+      "data_frame": "NA"
+    }
+  ]
+}

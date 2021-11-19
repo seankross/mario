@@ -26,6 +26,16 @@ pipeline_to_json <- function(call){
 #' @importFrom jsonlite toJSON
 pipeline_to_trace <- function(call){
   ptbl <- pipeline_tbl(call)
+
+  if(as.numeric(object.size(ptbl)) > 1000000){
+    error_message <- paste("Your total data is",
+                           as.numeric(object.size(ptbl)),
+                           "bytes, which is over the maximum of 1MB",
+                           "that this tool currently supports.")
+
+    stop(error_message, call. = FALSE)
+  }
+
   ptbl$BA <- c(NA, before_after_tbl_list(ptbl$DF))
 
   (pipeline_tbl_to_list(ptbl)[-1])
