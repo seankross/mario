@@ -1,80 +1,83 @@
-[
-  {
-    "type": "rename",
-    "code_step": "rename(carb = carb, Carbohydrate = carb)",
-    "mapping": [
-      {
-        "illustrate": "outline",
-        "select": "column",
-        "from": {
-          "anchor": "lhs",
-          "index": 1
+{
+  "code": "library(dplyr)\n\nFormaldehyde %>%\n  rename(carb = carb, Carbohydrate = carb)\n",
+  "trace": [
+    {
+      "type": "rename",
+      "code_step": "rename(carb = carb, Carbohydrate = carb)",
+      "mapping": [
+        {
+          "illustrate": "outline",
+          "select": "column",
+          "from": {
+            "anchor": "lhs",
+            "index": 1
+          },
+          "to": {
+            "anchor": "rhs",
+            "index": 1
+          }
+        }
+      ],
+      "data_frame": {
+        "lhs": {
+          "col_names": ["carb", "optden"],
+          "data": [
+            {
+              "carb": 0.1,
+              "optden": 0.086
+            },
+            {
+              "carb": 0.3,
+              "optden": 0.269
+            },
+            {
+              "carb": 0.5,
+              "optden": 0.446
+            },
+            {
+              "carb": 0.6,
+              "optden": 0.538
+            },
+            {
+              "carb": 0.7,
+              "optden": 0.626
+            },
+            {
+              "carb": 0.9,
+              "optden": 0.782
+            }
+          ]
         },
-        "to": {
-          "anchor": "rhs",
-          "index": 1
+        "rhs": {
+          "col_names": ["Carbohydrate", "optden"],
+          "data": [
+            {
+              "Carbohydrate": 0.1,
+              "optden": 0.086
+            },
+            {
+              "Carbohydrate": 0.3,
+              "optden": 0.269
+            },
+            {
+              "Carbohydrate": 0.5,
+              "optden": 0.446
+            },
+            {
+              "Carbohydrate": 0.6,
+              "optden": 0.538
+            },
+            {
+              "Carbohydrate": 0.7,
+              "optden": 0.626
+            },
+            {
+              "Carbohydrate": 0.9,
+              "optden": 0.782
+            }
+          ]
         }
       }
-    ],
-    "data_frame": {
-      "lhs": {
-        "col_names": ["carb", "optden"],
-        "data": [
-          {
-            "carb": 0.1,
-            "optden": 0.086
-          },
-          {
-            "carb": 0.3,
-            "optden": 0.269
-          },
-          {
-            "carb": 0.5,
-            "optden": 0.446
-          },
-          {
-            "carb": 0.6,
-            "optden": 0.538
-          },
-          {
-            "carb": 0.7,
-            "optden": 0.626
-          },
-          {
-            "carb": 0.9,
-            "optden": 0.782
-          }
-        ]
-      },
-      "rhs": {
-        "col_names": ["Carbohydrate", "optden"],
-        "data": [
-          {
-            "Carbohydrate": 0.1,
-            "optden": 0.086
-          },
-          {
-            "Carbohydrate": 0.3,
-            "optden": 0.269
-          },
-          {
-            "Carbohydrate": 0.5,
-            "optden": 0.446
-          },
-          {
-            "Carbohydrate": 0.6,
-            "optden": 0.538
-          },
-          {
-            "Carbohydrate": 0.7,
-            "optden": 0.626
-          },
-          {
-            "Carbohydrate": 0.9,
-            "optden": 0.782
-          }
-        ]
-      }
     }
-  }
-]
+  ]
+}

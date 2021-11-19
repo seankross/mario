@@ -1,104 +1,107 @@
-[
-  {
-    "type": "mutate",
-    "code_step": "mutate(DoubleCarb = carb * 2, TinyCarb = DoubleCarb/200)",
-    "mapping": [
-      {
-        "illustrate": "outline",
-        "select": "column",
-        "from": {
-          "anchor": "lhs",
-          "index": 1
-        },
-        "to": {
-          "anchor": "rhs",
-          "index": 3
-        }
-      },
-      {
-        "illustrate": "outline",
-        "select": "column",
-        "from": {
-          "anchor": "rhs",
-          "index": 3
-        },
-        "to": {
-          "anchor": "rhs",
-          "index": 4
-        }
-      }
-    ],
-    "data_frame": {
-      "lhs": {
-        "col_names": ["carb", "optden"],
-        "data": [
-          {
-            "carb": 0.1,
-            "optden": 0.086
+{
+  "code": "library(dplyr)\n\nFormaldehyde %>%\n  mutate(DoubleCarb = carb * 2, TinyCarb = DoubleCarb / 200)\n",
+  "trace": [
+    {
+      "type": "mutate",
+      "code_step": "mutate(DoubleCarb = carb * 2, TinyCarb = DoubleCarb/200)",
+      "mapping": [
+        {
+          "illustrate": "outline",
+          "select": "column",
+          "from": {
+            "anchor": "lhs",
+            "index": 1
           },
-          {
-            "carb": 0.3,
-            "optden": 0.269
-          },
-          {
-            "carb": 0.5,
-            "optden": 0.446
-          },
-          {
-            "carb": 0.6,
-            "optden": 0.538
-          },
-          {
-            "carb": 0.7,
-            "optden": 0.626
-          },
-          {
-            "carb": 0.9,
-            "optden": 0.782
+          "to": {
+            "anchor": "rhs",
+            "index": 3
           }
-        ]
-      },
-      "rhs": {
-        "col_names": ["carb", "optden", "DoubleCarb", "TinyCarb"],
-        "data": [
-          {
-            "carb": 0.1,
-            "optden": 0.086,
-            "DoubleCarb": 0.2,
-            "TinyCarb": 0.001
+        },
+        {
+          "illustrate": "outline",
+          "select": "column",
+          "from": {
+            "anchor": "rhs",
+            "index": 3
           },
-          {
-            "carb": 0.3,
-            "optden": 0.269,
-            "DoubleCarb": 0.6,
-            "TinyCarb": 0.003
-          },
-          {
-            "carb": 0.5,
-            "optden": 0.446,
-            "DoubleCarb": 1,
-            "TinyCarb": 0.005
-          },
-          {
-            "carb": 0.6,
-            "optden": 0.538,
-            "DoubleCarb": 1.2,
-            "TinyCarb": 0.006
-          },
-          {
-            "carb": 0.7,
-            "optden": 0.626,
-            "DoubleCarb": 1.4,
-            "TinyCarb": 0.007
-          },
-          {
-            "carb": 0.9,
-            "optden": 0.782,
-            "DoubleCarb": 1.8,
-            "TinyCarb": 0.009
+          "to": {
+            "anchor": "rhs",
+            "index": 4
           }
-        ]
+        }
+      ],
+      "data_frame": {
+        "lhs": {
+          "col_names": ["carb", "optden"],
+          "data": [
+            {
+              "carb": 0.1,
+              "optden": 0.086
+            },
+            {
+              "carb": 0.3,
+              "optden": 0.269
+            },
+            {
+              "carb": 0.5,
+              "optden": 0.446
+            },
+            {
+              "carb": 0.6,
+              "optden": 0.538
+            },
+            {
+              "carb": 0.7,
+              "optden": 0.626
+            },
+            {
+              "carb": 0.9,
+              "optden": 0.782
+            }
+          ]
+        },
+        "rhs": {
+          "col_names": ["carb", "optden", "DoubleCarb", "TinyCarb"],
+          "data": [
+            {
+              "carb": 0.1,
+              "optden": 0.086,
+              "DoubleCarb": 0.2,
+              "TinyCarb": 0.001
+            },
+            {
+              "carb": 0.3,
+              "optden": 0.269,
+              "DoubleCarb": 0.6,
+              "TinyCarb": 0.003
+            },
+            {
+              "carb": 0.5,
+              "optden": 0.446,
+              "DoubleCarb": 1,
+              "TinyCarb": 0.005
+            },
+            {
+              "carb": 0.6,
+              "optden": 0.538,
+              "DoubleCarb": 1.2,
+              "TinyCarb": 0.006
+            },
+            {
+              "carb": 0.7,
+              "optden": 0.626,
+              "DoubleCarb": 1.4,
+              "TinyCarb": 0.007
+            },
+            {
+              "carb": 0.9,
+              "optden": 0.782,
+              "DoubleCarb": 1.8,
+              "TinyCarb": 0.009
+            }
+          ]
+        }
       }
     }
-  }
-]
+  ]
+}

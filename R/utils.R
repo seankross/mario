@@ -37,3 +37,7 @@ csl <- function(x){
 er <- function(x) {
   gsub("([.|()\\^{}+$*?]|\\[|\\])", "\\\\\\1", x)
 }
+
+is_conn <- function(x){
+  all(c("file", "connection") %in% class(x))
+}

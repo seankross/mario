@@ -1,79 +1,82 @@
-[
-  {
-    "type": "group_by",
-    "code_step": "group_by()",
-    "mapping": [],
-    "data_frame": {
-      "lhs": {
-        "col_names": ["mpg", "cyl", "hp"],
-        "data": [
-          {
-            "mpg": 22.8,
-            "cyl": 4,
-            "hp": 93
-          },
-          {
-            "mpg": 24.4,
-            "cyl": 4,
-            "hp": 62
-          },
-          {
-            "mpg": 21,
-            "cyl": 6,
-            "hp": 110
-          },
-          {
-            "mpg": 21,
-            "cyl": 6,
-            "hp": 110
-          },
-          {
-            "mpg": 18.7,
-            "cyl": 8,
-            "hp": 175
-          },
-          {
-            "mpg": 14.3,
-            "cyl": 8,
-            "hp": 245
-          }
-        ]
-      },
-      "rhs": {
-        "col_names": ["mpg", "cyl", "hp"],
-        "data": [
-          {
-            "mpg": 22.8,
-            "cyl": 4,
-            "hp": 93
-          },
-          {
-            "mpg": 24.4,
-            "cyl": 4,
-            "hp": 62
-          },
-          {
-            "mpg": 21,
-            "cyl": 6,
-            "hp": 110
-          },
-          {
-            "mpg": 21,
-            "cyl": 6,
-            "hp": 110
-          },
-          {
-            "mpg": 18.7,
-            "cyl": 8,
-            "hp": 175
-          },
-          {
-            "mpg": 14.3,
-            "cyl": 8,
-            "hp": 245
-          }
-        ]
+{
+  "code": "library(dplyr)\n\nmt <- mtcars %>%\n  as_tibble() %>%\n  select(mpg, cyl, hp) %>%\n  group_by(cyl) %>%\n  slice(1:2) %>%\n  ungroup()\n\nmt %>%\n  group_by()\n",
+  "trace": [
+    {
+      "type": "group_by",
+      "code_step": "group_by()",
+      "mapping": [],
+      "data_frame": {
+        "lhs": {
+          "col_names": ["mpg", "cyl", "hp"],
+          "data": [
+            {
+              "mpg": 22.8,
+              "cyl": 4,
+              "hp": 93
+            },
+            {
+              "mpg": 24.4,
+              "cyl": 4,
+              "hp": 62
+            },
+            {
+              "mpg": 21,
+              "cyl": 6,
+              "hp": 110
+            },
+            {
+              "mpg": 21,
+              "cyl": 6,
+              "hp": 110
+            },
+            {
+              "mpg": 18.7,
+              "cyl": 8,
+              "hp": 175
+            },
+            {
+              "mpg": 14.3,
+              "cyl": 8,
+              "hp": 245
+            }
+          ]
+        },
+        "rhs": {
+          "col_names": ["mpg", "cyl", "hp"],
+          "data": [
+            {
+              "mpg": 22.8,
+              "cyl": 4,
+              "hp": 93
+            },
+            {
+              "mpg": 24.4,
+              "cyl": 4,
+              "hp": 62
+            },
+            {
+              "mpg": 21,
+              "cyl": 6,
+              "hp": 110
+            },
+            {
+              "mpg": 21,
+              "cyl": 6,
+              "hp": 110
+            },
+            {
+              "mpg": 18.7,
+              "cyl": 8,
+              "hp": 175
+            },
+            {
+              "mpg": 14.3,
+              "cyl": 8,
+              "hp": 245
+            }
+          ]
+        }
       }
     }
-  }
-]
+  ]
+}

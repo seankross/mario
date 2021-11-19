@@ -1,224 +1,227 @@
-[
-  {
-    "type": "rename",
-    "code_step": "rename(Miles_Per_Gallon = mpg)",
-    "mapping": [
-      {
-        "illustrate": "outline",
-        "select": "column",
-        "from": {
-          "anchor": "lhs",
-          "index": 1
+{
+  "code": "library(dplyr)\n\nmt <- mtcars %>%\n  as_tibble() %>%\n  select(mpg, cyl, hp) %>%\n  group_by(cyl) %>%\n  slice(1:2)\n\nmt %>%\n  rename(Miles_Per_Gallon = mpg)\n",
+  "trace": [
+    {
+      "type": "rename",
+      "code_step": "rename(Miles_Per_Gallon = mpg)",
+      "mapping": [
+        {
+          "illustrate": "outline",
+          "select": "column",
+          "from": {
+            "anchor": "lhs",
+            "index": 1
+          },
+          "to": {
+            "anchor": "rhs",
+            "index": 1
+          }
         },
-        "to": {
+        {
+          "illustrate": "highlight",
+          "select": "row",
+          "anchor": "lhs",
+          "index": 1,
+          "group_id": 1
+        },
+        {
+          "illustrate": "highlight",
+          "select": "row",
+          "anchor": "lhs",
+          "index": 2,
+          "group_id": 1
+        },
+        {
+          "illustrate": "highlight",
+          "select": "row",
+          "anchor": "lhs",
+          "index": 3,
+          "group_id": 2
+        },
+        {
+          "illustrate": "highlight",
+          "select": "row",
+          "anchor": "lhs",
+          "index": 4,
+          "group_id": 2
+        },
+        {
+          "illustrate": "highlight",
+          "select": "row",
+          "anchor": "lhs",
+          "index": 5,
+          "group_id": 3
+        },
+        {
+          "illustrate": "highlight",
+          "select": "row",
+          "anchor": "lhs",
+          "index": 6,
+          "group_id": 3
+        },
+        {
+          "illustrate": "highlight",
+          "select": "row",
           "anchor": "rhs",
-          "index": 1
+          "index": 1,
+          "group_id": 1
+        },
+        {
+          "illustrate": "highlight",
+          "select": "row",
+          "anchor": "rhs",
+          "index": 2,
+          "group_id": 1
+        },
+        {
+          "illustrate": "highlight",
+          "select": "row",
+          "anchor": "rhs",
+          "index": 3,
+          "group_id": 2
+        },
+        {
+          "illustrate": "highlight",
+          "select": "row",
+          "anchor": "rhs",
+          "index": 4,
+          "group_id": 2
+        },
+        {
+          "illustrate": "highlight",
+          "select": "row",
+          "anchor": "rhs",
+          "index": 5,
+          "group_id": 3
+        },
+        {
+          "illustrate": "highlight",
+          "select": "row",
+          "anchor": "rhs",
+          "index": 6,
+          "group_id": 3
         }
-      },
-      {
-        "illustrate": "highlight",
-        "select": "row",
-        "anchor": "lhs",
-        "index": 1,
-        "group_id": 1
-      },
-      {
-        "illustrate": "highlight",
-        "select": "row",
-        "anchor": "lhs",
-        "index": 2,
-        "group_id": 1
-      },
-      {
-        "illustrate": "highlight",
-        "select": "row",
-        "anchor": "lhs",
-        "index": 3,
-        "group_id": 2
-      },
-      {
-        "illustrate": "highlight",
-        "select": "row",
-        "anchor": "lhs",
-        "index": 4,
-        "group_id": 2
-      },
-      {
-        "illustrate": "highlight",
-        "select": "row",
-        "anchor": "lhs",
-        "index": 5,
-        "group_id": 3
-      },
-      {
-        "illustrate": "highlight",
-        "select": "row",
-        "anchor": "lhs",
-        "index": 6,
-        "group_id": 3
-      },
-      {
-        "illustrate": "highlight",
-        "select": "row",
-        "anchor": "rhs",
-        "index": 1,
-        "group_id": 1
-      },
-      {
-        "illustrate": "highlight",
-        "select": "row",
-        "anchor": "rhs",
-        "index": 2,
-        "group_id": 1
-      },
-      {
-        "illustrate": "highlight",
-        "select": "row",
-        "anchor": "rhs",
-        "index": 3,
-        "group_id": 2
-      },
-      {
-        "illustrate": "highlight",
-        "select": "row",
-        "anchor": "rhs",
-        "index": 4,
-        "group_id": 2
-      },
-      {
-        "illustrate": "highlight",
-        "select": "row",
-        "anchor": "rhs",
-        "index": 5,
-        "group_id": 3
-      },
-      {
-        "illustrate": "highlight",
-        "select": "row",
-        "anchor": "rhs",
-        "index": 6,
-        "group_id": 3
-      }
-    ],
-    "data_frame": {
-      "lhs": {
-        "col_names": ["mpg", "cyl", "hp"],
-        "data": [
-          {
-            "mpg": 22.8,
-            "cyl": 4,
-            "hp": 93
-          },
-          {
-            "mpg": 24.4,
-            "cyl": 4,
-            "hp": 62
-          },
-          {
-            "mpg": 21,
-            "cyl": 6,
-            "hp": 110
-          },
-          {
-            "mpg": 21,
-            "cyl": 6,
-            "hp": 110
-          },
-          {
-            "mpg": 18.7,
-            "cyl": 8,
-            "hp": 175
-          },
-          {
-            "mpg": 14.3,
-            "cyl": 8,
-            "hp": 245
-          }
-        ],
-        "group_data": {
-          "col_names": ["cyl"],
-          "group_indices": [1, 1, 2, 2, 3, 3],
-          "group_keys": [
+      ],
+      "data_frame": {
+        "lhs": {
+          "col_names": ["mpg", "cyl", "hp"],
+          "data": [
             {
-              "group_id": 1,
-              "key": {
-                "cyl": 4
-              }
+              "mpg": 22.8,
+              "cyl": 4,
+              "hp": 93
             },
             {
-              "group_id": 2,
-              "key": {
-                "cyl": 6
-              }
+              "mpg": 24.4,
+              "cyl": 4,
+              "hp": 62
             },
             {
-              "group_id": 3,
-              "key": {
-                "cyl": 8
-              }
+              "mpg": 21,
+              "cyl": 6,
+              "hp": 110
+            },
+            {
+              "mpg": 21,
+              "cyl": 6,
+              "hp": 110
+            },
+            {
+              "mpg": 18.7,
+              "cyl": 8,
+              "hp": 175
+            },
+            {
+              "mpg": 14.3,
+              "cyl": 8,
+              "hp": 245
             }
-          ]
-        }
-      },
-      "rhs": {
-        "col_names": ["Miles_Per_Gallon", "cyl", "hp"],
-        "data": [
-          {
-            "Miles_Per_Gallon": 22.8,
-            "cyl": 4,
-            "hp": 93
-          },
-          {
-            "Miles_Per_Gallon": 24.4,
-            "cyl": 4,
-            "hp": 62
-          },
-          {
-            "Miles_Per_Gallon": 21,
-            "cyl": 6,
-            "hp": 110
-          },
-          {
-            "Miles_Per_Gallon": 21,
-            "cyl": 6,
-            "hp": 110
-          },
-          {
-            "Miles_Per_Gallon": 18.7,
-            "cyl": 8,
-            "hp": 175
-          },
-          {
-            "Miles_Per_Gallon": 14.3,
-            "cyl": 8,
-            "hp": 245
+          ],
+          "group_data": {
+            "col_names": ["cyl"],
+            "group_indices": [1, 1, 2, 2, 3, 3],
+            "group_keys": [
+              {
+                "group_id": 1,
+                "key": {
+                  "cyl": 4
+                }
+              },
+              {
+                "group_id": 2,
+                "key": {
+                  "cyl": 6
+                }
+              },
+              {
+                "group_id": 3,
+                "key": {
+                  "cyl": 8
+                }
+              }
+            ]
           }
-        ],
-        "group_data": {
-          "col_names": ["cyl"],
-          "group_indices": [1, 1, 2, 2, 3, 3],
-          "group_keys": [
+        },
+        "rhs": {
+          "col_names": ["Miles_Per_Gallon", "cyl", "hp"],
+          "data": [
             {
-              "group_id": 1,
-              "key": {
-                "cyl": 4
-              }
+              "Miles_Per_Gallon": 22.8,
+              "cyl": 4,
+              "hp": 93
             },
             {
-              "group_id": 2,
-              "key": {
-                "cyl": 6
-              }
+              "Miles_Per_Gallon": 24.4,
+              "cyl": 4,
+              "hp": 62
             },
             {
-              "group_id": 3,
-              "key": {
-                "cyl": 8
-              }
+              "Miles_Per_Gallon": 21,
+              "cyl": 6,
+              "hp": 110
+            },
+            {
+              "Miles_Per_Gallon": 21,
+              "cyl": 6,
+              "hp": 110
+            },
+            {
+              "Miles_Per_Gallon": 18.7,
+              "cyl": 8,
+              "hp": 175
+            },
+            {
+              "Miles_Per_Gallon": 14.3,
+              "cyl": 8,
+              "hp": 245
             }
-          ]
+          ],
+          "group_data": {
+            "col_names": ["cyl"],
+            "group_indices": [1, 1, 2, 2, 3, 3],
+            "group_keys": [
+              {
+                "group_id": 1,
+                "key": {
+                  "cyl": 4
+                }
+              },
+              {
+                "group_id": 2,
+                "key": {
+                  "cyl": 6
+                }
+              },
+              {
+                "group_id": 3,
+                "key": {
+                  "cyl": 8
+                }
+              }
+            ]
+          }
         }
       }
     }
-  }
-]
+  ]
+}

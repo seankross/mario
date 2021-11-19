@@ -1,14 +1,17 @@
-[
-  {
-    "type": "error",
-    "code_step": "NA",
-    "mapping": {
-      "message": {
-        "header": "4:4: unexpected symbol\n3: Formaldehyde %>%\n4:   2quack\n      ^",
-        "body": [],
-        "footer": []
-      }
-    },
-    "data_frame": "NA"
-  }
-]
+{
+  "code": "library(dplyr)\n\nFormaldehyde %>%\n  2quack()\n",
+  "trace": [
+    {
+      "type": "error",
+      "code_step": "NA",
+      "mapping": {
+        "message": {
+          "header": "<text>:4:4: unexpected symbol\n3: Formaldehyde %>%\n4:   2quack\n      ^",
+          "body": [],
+          "footer": []
+        }
+      },
+      "data_frame": "NA"
+    }
+  ]
+}

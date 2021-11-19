@@ -3,11 +3,11 @@
 #' @param path The path to an R code file.
 #' @importFrom rlang parse_exprs global_env
 #' @importFrom purrr map safely
+#' @importFrom readr read_file
 #' @export
 file_to_json <- function(path) {
-  con <- file(path, open = "r")
-  on.exit(close(con))
-  string_to_json(con)
+  code <- read_file(path)
+  string_to_json(code)
 }
 
 #' Turn a pipeline call into JSON
@@ -23,33 +23,49 @@ pipeline_to_json <- function(call){
   (pipeline_tbl_to_list(ptbl)[-1]) %>% toJSON(auto_unbox = TRUE, pretty = TRUE)
 }
 
+#' @importFrom jsonlite toJSON
+pipeline_to_trace <- function(call){
+  ptbl <- pipeline_tbl(call)
+  ptbl$BA <- c(NA, before_after_tbl_list(ptbl$DF))
+
+  (pipeline_tbl_to_list(ptbl)[-1])
+}
+
 #' Turn a string of a pipeline into a JSON
 #'
 #' @param code A string of R code.
 #' @importFrom rlang parse_exprs
 #' @importFrom rlang cnd_header cnd_body cnd_footer
 #' @importFrom crayon strip_style
+
 #' @export
 string_to_json <- function(code) {
-  result <- safely(string_to_json_helper)(code)
+  trace_raw <- safely(string_to_json_helper)(code)
 
-  if(!is.null(result[["error"]])){
-    list(list(
+  if(!is.null(trace_raw[["error"]])){
+    trace_ <- list(list(
       type = "error",
       code_step = "NA",
       mapping = list(
-        message = list(header = cnd_header(result[["error"]]) %>%
+        message = list(header = cnd_header(trace_raw[["error"]]) %>%
                          strip_style() %>% strip_i(),
-                       body = cnd_body(result[["error"]]) %>%
+                       body = cnd_body(trace_raw[["error"]]) %>%
                          strip_style() %>% strip_i(),
-                       footer = cnd_footer(result[["error"]]) %>%
+                       footer = cnd_footer(trace_raw[["error"]]) %>%
                          strip_style() %>% strip_i())
       ),
       data_frame = "NA"
-    )) %>% toJSON(auto_unbox = TRUE, pretty = TRUE)
+    ))# %>% toJSON(auto_unbox = TRUE, pretty = TRUE)
   } else {
-    result[["result"]]
+    trace_ <- trace_raw[["result"]]
   }
+
+  result <- list(
+    code = code,
+    trace = trace_
+  )
+
+  result %>% toJSON(auto_unbox = TRUE, pretty = TRUE)
 }
 
 string_to_json_helper <- function(code) {
@@ -57,7 +73,7 @@ string_to_json_helper <- function(code) {
   map(exprs_[-length(exprs_)], eval, envir = global_env())
   pipeline_call <- exprs_[[length(exprs_)]]
 
-  pipeline_to_json(pipeline_call)
+  pipeline_to_trace(pipeline_call)
 }
 
 # When you have the mario project open in RStudio, run this with

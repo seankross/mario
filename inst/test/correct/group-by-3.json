@@ -1,168 +1,171 @@
-[
-  {
-    "type": "group_by",
-    "code_step": "group_by(cyl, am)",
-    "mapping": [
-      {
-        "illustrate": "outline",
-        "select": "column",
-        "anchor": "lhs",
-        "index": 2
-      },
-      {
-        "illustrate": "outline",
-        "select": "column",
-        "anchor": "lhs",
-        "index": 3
-      },
-      {
-        "illustrate": "highlight",
-        "select": "row",
-        "anchor": "rhs",
-        "index": 1,
-        "group_id": 1
-      },
-      {
-        "illustrate": "highlight",
-        "select": "row",
-        "anchor": "rhs",
-        "index": 2,
-        "group_id": 1
-      },
-      {
-        "illustrate": "highlight",
-        "select": "row",
-        "anchor": "rhs",
-        "index": 3,
-        "group_id": 2
-      },
-      {
-        "illustrate": "highlight",
-        "select": "row",
-        "anchor": "rhs",
-        "index": 4,
-        "group_id": 3
-      },
-      {
-        "illustrate": "highlight",
-        "select": "row",
-        "anchor": "rhs",
-        "index": 5,
-        "group_id": 4
-      },
-      {
-        "illustrate": "highlight",
-        "select": "row",
-        "anchor": "rhs",
-        "index": 6,
-        "group_id": 4
-      }
-    ],
-    "data_frame": {
-      "lhs": {
-        "col_names": ["mpg", "cyl", "am"],
-        "data": [
-          {
-            "mpg": 24.4,
-            "cyl": 4,
-            "am": 0
-          },
-          {
-            "mpg": 22.8,
-            "cyl": 4,
-            "am": 0
-          },
-          {
-            "mpg": 32.4,
-            "cyl": 4,
-            "am": 1
-          },
-          {
-            "mpg": 21.4,
-            "cyl": 6,
-            "am": 0
-          },
-          {
-            "mpg": 21,
-            "cyl": 6,
-            "am": 1
-          },
-          {
-            "mpg": 19.7,
-            "cyl": 6,
-            "am": 1
-          }
-        ]
-      },
-      "rhs": {
-        "col_names": ["mpg", "cyl", "am"],
-        "data": [
-          {
-            "mpg": 24.4,
-            "cyl": 4,
-            "am": 0
-          },
-          {
-            "mpg": 22.8,
-            "cyl": 4,
-            "am": 0
-          },
-          {
-            "mpg": 32.4,
-            "cyl": 4,
-            "am": 1
-          },
-          {
-            "mpg": 21.4,
-            "cyl": 6,
-            "am": 0
-          },
-          {
-            "mpg": 21,
-            "cyl": 6,
-            "am": 1
-          },
-          {
-            "mpg": 19.7,
-            "cyl": 6,
-            "am": 1
-          }
-        ],
-        "group_data": {
-          "col_names": ["cyl", "am"],
-          "group_indices": [1, 1, 2, 3, 4, 4],
-          "group_keys": [
+{
+  "code": "library(dplyr)\n\nmt <- mtcars %>%\n  as_tibble() %>%\n  filter(cyl < 8) %>%\n  select(mpg, cyl, am) %>%\n  arrange(cyl, am) %>%\n  slice(1, 2, 5, 12, 17, 18)\n\nmt %>%\n  group_by(cyl, am)\n",
+  "trace": [
+    {
+      "type": "group_by",
+      "code_step": "group_by(cyl, am)",
+      "mapping": [
+        {
+          "illustrate": "outline",
+          "select": "column",
+          "anchor": "lhs",
+          "index": 2
+        },
+        {
+          "illustrate": "outline",
+          "select": "column",
+          "anchor": "lhs",
+          "index": 3
+        },
+        {
+          "illustrate": "highlight",
+          "select": "row",
+          "anchor": "rhs",
+          "index": 1,
+          "group_id": 1
+        },
+        {
+          "illustrate": "highlight",
+          "select": "row",
+          "anchor": "rhs",
+          "index": 2,
+          "group_id": 1
+        },
+        {
+          "illustrate": "highlight",
+          "select": "row",
+          "anchor": "rhs",
+          "index": 3,
+          "group_id": 2
+        },
+        {
+          "illustrate": "highlight",
+          "select": "row",
+          "anchor": "rhs",
+          "index": 4,
+          "group_id": 3
+        },
+        {
+          "illustrate": "highlight",
+          "select": "row",
+          "anchor": "rhs",
+          "index": 5,
+          "group_id": 4
+        },
+        {
+          "illustrate": "highlight",
+          "select": "row",
+          "anchor": "rhs",
+          "index": 6,
+          "group_id": 4
+        }
+      ],
+      "data_frame": {
+        "lhs": {
+          "col_names": ["mpg", "cyl", "am"],
+          "data": [
             {
-              "group_id": 1,
-              "key": {
-                "cyl": 4,
-                "am": 0
-              }
+              "mpg": 24.4,
+              "cyl": 4,
+              "am": 0
             },
             {
-              "group_id": 2,
-              "key": {
-                "cyl": 4,
-                "am": 1
-              }
+              "mpg": 22.8,
+              "cyl": 4,
+              "am": 0
             },
             {
-              "group_id": 3,
-              "key": {
-                "cyl": 6,
-                "am": 0
-              }
+              "mpg": 32.4,
+              "cyl": 4,
+              "am": 1
             },
             {
-              "group_id": 4,
-              "key": {
-                "cyl": 6,
-                "am": 1
-              }
+              "mpg": 21.4,
+              "cyl": 6,
+              "am": 0
+            },
+            {
+              "mpg": 21,
+              "cyl": 6,
+              "am": 1
+            },
+            {
+              "mpg": 19.7,
+              "cyl": 6,
+              "am": 1
             }
           ]
+        },
+        "rhs": {
+          "col_names": ["mpg", "cyl", "am"],
+          "data": [
+            {
+              "mpg": 24.4,
+              "cyl": 4,
+              "am": 0
+            },
+            {
+              "mpg": 22.8,
+              "cyl": 4,
+              "am": 0
+            },
+            {
+              "mpg": 32.4,
+              "cyl": 4,
+              "am": 1
+            },
+            {
+              "mpg": 21.4,
+              "cyl": 6,
+              "am": 0
+            },
+            {
+              "mpg": 21,
+              "cyl": 6,
+              "am": 1
+            },
+            {
+              "mpg": 19.7,
+              "cyl": 6,
+              "am": 1
+            }
+          ],
+          "group_data": {
+            "col_names": ["cyl", "am"],
+            "group_indices": [1, 1, 2, 3, 4, 4],
+            "group_keys": [
+              {
+                "group_id": 1,
+                "key": {
+                  "cyl": 4,
+                  "am": 0
+                }
+              },
+              {
+                "group_id": 2,
+                "key": {
+                  "cyl": 4,
+                  "am": 1
+                }
+              },
+              {
+                "group_id": 3,
+                "key": {
+                  "cyl": 6,
+                  "am": 0
+                }
+              },
+              {
+                "group_id": 4,
+                "key": {
+                  "cyl": 6,
+                  "am": 1
+                }
+              }
+            ]
+          }
         }
       }
     }
-  }
-]
+  ]
+}

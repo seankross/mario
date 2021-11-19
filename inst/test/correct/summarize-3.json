@@ -1,486 +1,489 @@
-[
-  {
-    "type": "summarize",
-    "code_step": "summarize(Sum = sum(mpg, hp))",
-    "mapping": [
-      {
-        "illustrate": "outline",
-        "select": "cell",
-        "from": {
-          "anchor": "lhs",
-          "index": [1, 3]
-        },
-        "to": {
-          "anchor": "rhs",
-          "index": [1, 1]
-        }
-      },
-      {
-        "illustrate": "outline",
-        "select": "cell",
-        "from": {
-          "anchor": "lhs",
-          "index": [2, 3]
-        },
-        "to": {
-          "anchor": "rhs",
-          "index": [1, 1]
-        }
-      },
-      {
-        "illustrate": "outline",
-        "select": "cell",
-        "from": {
-          "anchor": "lhs",
-          "index": [3, 3]
-        },
-        "to": {
-          "anchor": "rhs",
-          "index": [2, 1]
-        }
-      },
-      {
-        "illustrate": "outline",
-        "select": "cell",
-        "from": {
-          "anchor": "lhs",
-          "index": [4, 3]
-        },
-        "to": {
-          "anchor": "rhs",
-          "index": [3, 1]
-        }
-      },
-      {
-        "illustrate": "outline",
-        "select": "cell",
-        "from": {
-          "anchor": "lhs",
-          "index": [5, 3]
-        },
-        "to": {
-          "anchor": "rhs",
-          "index": [4, 1]
-        }
-      },
-      {
-        "illustrate": "outline",
-        "select": "cell",
-        "from": {
-          "anchor": "lhs",
-          "index": [6, 3]
-        },
-        "to": {
-          "anchor": "rhs",
-          "index": [4, 1]
-        }
-      },
-      {
-        "illustrate": "outline",
-        "select": "cell",
-        "from": {
-          "anchor": "lhs",
-          "index": [1, 4]
-        },
-        "to": {
-          "anchor": "rhs",
-          "index": [1, 2]
-        }
-      },
-      {
-        "illustrate": "outline",
-        "select": "cell",
-        "from": {
-          "anchor": "lhs",
-          "index": [2, 4]
-        },
-        "to": {
-          "anchor": "rhs",
-          "index": [1, 2]
-        }
-      },
-      {
-        "illustrate": "outline",
-        "select": "cell",
-        "from": {
-          "anchor": "lhs",
-          "index": [3, 4]
-        },
-        "to": {
-          "anchor": "rhs",
-          "index": [2, 2]
-        }
-      },
-      {
-        "illustrate": "outline",
-        "select": "cell",
-        "from": {
-          "anchor": "lhs",
-          "index": [4, 4]
-        },
-        "to": {
-          "anchor": "rhs",
-          "index": [3, 2]
-        }
-      },
-      {
-        "illustrate": "outline",
-        "select": "cell",
-        "from": {
-          "anchor": "lhs",
-          "index": [5, 4]
-        },
-        "to": {
-          "anchor": "rhs",
-          "index": [4, 2]
-        }
-      },
-      {
-        "illustrate": "outline",
-        "select": "cell",
-        "from": {
-          "anchor": "lhs",
-          "index": [6, 4]
-        },
-        "to": {
-          "anchor": "rhs",
-          "index": [4, 2]
-        }
-      },
-      {
-        "illustrate": "outline",
-        "select": "cell",
-        "from": {
-          "anchor": "lhs",
-          "index": [1, 1]
-        },
-        "to": {
-          "anchor": "rhs",
-          "index": [1, 3]
-        }
-      },
-      {
-        "illustrate": "outline",
-        "select": "cell",
-        "from": {
-          "anchor": "lhs",
-          "index": [2, 1]
-        },
-        "to": {
-          "anchor": "rhs",
-          "index": [1, 3]
-        }
-      },
-      {
-        "illustrate": "outline",
-        "select": "cell",
-        "from": {
-          "anchor": "lhs",
-          "index": [3, 1]
-        },
-        "to": {
-          "anchor": "rhs",
-          "index": [2, 3]
-        }
-      },
-      {
-        "illustrate": "outline",
-        "select": "cell",
-        "from": {
-          "anchor": "lhs",
-          "index": [4, 1]
-        },
-        "to": {
-          "anchor": "rhs",
-          "index": [3, 3]
-        }
-      },
-      {
-        "illustrate": "outline",
-        "select": "cell",
-        "from": {
-          "anchor": "lhs",
-          "index": [5, 1]
-        },
-        "to": {
-          "anchor": "rhs",
-          "index": [4, 3]
-        }
-      },
-      {
-        "illustrate": "outline",
-        "select": "cell",
-        "from": {
-          "anchor": "lhs",
-          "index": [6, 1]
-        },
-        "to": {
-          "anchor": "rhs",
-          "index": [4, 3]
-        }
-      },
-      {
-        "illustrate": "outline",
-        "select": "cell",
-        "from": {
-          "anchor": "lhs",
-          "index": [1, 2]
-        },
-        "to": {
-          "anchor": "rhs",
-          "index": [1, 3]
-        }
-      },
-      {
-        "illustrate": "outline",
-        "select": "cell",
-        "from": {
-          "anchor": "lhs",
-          "index": [2, 2]
-        },
-        "to": {
-          "anchor": "rhs",
-          "index": [1, 3]
-        }
-      },
-      {
-        "illustrate": "outline",
-        "select": "cell",
-        "from": {
-          "anchor": "lhs",
-          "index": [3, 2]
-        },
-        "to": {
-          "anchor": "rhs",
-          "index": [2, 3]
-        }
-      },
-      {
-        "illustrate": "outline",
-        "select": "cell",
-        "from": {
-          "anchor": "lhs",
-          "index": [4, 2]
-        },
-        "to": {
-          "anchor": "rhs",
-          "index": [3, 3]
-        }
-      },
-      {
-        "illustrate": "outline",
-        "select": "cell",
-        "from": {
-          "anchor": "lhs",
-          "index": [5, 2]
-        },
-        "to": {
-          "anchor": "rhs",
-          "index": [4, 3]
-        }
-      },
-      {
-        "illustrate": "outline",
-        "select": "cell",
-        "from": {
-          "anchor": "lhs",
-          "index": [6, 2]
-        },
-        "to": {
-          "anchor": "rhs",
-          "index": [4, 3]
-        }
-      },
-      {
-        "illustrate": "highlight",
-        "select": "row",
-        "anchor": "lhs",
-        "index": 1,
-        "group_id": 1
-      },
-      {
-        "illustrate": "highlight",
-        "select": "row",
-        "anchor": "lhs",
-        "index": 2,
-        "group_id": 1
-      },
-      {
-        "illustrate": "highlight",
-        "select": "row",
-        "anchor": "lhs",
-        "index": 3,
-        "group_id": 2
-      },
-      {
-        "illustrate": "highlight",
-        "select": "row",
-        "anchor": "lhs",
-        "index": 4,
-        "group_id": 3
-      },
-      {
-        "illustrate": "highlight",
-        "select": "row",
-        "anchor": "lhs",
-        "index": 5,
-        "group_id": 4
-      },
-      {
-        "illustrate": "highlight",
-        "select": "row",
-        "anchor": "lhs",
-        "index": 6,
-        "group_id": 4
-      },
-      {
-        "illustrate": "highlight",
-        "select": "row",
-        "anchor": "rhs",
-        "index": 1,
-        "group_id": 1
-      },
-      {
-        "illustrate": "highlight",
-        "select": "row",
-        "anchor": "rhs",
-        "index": 2,
-        "group_id": 1
-      },
-      {
-        "illustrate": "highlight",
-        "select": "row",
-        "anchor": "rhs",
-        "index": 3,
-        "group_id": 2
-      },
-      {
-        "illustrate": "highlight",
-        "select": "row",
-        "anchor": "rhs",
-        "index": 4,
-        "group_id": 2
-      }
-    ],
-    "data_frame": {
-      "lhs": {
-        "col_names": ["mpg", "hp", "cyl", "am"],
-        "data": [
-          {
-            "mpg": 24.4,
-            "hp": 62,
-            "cyl": 4,
-            "am": 0
+{
+  "code": "library(dplyr)\n\nmt <- mtcars %>%\n  as_tibble() %>%\n  filter(cyl < 8) %>%\n  select(mpg, hp, cyl, am) %>%\n  arrange(cyl, am) %>%\n  slice(1, 2, 5, 12, 17, 18) %>%\n  group_by(cyl, am)\n\nmt %>%\n  summarize(Sum = sum(mpg, hp))\n",
+  "trace": [
+    {
+      "type": "summarize",
+      "code_step": "summarize(Sum = sum(mpg, hp))",
+      "mapping": [
+        {
+          "illustrate": "outline",
+          "select": "cell",
+          "from": {
+            "anchor": "lhs",
+            "index": [1, 3]
           },
-          {
-            "mpg": 22.8,
-            "hp": 95,
-            "cyl": 4,
-            "am": 0
-          },
-          {
-            "mpg": 32.4,
-            "hp": 66,
-            "cyl": 4,
-            "am": 1
-          },
-          {
-            "mpg": 21.4,
-            "hp": 110,
-            "cyl": 6,
-            "am": 0
-          },
-          {
-            "mpg": 21,
-            "hp": 110,
-            "cyl": 6,
-            "am": 1
-          },
-          {
-            "mpg": 19.7,
-            "hp": 175,
-            "cyl": 6,
-            "am": 1
+          "to": {
+            "anchor": "rhs",
+            "index": [1, 1]
           }
-        ],
-        "group_data": {
-          "col_names": ["cyl", "am"],
-          "group_indices": [1, 1, 2, 3, 4, 4],
-          "group_keys": [
-            {
-              "group_id": 1,
-              "key": {
-                "cyl": 4,
-                "am": 0
-              }
-            },
-            {
-              "group_id": 2,
-              "key": {
-                "cyl": 4,
-                "am": 1
-              }
-            },
-            {
-              "group_id": 3,
-              "key": {
-                "cyl": 6,
-                "am": 0
-              }
-            },
-            {
-              "group_id": 4,
-              "key": {
-                "cyl": 6,
-                "am": 1
-              }
-            }
-          ]
-        }
-      },
-      "rhs": {
-        "col_names": ["cyl", "am", "Sum"],
-        "data": [
-          {
-            "cyl": 4,
-            "am": 0,
-            "Sum": 204.2
+        },
+        {
+          "illustrate": "outline",
+          "select": "cell",
+          "from": {
+            "anchor": "lhs",
+            "index": [2, 3]
           },
-          {
-            "cyl": 4,
-            "am": 1,
-            "Sum": 98.4
-          },
-          {
-            "cyl": 6,
-            "am": 0,
-            "Sum": 131.4
-          },
-          {
-            "cyl": 6,
-            "am": 1,
-            "Sum": 325.7
+          "to": {
+            "anchor": "rhs",
+            "index": [1, 1]
           }
-        ],
-        "group_data": {
-          "col_names": ["cyl"],
-          "group_indices": [1, 1, 2, 2],
-          "group_keys": [
+        },
+        {
+          "illustrate": "outline",
+          "select": "cell",
+          "from": {
+            "anchor": "lhs",
+            "index": [3, 3]
+          },
+          "to": {
+            "anchor": "rhs",
+            "index": [2, 1]
+          }
+        },
+        {
+          "illustrate": "outline",
+          "select": "cell",
+          "from": {
+            "anchor": "lhs",
+            "index": [4, 3]
+          },
+          "to": {
+            "anchor": "rhs",
+            "index": [3, 1]
+          }
+        },
+        {
+          "illustrate": "outline",
+          "select": "cell",
+          "from": {
+            "anchor": "lhs",
+            "index": [5, 3]
+          },
+          "to": {
+            "anchor": "rhs",
+            "index": [4, 1]
+          }
+        },
+        {
+          "illustrate": "outline",
+          "select": "cell",
+          "from": {
+            "anchor": "lhs",
+            "index": [6, 3]
+          },
+          "to": {
+            "anchor": "rhs",
+            "index": [4, 1]
+          }
+        },
+        {
+          "illustrate": "outline",
+          "select": "cell",
+          "from": {
+            "anchor": "lhs",
+            "index": [1, 4]
+          },
+          "to": {
+            "anchor": "rhs",
+            "index": [1, 2]
+          }
+        },
+        {
+          "illustrate": "outline",
+          "select": "cell",
+          "from": {
+            "anchor": "lhs",
+            "index": [2, 4]
+          },
+          "to": {
+            "anchor": "rhs",
+            "index": [1, 2]
+          }
+        },
+        {
+          "illustrate": "outline",
+          "select": "cell",
+          "from": {
+            "anchor": "lhs",
+            "index": [3, 4]
+          },
+          "to": {
+            "anchor": "rhs",
+            "index": [2, 2]
+          }
+        },
+        {
+          "illustrate": "outline",
+          "select": "cell",
+          "from": {
+            "anchor": "lhs",
+            "index": [4, 4]
+          },
+          "to": {
+            "anchor": "rhs",
+            "index": [3, 2]
+          }
+        },
+        {
+          "illustrate": "outline",
+          "select": "cell",
+          "from": {
+            "anchor": "lhs",
+            "index": [5, 4]
+          },
+          "to": {
+            "anchor": "rhs",
+            "index": [4, 2]
+          }
+        },
+        {
+          "illustrate": "outline",
+          "select": "cell",
+          "from": {
+            "anchor": "lhs",
+            "index": [6, 4]
+          },
+          "to": {
+            "anchor": "rhs",
+            "index": [4, 2]
+          }
+        },
+        {
+          "illustrate": "outline",
+          "select": "cell",
+          "from": {
+            "anchor": "lhs",
+            "index": [1, 1]
+          },
+          "to": {
+            "anchor": "rhs",
+            "index": [1, 3]
+          }
+        },
+        {
+          "illustrate": "outline",
+          "select": "cell",
+          "from": {
+            "anchor": "lhs",
+            "index": [2, 1]
+          },
+          "to": {
+            "anchor": "rhs",
+            "index": [1, 3]
+          }
+        },
+        {
+          "illustrate": "outline",
+          "select": "cell",
+          "from": {
+            "anchor": "lhs",
+            "index": [3, 1]
+          },
+          "to": {
+            "anchor": "rhs",
+            "index": [2, 3]
+          }
+        },
+        {
+          "illustrate": "outline",
+          "select": "cell",
+          "from": {
+            "anchor": "lhs",
+            "index": [4, 1]
+          },
+          "to": {
+            "anchor": "rhs",
+            "index": [3, 3]
+          }
+        },
+        {
+          "illustrate": "outline",
+          "select": "cell",
+          "from": {
+            "anchor": "lhs",
+            "index": [5, 1]
+          },
+          "to": {
+            "anchor": "rhs",
+            "index": [4, 3]
+          }
+        },
+        {
+          "illustrate": "outline",
+          "select": "cell",
+          "from": {
+            "anchor": "lhs",
+            "index": [6, 1]
+          },
+          "to": {
+            "anchor": "rhs",
+            "index": [4, 3]
+          }
+        },
+        {
+          "illustrate": "outline",
+          "select": "cell",
+          "from": {
+            "anchor": "lhs",
+            "index": [1, 2]
+          },
+          "to": {
+            "anchor": "rhs",
+            "index": [1, 3]
+          }
+        },
+        {
+          "illustrate": "outline",
+          "select": "cell",
+          "from": {
+            "anchor": "lhs",
+            "index": [2, 2]
+          },
+          "to": {
+            "anchor": "rhs",
+            "index": [1, 3]
+          }
+        },
+        {
+          "illustrate": "outline",
+          "select": "cell",
+          "from": {
+            "anchor": "lhs",
+            "index": [3, 2]
+          },
+          "to": {
+            "anchor": "rhs",
+            "index": [2, 3]
+          }
+        },
+        {
+          "illustrate": "outline",
+          "select": "cell",
+          "from": {
+            "anchor": "lhs",
+            "index": [4, 2]
+          },
+          "to": {
+            "anchor": "rhs",
+            "index": [3, 3]
+          }
+        },
+        {
+          "illustrate": "outline",
+          "select": "cell",
+          "from": {
+            "anchor": "lhs",
+            "index": [5, 2]
+          },
+          "to": {
+            "anchor": "rhs",
+            "index": [4, 3]
+          }
+        },
+        {
+          "illustrate": "outline",
+          "select": "cell",
+          "from": {
+            "anchor": "lhs",
+            "index": [6, 2]
+          },
+          "to": {
+            "anchor": "rhs",
+            "index": [4, 3]
+          }
+        },
+        {
+          "illustrate": "highlight",
+          "select": "row",
+          "anchor": "lhs",
+          "index": 1,
+          "group_id": 1
+        },
+        {
+          "illustrate": "highlight",
+          "select": "row",
+          "anchor": "lhs",
+          "index": 2,
+          "group_id": 1
+        },
+        {
+          "illustrate": "highlight",
+          "select": "row",
+          "anchor": "lhs",
+          "index": 3,
+          "group_id": 2
+        },
+        {
+          "illustrate": "highlight",
+          "select": "row",
+          "anchor": "lhs",
+          "index": 4,
+          "group_id": 3
+        },
+        {
+          "illustrate": "highlight",
+          "select": "row",
+          "anchor": "lhs",
+          "index": 5,
+          "group_id": 4
+        },
+        {
+          "illustrate": "highlight",
+          "select": "row",
+          "anchor": "lhs",
+          "index": 6,
+          "group_id": 4
+        },
+        {
+          "illustrate": "highlight",
+          "select": "row",
+          "anchor": "rhs",
+          "index": 1,
+          "group_id": 1
+        },
+        {
+          "illustrate": "highlight",
+          "select": "row",
+          "anchor": "rhs",
+          "index": 2,
+          "group_id": 1
+        },
+        {
+          "illustrate": "highlight",
+          "select": "row",
+          "anchor": "rhs",
+          "index": 3,
+          "group_id": 2
+        },
+        {
+          "illustrate": "highlight",
+          "select": "row",
+          "anchor": "rhs",
+          "index": 4,
+          "group_id": 2
+        }
+      ],
+      "data_frame": {
+        "lhs": {
+          "col_names": ["mpg", "hp", "cyl", "am"],
+          "data": [
             {
-              "group_id": 1,
-              "key": {
-                "cyl": 4
-              }
+              "mpg": 24.4,
+              "hp": 62,
+              "cyl": 4,
+              "am": 0
             },
             {
-              "group_id": 2,
-              "key": {
-                "cyl": 6
-              }
+              "mpg": 22.8,
+              "hp": 95,
+              "cyl": 4,
+              "am": 0
+            },
+            {
+              "mpg": 32.4,
+              "hp": 66,
+              "cyl": 4,
+              "am": 1
+            },
+            {
+              "mpg": 21.4,
+              "hp": 110,
+              "cyl": 6,
+              "am": 0
+            },
+            {
+              "mpg": 21,
+              "hp": 110,
+              "cyl": 6,
+              "am": 1
+            },
+            {
+              "mpg": 19.7,
+              "hp": 175,
+              "cyl": 6,
+              "am": 1
             }
-          ]
+          ],
+          "group_data": {
+            "col_names": ["cyl", "am"],
+            "group_indices": [1, 1, 2, 3, 4, 4],
+            "group_keys": [
+              {
+                "group_id": 1,
+                "key": {
+                  "cyl": 4,
+                  "am": 0
+                }
+              },
+              {
+                "group_id": 2,
+                "key": {
+                  "cyl": 4,
+                  "am": 1
+                }
+              },
+              {
+                "group_id": 3,
+                "key": {
+                  "cyl": 6,
+                  "am": 0
+                }
+              },
+              {
+                "group_id": 4,
+                "key": {
+                  "cyl": 6,
+                  "am": 1
+                }
+              }
+            ]
+          }
+        },
+        "rhs": {
+          "col_names": ["cyl", "am", "Sum"],
+          "data": [
+            {
+              "cyl": 4,
+              "am": 0,
+              "Sum": 204.2
+            },
+            {
+              "cyl": 4,
+              "am": 1,
+              "Sum": 98.4
+            },
+            {
+              "cyl": 6,
+              "am": 0,
+              "Sum": 131.4
+            },
+            {
+              "cyl": 6,
+              "am": 1,
+              "Sum": 325.7
+            }
+          ],
+          "group_data": {
+            "col_names": ["cyl"],
+            "group_indices": [1, 1, 2, 2],
+            "group_keys": [
+              {
+                "group_id": 1,
+                "key": {
+                  "cyl": 4
+                }
+              },
+              {
+                "group_id": 2,
+                "key": {
+                  "cyl": 6
+                }
+              }
+            ]
+          }
         }
       }
     }
-  }
-]
+  ]
+}

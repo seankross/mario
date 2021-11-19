@@ -17,6 +17,7 @@ Imports:
     jsonlite,
     magrittr,
     purrr,
+    readr,
     rlang,
     stringr,
     tibble

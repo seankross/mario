@@ -1,86 +1,89 @@
-[
-  {
-    "type": "mutate",
-    "code_step": "mutate(1 + 3)",
-    "mapping": [
-      {
-        "illustrate": "outline",
-        "select": "column",
-        "from": {
-          "anchor": "arg",
-          "index": 1
+{
+  "code": "library(dplyr)\n\nFormaldehyde %>%\n  mutate(1 + 3)\n",
+  "trace": [
+    {
+      "type": "mutate",
+      "code_step": "mutate(1 + 3)",
+      "mapping": [
+        {
+          "illustrate": "outline",
+          "select": "column",
+          "from": {
+            "anchor": "arg",
+            "index": 1
+          },
+          "to": {
+            "anchor": "rhs",
+            "index": 3
+          }
+        }
+      ],
+      "data_frame": {
+        "lhs": {
+          "col_names": ["carb", "optden"],
+          "data": [
+            {
+              "carb": 0.1,
+              "optden": 0.086
+            },
+            {
+              "carb": 0.3,
+              "optden": 0.269
+            },
+            {
+              "carb": 0.5,
+              "optden": 0.446
+            },
+            {
+              "carb": 0.6,
+              "optden": 0.538
+            },
+            {
+              "carb": 0.7,
+              "optden": 0.626
+            },
+            {
+              "carb": 0.9,
+              "optden": 0.782
+            }
+          ]
         },
-        "to": {
-          "anchor": "rhs",
-          "index": 3
+        "rhs": {
+          "col_names": ["carb", "optden", "1 + 3"],
+          "data": [
+            {
+              "carb": 0.1,
+              "optden": 0.086,
+              "1 + 3": 4
+            },
+            {
+              "carb": 0.3,
+              "optden": 0.269,
+              "1 + 3": 4
+            },
+            {
+              "carb": 0.5,
+              "optden": 0.446,
+              "1 + 3": 4
+            },
+            {
+              "carb": 0.6,
+              "optden": 0.538,
+              "1 + 3": 4
+            },
+            {
+              "carb": 0.7,
+              "optden": 0.626,
+              "1 + 3": 4
+            },
+            {
+              "carb": 0.9,
+              "optden": 0.782,
+              "1 + 3": 4
+            }
+          ]
         }
       }
-    ],
-    "data_frame": {
-      "lhs": {
-        "col_names": ["carb", "optden"],
-        "data": [
-          {
-            "carb": 0.1,
-            "optden": 0.086
-          },
-          {
-            "carb": 0.3,
-            "optden": 0.269
-          },
-          {
-            "carb": 0.5,
-            "optden": 0.446
-          },
-          {
-            "carb": 0.6,
-            "optden": 0.538
-          },
-          {
-            "carb": 0.7,
-            "optden": 0.626
-          },
-          {
-            "carb": 0.9,
-            "optden": 0.782
-          }
-        ]
-      },
-      "rhs": {
-        "col_names": ["carb", "optden", "1 + 3"],
-        "data": [
-          {
-            "carb": 0.1,
-            "optden": 0.086,
-            "1 + 3": 4
-          },
-          {
-            "carb": 0.3,
-            "optden": 0.269,
-            "1 + 3": 4
-          },
-          {
-            "carb": 0.5,
-            "optden": 0.446,
-            "1 + 3": 4
-          },
-          {
-            "carb": 0.6,
-            "optden": 0.538,
-            "1 + 3": 4
-          },
-          {
-            "carb": 0.7,
-            "optden": 0.626,
-            "1 + 3": 4
-          },
-          {
-            "carb": 0.9,
-            "optden": 0.782,
-            "1 + 3": 4
-          }
-        ]
-      }
     }
-  }
-]
+  ]
+}

@@ -1,14 +1,17 @@
-[
-  {
-    "type": "error",
-    "code_step": "NA",
-    "mapping": {
-      "message": {
-        "header": "there is no package called 'ggplot3'",
-        "body": [],
-        "footer": []
-      }
-    },
-    "data_frame": "NA"
-  }
-]
+{
+  "code": "library(ggplot3)\n\ntrees %>%\n  ggplot(aes(Girth, Height)) +\n  geom_point(aes(color = Volume))\n",
+  "trace": [
+    {
+      "type": "error",
+      "code_step": "NA",
+      "mapping": {
+        "message": {
+          "header": "there is no package called 'ggplot3'",
+          "body": [],
+          "footer": []
+        }
+      },
+      "data_frame": "NA"
+    }
+  ]
+}

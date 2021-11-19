@@ -1,288 +1,291 @@
-[
-  {
-    "type": "arrange",
-    "code_step": "arrange(desc(carb))",
-    "mapping": [
-      {
-        "illustrate": "highlight",
-        "select": "column",
-        "anchor": "lhs",
-        "index": 1
-      },
-      {
-        "illustrate": "outline",
-        "select": "row",
-        "from": {
-          "anchor": "lhs",
-          "index": 6
-        },
-        "to": {
-          "anchor": "rhs",
-          "index": 1
-        }
-      },
-      {
-        "illustrate": "outline",
-        "select": "row",
-        "from": {
-          "anchor": "lhs",
-          "index": 5
-        },
-        "to": {
-          "anchor": "rhs",
-          "index": 2
-        }
-      },
-      {
-        "illustrate": "outline",
-        "select": "row",
-        "from": {
-          "anchor": "lhs",
-          "index": 4
-        },
-        "to": {
-          "anchor": "rhs",
-          "index": 3
-        }
-      },
-      {
-        "illustrate": "outline",
-        "select": "row",
-        "from": {
-          "anchor": "lhs",
-          "index": 3
-        },
-        "to": {
-          "anchor": "rhs",
-          "index": 4
-        }
-      },
-      {
-        "illustrate": "outline",
-        "select": "row",
-        "from": {
-          "anchor": "lhs",
-          "index": 2
-        },
-        "to": {
-          "anchor": "rhs",
-          "index": 5
-        }
-      },
-      {
-        "illustrate": "outline",
-        "select": "row",
-        "from": {
+{
+  "code": "library(dplyr)\n\nFormaldehyde %>%\n  arrange(desc(carb)) %>%\n  slice(1:3) %>%\n  mutate(Sum = cyl + mpg) %>%\n  select(optden)\n",
+  "trace": [
+    {
+      "type": "arrange",
+      "code_step": "arrange(desc(carb))",
+      "mapping": [
+        {
+          "illustrate": "highlight",
+          "select": "column",
           "anchor": "lhs",
           "index": 1
         },
-        "to": {
-          "anchor": "rhs",
-          "index": 6
-        }
-      }
-    ],
-    "data_frame": {
-      "lhs": {
-        "col_names": ["carb", "optden"],
-        "data": [
-          {
-            "carb": 0.1,
-            "optden": 0.086
+        {
+          "illustrate": "outline",
+          "select": "row",
+          "from": {
+            "anchor": "lhs",
+            "index": 6
           },
-          {
-            "carb": 0.3,
-            "optden": 0.269
-          },
-          {
-            "carb": 0.5,
-            "optden": 0.446
-          },
-          {
-            "carb": 0.6,
-            "optden": 0.538
-          },
-          {
-            "carb": 0.7,
-            "optden": 0.626
-          },
-          {
-            "carb": 0.9,
-            "optden": 0.782
+          "to": {
+            "anchor": "rhs",
+            "index": 1
           }
-        ]
-      },
-      "rhs": {
-        "col_names": ["carb", "optden"],
-        "data": [
-          {
-            "carb": 0.9,
-            "optden": 0.782
-          },
-          {
-            "carb": 0.7,
-            "optden": 0.626
-          },
-          {
-            "carb": 0.6,
-            "optden": 0.538
-          },
-          {
-            "carb": 0.5,
-            "optden": 0.446
-          },
-          {
-            "carb": 0.3,
-            "optden": 0.269
-          },
-          {
-            "carb": 0.1,
-            "optden": 0.086
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "slice",
-    "code_step": "slice(1:3)",
-    "mapping": [
-      {
-        "illustrate": "outline",
-        "select": "row",
-        "from": {
-          "anchor": "lhs",
-          "index": 1
         },
-        "to": {
-          "anchor": "rhs",
-          "index": 1
-        }
-      },
-      {
-        "illustrate": "outline",
-        "select": "row",
-        "from": {
-          "anchor": "lhs",
-          "index": 2
-        },
-        "to": {
-          "anchor": "rhs",
-          "index": 2
-        }
-      },
-      {
-        "illustrate": "outline",
-        "select": "row",
-        "from": {
-          "anchor": "lhs",
-          "index": 3
-        },
-        "to": {
-          "anchor": "rhs",
-          "index": 3
-        }
-      }
-    ],
-    "data_frame": {
-      "lhs": {
-        "col_names": ["carb", "optden"],
-        "data": [
-          {
-            "carb": 0.9,
-            "optden": 0.782
+        {
+          "illustrate": "outline",
+          "select": "row",
+          "from": {
+            "anchor": "lhs",
+            "index": 5
           },
-          {
-            "carb": 0.7,
-            "optden": 0.626
-          },
-          {
-            "carb": 0.6,
-            "optden": 0.538
-          },
-          {
-            "carb": 0.5,
-            "optden": 0.446
-          },
-          {
-            "carb": 0.3,
-            "optden": 0.269
-          },
-          {
-            "carb": 0.1,
-            "optden": 0.086
+          "to": {
+            "anchor": "rhs",
+            "index": 2
           }
-        ]
-      },
-      "rhs": {
-        "col_names": ["carb", "optden"],
-        "data": [
-          {
-            "carb": 0.9,
-            "optden": 0.782
+        },
+        {
+          "illustrate": "outline",
+          "select": "row",
+          "from": {
+            "anchor": "lhs",
+            "index": 4
           },
-          {
-            "carb": 0.7,
-            "optden": 0.626
-          },
-          {
-            "carb": 0.6,
-            "optden": 0.538
+          "to": {
+            "anchor": "rhs",
+            "index": 3
           }
-        ]
-      }
-    }
-  },
-  {
-    "type": "error",
-    "code_step": "mutate(Sum = cyl + mpg)",
-    "mapping": {
-      "message": {
-        "header": "Problem with `mutate()` column `Sum`.\ni `Sum = cyl + mpg`.\nx object 'cyl' not found",
-        "body": [],
-        "footer": []
+        },
+        {
+          "illustrate": "outline",
+          "select": "row",
+          "from": {
+            "anchor": "lhs",
+            "index": 3
+          },
+          "to": {
+            "anchor": "rhs",
+            "index": 4
+          }
+        },
+        {
+          "illustrate": "outline",
+          "select": "row",
+          "from": {
+            "anchor": "lhs",
+            "index": 2
+          },
+          "to": {
+            "anchor": "rhs",
+            "index": 5
+          }
+        },
+        {
+          "illustrate": "outline",
+          "select": "row",
+          "from": {
+            "anchor": "lhs",
+            "index": 1
+          },
+          "to": {
+            "anchor": "rhs",
+            "index": 6
+          }
+        }
+      ],
+      "data_frame": {
+        "lhs": {
+          "col_names": ["carb", "optden"],
+          "data": [
+            {
+              "carb": 0.1,
+              "optden": 0.086
+            },
+            {
+              "carb": 0.3,
+              "optden": 0.269
+            },
+            {
+              "carb": 0.5,
+              "optden": 0.446
+            },
+            {
+              "carb": 0.6,
+              "optden": 0.538
+            },
+            {
+              "carb": 0.7,
+              "optden": 0.626
+            },
+            {
+              "carb": 0.9,
+              "optden": 0.782
+            }
+          ]
+        },
+        "rhs": {
+          "col_names": ["carb", "optden"],
+          "data": [
+            {
+              "carb": 0.9,
+              "optden": 0.782
+            },
+            {
+              "carb": 0.7,
+              "optden": 0.626
+            },
+            {
+              "carb": 0.6,
+              "optden": 0.538
+            },
+            {
+              "carb": 0.5,
+              "optden": 0.446
+            },
+            {
+              "carb": 0.3,
+              "optden": 0.269
+            },
+            {
+              "carb": 0.1,
+              "optden": 0.086
+            }
+          ]
+        }
       }
     },
-    "data_frame": {
-      "lhs": {
-        "col_names": ["carb", "optden"],
-        "data": [
-          {
-            "carb": 0.9,
-            "optden": 0.782
+    {
+      "type": "slice",
+      "code_step": "slice(1:3)",
+      "mapping": [
+        {
+          "illustrate": "outline",
+          "select": "row",
+          "from": {
+            "anchor": "lhs",
+            "index": 1
           },
-          {
-            "carb": 0.7,
-            "optden": 0.626
-          },
-          {
-            "carb": 0.6,
-            "optden": 0.538
+          "to": {
+            "anchor": "rhs",
+            "index": 1
           }
-        ]
-      },
-      "rhs": {
-        "data": "NA"
-      }
-    }
-  },
-  {
-    "type": "error",
-    "code_step": "select(optden)",
-    "mapping": {
-      "message": {
-        "header": "Problem with `mutate()` column `Sum`.\ni `Sum = cyl + mpg`.\nx object 'cyl' not found",
-        "body": [],
-        "footer": []
+        },
+        {
+          "illustrate": "outline",
+          "select": "row",
+          "from": {
+            "anchor": "lhs",
+            "index": 2
+          },
+          "to": {
+            "anchor": "rhs",
+            "index": 2
+          }
+        },
+        {
+          "illustrate": "outline",
+          "select": "row",
+          "from": {
+            "anchor": "lhs",
+            "index": 3
+          },
+          "to": {
+            "anchor": "rhs",
+            "index": 3
+          }
+        }
+      ],
+      "data_frame": {
+        "lhs": {
+          "col_names": ["carb", "optden"],
+          "data": [
+            {
+              "carb": 0.9,
+              "optden": 0.782
+            },
+            {
+              "carb": 0.7,
+              "optden": 0.626
+            },
+            {
+              "carb": 0.6,
+              "optden": 0.538
+            },
+            {
+              "carb": 0.5,
+              "optden": 0.446
+            },
+            {
+              "carb": 0.3,
+              "optden": 0.269
+            },
+            {
+              "carb": 0.1,
+              "optden": 0.086
+            }
+          ]
+        },
+        "rhs": {
+          "col_names": ["carb", "optden"],
+          "data": [
+            {
+              "carb": 0.9,
+              "optden": 0.782
+            },
+            {
+              "carb": 0.7,
+              "optden": 0.626
+            },
+            {
+              "carb": 0.6,
+              "optden": 0.538
+            }
+          ]
+        }
       }
     },
-    "data_frame": {
-      "lhs": {
-        "data": "NA"
+    {
+      "type": "error",
+      "code_step": "mutate(Sum = cyl + mpg)",
+      "mapping": {
+        "message": {
+          "header": "Problem with `mutate()` column `Sum`.\ni `Sum = cyl + mpg`.\nx object 'cyl' not found",
+          "body": [],
+          "footer": []
+        }
       },
-      "rhs": {
-        "data": "NA"
+      "data_frame": {
+        "lhs": {
+          "col_names": ["carb", "optden"],
+          "data": [
+            {
+              "carb": 0.9,
+              "optden": 0.782
+            },
+            {
+              "carb": 0.7,
+              "optden": 0.626
+            },
+            {
+              "carb": 0.6,
+              "optden": 0.538
+            }
+          ]
+        },
+        "rhs": {
+          "data": "NA"
+        }
+      }
+    },
+    {
+      "type": "error",
+      "code_step": "select(optden)",
+      "mapping": {
+        "message": {
+          "header": "Problem with `mutate()` column `Sum`.\ni `Sum = cyl + mpg`.\nx object 'cyl' not found",
+          "body": [],
+          "footer": []
+        }
+      },
+      "data_frame": {
+        "lhs": {
+          "data": "NA"
+        },
+        "rhs": {
+          "data": "NA"
+        }
       }
     }
-  }
-]
+  ]
+}

@@ -1,110 +1,113 @@
-[
-  {
-    "type": "mutate",
-    "code_step": "mutate(Sum = carb + optden, carb = carb * 2)",
-    "mapping": [
-      {
-        "illustrate": "outline",
-        "select": "column",
-        "from": {
-          "anchor": "lhs",
-          "index": 1
-        },
-        "to": {
-          "anchor": "rhs",
-          "index": 3
-        }
-      },
-      {
-        "illustrate": "outline",
-        "select": "column",
-        "from": {
-          "anchor": "lhs",
-          "index": 2
-        },
-        "to": {
-          "anchor": "rhs",
-          "index": 3
-        }
-      },
-      {
-        "illustrate": "outline",
-        "select": "column",
-        "from": {
-          "anchor": "lhs",
-          "index": 1
-        },
-        "to": {
-          "anchor": "rhs",
-          "index": 1
-        }
-      }
-    ],
-    "data_frame": {
-      "lhs": {
-        "col_names": ["carb", "optden"],
-        "data": [
-          {
-            "carb": 0.1,
-            "optden": 0.086
+{
+  "code": "library(dplyr)\n\nFormaldehyde %>%\n  mutate(Sum = carb + optden, carb = carb * 2)\n",
+  "trace": [
+    {
+      "type": "mutate",
+      "code_step": "mutate(Sum = carb + optden, carb = carb * 2)",
+      "mapping": [
+        {
+          "illustrate": "outline",
+          "select": "column",
+          "from": {
+            "anchor": "lhs",
+            "index": 1
           },
-          {
-            "carb": 0.3,
-            "optden": 0.269
-          },
-          {
-            "carb": 0.5,
-            "optden": 0.446
-          },
-          {
-            "carb": 0.6,
-            "optden": 0.538
-          },
-          {
-            "carb": 0.7,
-            "optden": 0.626
-          },
-          {
-            "carb": 0.9,
-            "optden": 0.782
+          "to": {
+            "anchor": "rhs",
+            "index": 3
           }
-        ]
-      },
-      "rhs": {
-        "col_names": ["carb", "optden", "Sum"],
-        "data": [
-          {
-            "carb": 0.2,
-            "optden": 0.086,
-            "Sum": 0.186
+        },
+        {
+          "illustrate": "outline",
+          "select": "column",
+          "from": {
+            "anchor": "lhs",
+            "index": 2
           },
-          {
-            "carb": 0.6,
-            "optden": 0.269,
-            "Sum": 0.569
-          },
-          {
-            "carb": 1,
-            "optden": 0.446,
-            "Sum": 0.946
-          },
-          {
-            "carb": 1.2,
-            "optden": 0.538,
-            "Sum": 1.138
-          },
-          {
-            "carb": 1.4,
-            "optden": 0.626,
-            "Sum": 1.326
-          },
-          {
-            "carb": 1.8,
-            "optden": 0.782,
-            "Sum": 1.682
+          "to": {
+            "anchor": "rhs",
+            "index": 3
           }
-        ]
+        },
+        {
+          "illustrate": "outline",
+          "select": "column",
+          "from": {
+            "anchor": "lhs",
+            "index": 1
+          },
+          "to": {
+            "anchor": "rhs",
+            "index": 1
+          }
+        }
+      ],
+      "data_frame": {
+        "lhs": {
+          "col_names": ["carb", "optden"],
+          "data": [
+            {
+              "carb": 0.1,
+              "optden": 0.086
+            },
+            {
+              "carb": 0.3,
+              "optden": 0.269
+            },
+            {
+              "carb": 0.5,
+              "optden": 0.446
+            },
+            {
+              "carb": 0.6,
+              "optden": 0.538
+            },
+            {
+              "carb": 0.7,
+              "optden": 0.626
+            },
+            {
+              "carb": 0.9,
+              "optden": 0.782
+            }
+          ]
+        },
+        "rhs": {
+          "col_names": ["carb", "optden", "Sum"],
+          "data": [
+            {
+              "carb": 0.2,
+              "optden": 0.086,
+              "Sum": 0.186
+            },
+            {
+              "carb": 0.6,
+              "optden": 0.269,
+              "Sum": 0.569
+            },
+            {
+              "carb": 1,
+              "optden": 0.446,
+              "Sum": 0.946
+            },
+            {
+              "carb": 1.2,
+              "optden": 0.538,
+              "Sum": 1.138
+            },
+            {
+              "carb": 1.4,
+              "optden": 0.626,
+              "Sum": 1.326
+            },
+            {
+              "carb": 1.8,
+              "optden": 0.782,
+              "Sum": 1.682
+            }
+          ]
+        }
       }
     }
-  }
-]
+  ]
+}
