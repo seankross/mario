@@ -41,3 +41,14 @@ er <- function(x) {
 is_conn <- function(x){
   all(c("file", "connection") %in% class(x))
 }
+
+is_pipeline <- function(x) {
+  length(as.character(x)) > 0 && as.character(x)[1] == "%>%"
+}
+
+is_assignment_pipeline <- function(x) {
+  length(as.character(x)) > 0 &&
+    (as.character(x)[1] == "<-" || as.character(x)[1] == "=") &&
+    length(as.list(x)) > 2 &&
+    is_pipeline(as.list(x)[[3]])
+}

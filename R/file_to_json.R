@@ -15,6 +15,7 @@ file_to_json <- function(path) {
 #' @param call A pipeline call, likely from either [parse_pipeline()]
 #' or [rlang::parse_expr()].
 #' @importFrom jsonlite toJSON
+#' @importFrom pryr object_size
 #' @export
 pipeline_to_json <- function(call){
   ptbl <- pipeline_tbl(call)
@@ -27,9 +28,9 @@ pipeline_to_json <- function(call){
 pipeline_to_trace <- function(call){
   ptbl <- pipeline_tbl(call)
 
-  if(as.numeric(object.size(ptbl)) > 1000000){
+  if(as.numeric(object_size(ptbl)) > 1000000){
     error_message <- paste("Your total data is",
-                           as.numeric(object.size(ptbl)),
+                           as.numeric(object_size(ptbl)),
                            "bytes, which is over the maximum of 1MB",
                            "that this tool currently supports.")
 
@@ -65,7 +66,7 @@ string_to_json <- function(code) {
                          strip_style() %>% strip_i())
       ),
       data_frame = "NA"
-    ))# %>% toJSON(auto_unbox = TRUE, pretty = TRUE)
+    ))
   } else {
     trace_ <- trace_raw[["result"]]
   }
@@ -81,9 +82,20 @@ string_to_json <- function(code) {
 string_to_json_helper <- function(code) {
   exprs_ <- parse_exprs(code)
   map(exprs_[-length(exprs_)], eval, envir = global_env())
+
+  if(length(exprs_) < 1){
+    stop("No code detected.", call. = FALSE)
+  }
+
   pipeline_call <- exprs_[[length(exprs_)]]
 
-  pipeline_to_trace(pipeline_call)
+  if(is_pipeline(pipeline_call)){
+    pipeline_to_trace(pipeline_call)
+  } else if(is_assignment_pipeline(pipeline_call)){
+    pipeline_to_trace(as.list(pipeline_call)[[3]])
+  } else {
+    stop("No data pipeline detected.", call. = FALSE)
+  }
 }
 
 # When you have the mario project open in RStudio, run this with
@@ -136,7 +148,7 @@ check_jsons <- function(){
     file_to_json(code) %>% writeLines(temp_file)
     pass <- all.equal(readLines(temp_file), readLines(json))
     status <- ifelse(isTRUE(pass), "Passed", "FAILED")
-    list(status = status, type = csl(fromJSON(json)[["type"]]))
+    list(status = status, type = csl(fromJSON(json)[["trace"]][["type"]]))
   }))
   })
 

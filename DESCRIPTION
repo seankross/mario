@@ -16,6 +16,7 @@ Imports:
     dplyr,
     jsonlite,
     magrittr,
+    pryr,
     purrr,
     readr,
     rlang,

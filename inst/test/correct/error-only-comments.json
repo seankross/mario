@@ -1,0 +1,17 @@
+{
+  "code": "# Monday August 29th 2016\n\n# Hi Prof. Guo,\n\n# I work in the Johns Hopkins Data Science Lab with Jeff Leek and we're putting\n# together a group of speakers for an invited session at the 2017 Joint\n# Statistical Meeting. The topic of our session focuses on using technology to\n# implement data science and programming education and we were wondering if\n# you'd be interested in joining our session to speak about pythontutor.com.\n#\n# Your talk would last 20-30 minutes and it would be one of four talks. I will\n# be presenting my work with swirl and Nick Carchedi will be discussing his\n# work at a startup. Jeff will be chairing the session.\n#\n# Please let me know what questions you have and I look forward to hearing from\n# you.\n#\n# Thanks,\n# Sean Kross\n",
+  "trace": [
+    {
+      "type": "error",
+      "code_step": "NA",
+      "mapping": {
+        "message": {
+          "header": "No code detected.",
+          "body": [],
+          "footer": []
+        }
+      },
+      "data_frame": "NA"
+    }
+  ]
+}
