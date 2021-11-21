@@ -1,0 +1,17 @@
+{
+  "code": "library(dplyr)\n\nmutate(Formaldehyde, Sum = carb + optden)\n",
+  "trace": [
+    {
+      "type": "error",
+      "code_step": "NA",
+      "mapping": {
+        "message": {
+          "header": "No data pipeline detected.",
+          "body": [],
+          "footer": []
+        }
+      },
+      "data_frame": "NA"
+    }
+  ]
+}

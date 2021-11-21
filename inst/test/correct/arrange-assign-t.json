@@ -1,0 +1,101 @@
+{
+  "code": "library(dplyr)\nlibrary(tibble)\n\nt <- tribble(\n  ~X, 4, 3, 2, 1\n)\n\nt %>%\n  arrange(X)\n",
+  "trace": [
+    {
+      "type": "arrange",
+      "code_step": "arrange(X)",
+      "mapping": [
+        {
+          "illustrate": "highlight",
+          "select": "column",
+          "anchor": "lhs",
+          "index": 1
+        },
+        {
+          "illustrate": "outline",
+          "select": "row",
+          "from": {
+            "anchor": "lhs",
+            "index": 4
+          },
+          "to": {
+            "anchor": "rhs",
+            "index": 1
+          }
+        },
+        {
+          "illustrate": "outline",
+          "select": "row",
+          "from": {
+            "anchor": "lhs",
+            "index": 3
+          },
+          "to": {
+            "anchor": "rhs",
+            "index": 2
+          }
+        },
+        {
+          "illustrate": "outline",
+          "select": "row",
+          "from": {
+            "anchor": "lhs",
+            "index": 2
+          },
+          "to": {
+            "anchor": "rhs",
+            "index": 3
+          }
+        },
+        {
+          "illustrate": "outline",
+          "select": "row",
+          "from": {
+            "anchor": "lhs",
+            "index": 1
+          },
+          "to": {
+            "anchor": "rhs",
+            "index": 4
+          }
+        }
+      ],
+      "data_frame": {
+        "lhs": {
+          "col_names": ["X"],
+          "data": [
+            {
+              "X": 4
+            },
+            {
+              "X": 3
+            },
+            {
+              "X": 2
+            },
+            {
+              "X": 1
+            }
+          ]
+        },
+        "rhs": {
+          "col_names": ["X"],
+          "data": [
+            {
+              "X": 1
+            },
+            {
+              "X": 2
+            },
+            {
+              "X": 3
+            },
+            {
+              "X": 4
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

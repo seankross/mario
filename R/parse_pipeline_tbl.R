@@ -29,7 +29,7 @@ pipeline_tbl <- function(pipeline_call) {
 
   result %>%
     mutate(DF = pipeline_call %>%
-             get_data_steps() %>%
+             get_data_steps(envir = global_env()) %>%
              right_pad_list(nrow(result))) %>%
     select(Name_Strings, Verb_Strings, DF, Verbs, Names, Args, Values, everything())
 }

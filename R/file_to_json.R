@@ -81,11 +81,12 @@ string_to_json <- function(code) {
 
 string_to_json_helper <- function(code) {
   exprs_ <- parse_exprs(code)
-  map(exprs_[-length(exprs_)], eval, envir = global_env())
 
   if(length(exprs_) < 1){
     stop("No code detected.", call. = FALSE)
   }
+
+  map(exprs_[-length(exprs_)], eval, envir = global_env())
 
   pipeline_call <- exprs_[[length(exprs_)]]
 
