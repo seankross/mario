@@ -23,6 +23,7 @@ Imports:
     stringr,
     tibble
 Suggests: 
+    ggplot2,
     rmarkdown,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3

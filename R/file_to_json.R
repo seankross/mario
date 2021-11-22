@@ -267,7 +267,11 @@ handle_pipeline_tbl_row <- function(Name_Strings, Verb_Strings, DF, Verbs,
 #' @importFrom dplyr slice
 #' @importFrom purrr flatten
 #' @importFrom rlang global_env
-load_vars <- function(call, where = 2){
+load_vars <- function(path, where = 2){
+  code <- read_file(path)
+  exprs_ <- parse_exprs(code)
+  map(exprs_[-length(exprs_)], eval, envir = global_env())
+  call <- exprs_[[length(exprs_)]]
   ptbl <- mario::pipeline_tbl(call)
   ptbl$BA <- c(NA, before_after_tbl_list(ptbl$DF))
   map2(colnames(ptbl), ptbl %>% slice(where) %>% purrr::flatten(), ~assign(.x, .y, envir = global_env()))

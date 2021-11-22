@@ -10,5 +10,4 @@ mt <- mtcars %>%
 
 
 mt %>%
-  summarise(qs = quantile(mpg, c(0.25, 0.75)), prob = c(0.25, 0.75))# %>%
-  #parse_pipeline() %>% mario::load_vars()
+  summarise(qs = quantile(mpg, c(0.25, 0.75)), prob = c(0.25, 0.75))
