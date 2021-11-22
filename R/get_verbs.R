@@ -18,7 +18,7 @@ get_verbs <- function(call) {
 }
 
 get_verbs_helper <- function(call, acc = list()) {
-  if (length(call) == 1) {
+  if (!is_pipeline(call)) {
     c(call, acc)
   } else {
     get_verbs_helper(call[[2]], acc = c(call[[3]], acc))

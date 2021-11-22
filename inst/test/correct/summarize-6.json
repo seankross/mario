@@ -1,5 +1,5 @@
 {
-  "code": "library(dplyr)\n\nmt <- mtcars %>%\n  as_tibble() %>%\n  filter(cyl < 8) %>%\n  select(mpg, cyl, am) %>%\n  arrange(cyl, am) %>%\n  slice(1, 2, 5, 12, 17, 18) %>%\n  group_by(cyl)\n\n\nmt %>%\n  summarise(qs = quantile(mpg, c(0.25, 0.75)), prob = c(0.25, 0.75))# %>%\n  #parse_pipeline() %>% mario::load_vars()\n",
+  "code": "library(dplyr)\n\nmt <- mtcars %>%\n  as_tibble() %>%\n  filter(cyl < 8) %>%\n  select(mpg, cyl, am) %>%\n  arrange(cyl, am) %>%\n  slice(1, 2, 5, 12, 17, 18) %>%\n  group_by(cyl)\n\n\nmt %>%\n  summarise(qs = quantile(mpg, c(0.25, 0.75)), prob = c(0.25, 0.75))\n",
   "trace": [
     {
       "type": "summarize",

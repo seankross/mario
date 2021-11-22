@@ -17,7 +17,7 @@ get_data_steps <- function(call, envir = parent.frame()) {
 #' @importFrom rlang cnd_header cnd_body cnd_footer
 #' @importFrom crayon strip_style
 walk_pipeline <- function(pipeline, acc = list(), envir = parent.frame()){
-  if(is.call(pipeline)){
+  if(is.call(pipeline) && is_pipeline(pipeline)){
     result <- safely(function(x){eval(x, envir = envir)})(pipeline)
     if(!is.null(result[["error"]])){
       result <- list(
@@ -36,7 +36,7 @@ walk_pipeline <- function(pipeline, acc = list(), envir = parent.frame()){
     acc <- c(acc, list(result))
     pipeline <- as.list(pipeline)[[2]]
     walk_pipeline(pipeline, acc, envir)
-  } else if(is.name(pipeline)){
+  } else if(is.name(pipeline) || is.call(pipeline)){
     result <- safely(function(x){eval(x, envir = envir)})(pipeline)
     if(!is.null(result[["error"]])){
       result <- list(

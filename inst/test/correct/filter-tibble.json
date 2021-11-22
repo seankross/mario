@@ -1,0 +1,71 @@
+{
+  "code": "library(dplyr)\nlibrary(tibble)\n\ntribble(~A, 1, 2, 3, 4) %>%\n  filter(A >= 3)\n",
+  "trace": [
+    {
+      "type": "filter",
+      "code_step": "filter(A >= 3)",
+      "mapping": [
+        {
+          "illustrate": "highlight",
+          "select": "column",
+          "anchor": "lhs",
+          "index": 1
+        },
+        {
+          "illustrate": "outline",
+          "select": "row",
+          "from": {
+            "anchor": "lhs",
+            "index": 3
+          },
+          "to": {
+            "anchor": "rhs",
+            "index": 1
+          }
+        },
+        {
+          "illustrate": "outline",
+          "select": "row",
+          "from": {
+            "anchor": "lhs",
+            "index": 4
+          },
+          "to": {
+            "anchor": "rhs",
+            "index": 2
+          }
+        }
+      ],
+      "data_frame": {
+        "lhs": {
+          "col_names": ["A"],
+          "data": [
+            {
+              "A": 1
+            },
+            {
+              "A": 2
+            },
+            {
+              "A": 3
+            },
+            {
+              "A": 4
+            }
+          ]
+        },
+        "rhs": {
+          "col_names": ["A"],
+          "data": [
+            {
+              "A": 3
+            },
+            {
+              "A": 4
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
