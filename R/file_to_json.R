@@ -393,6 +393,8 @@ handle_mutate  <- function(Name_Strings, Verb_Strings, DF, Verbs,
   new_columns <- setdiff(after_columns, before_columns)
   value_s <- Values %>% as.character()
 
+
+
   quoted_values <- Values %>%
     as.character() %>%
     map(function(x){
@@ -425,7 +427,7 @@ handle_mutate  <- function(Name_Strings, Verb_Strings, DF, Verbs,
   # - from "raw" values: mutate(Two = 2)
 
   pmap(list(Args, values, seq_along(Args), value_s), function(a, v, i, vs){
-    #i = 2; a = Args[i]; v = values[[i]]; vs = value_s[i]
+    #i = 3; a = Args[i]; v = values[[i]]; vs = value_s[i]
     mapping <- list()
     visited <- FALSE
     # is it null? (we do not draw columns created and nulled inline)
@@ -717,4 +719,25 @@ handle_summarize <- function(Name_Strings, Verb_Strings, DF, Verbs,
 handle_unknown <- function(Name_Strings, Verb_Strings, DF, Verbs,
                            Names, Args, Values, BA){
   result_setup("unknown", BA)
+}
+
+#' @importFrom stringr str_locate_all
+verb_string_position_map <- function(Verbs) {
+  verb_map <- Verbs %>%
+    as.list() %>% map(~ .x %>% get_verbs() %>% as.character())
+
+  verb <- verb_map[[1]]
+
+  verb_map <- verb_map[-1] %>%
+    imap(~paste(.y, "=", .x)) %>%
+    unname()
+
+  result <- list()
+  for (i in seq_along(verb_map)) {
+    pre <- ifelse(i == 1, "(", "")
+    verb <- verb %>% paste0(pre, verb_map[[i]])
+    result[[i]] <- str_locate_all(verb, er(verb_map[[i]]))
+    verb <- verb %>% paste0(", ")
+  }
+
 }
