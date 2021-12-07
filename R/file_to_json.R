@@ -73,12 +73,15 @@ string_to_json <- function(code) {
 
   result <- list(
     code = code,
-    trace = trace_
+    trace = trace_[["trace"]],
+    ggplot_meta = trace_[["ggplot_meta"]]
   )
 
   result %>% toJSON(auto_unbox = TRUE, pretty = TRUE)
 }
 
+#' @importFrom ggplot2 ggsave is.ggplot
+#' @importFrom base64enc base64encode
 string_to_json_helper <- function(code) {
   exprs_ <- parse_exprs(code)
 
@@ -90,10 +93,21 @@ string_to_json_helper <- function(code) {
 
   pipeline_call <- exprs_[[length(exprs_)]]
 
+  ggplot_meta <- list(code = "", base64 = "")
+  if(is_ggplot_pipeline(pipeline_call)) {
+    ggplot_meta[["code"]] <- get_ggp_text(pipeline_call)
+    gg_plot <- eval(exprs_[[length(exprs_)]], envir = global_env())
+    stopifnot(is.ggplot(gg_plot))
+    temp_file <- tempfile(fileext = ".png")
+    ggsave(temp_file, plot = gg_plot, width = 7, height = 5, dpi = 72, units = "in")
+    ggplot_meta[["base64"]] <- base64encode(temp_file)
+    pipeline_call <- get_dp_from_ggplotp(pipeline_call)
+  }
+
   if(is_pipeline(pipeline_call)){
-    pipeline_to_trace(pipeline_call)
+    list(trace = pipeline_to_trace(pipeline_call), ggplot_meta = ggplot_meta)
   } else if(is_assignment_pipeline(pipeline_call)){
-    pipeline_to_trace(as.list(pipeline_call)[[3]])
+    list(trace = pipeline_to_trace(as.list(pipeline_call)[[3]]), ggplot_meta = ggplot_meta)
   } else {
     stop("No data pipeline detected.", call. = FALSE)
   }
