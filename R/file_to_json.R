@@ -98,7 +98,7 @@ string_to_json_helper <- function(code) {
     gg_plot <- eval(exprs_[[length(exprs_)]], envir = global_env())
     stopifnot(is.ggplot(gg_plot))
     temp_file <- tempfile(fileext = ".png")
-    ggsave(temp_file, plot = gg_plot, width = 7, height = 5, dpi = 72, units = "in")
+    ggsave(temp_file, plot = gg_plot, width = 800, height = 600, dpi = 175, units = "px")
     ggplot_meta[["base64"]] <- base64encode(temp_file)
     pipeline_call <- get_dp_from_ggplotp(pipeline_call)
   }
