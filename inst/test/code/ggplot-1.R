@@ -1,8 +1,9 @@
 library(dplyr)
+library(tibble)
 library(ggplot2)
 
-mtcars %>%
-  filter(mpg > 15) %>%
-  ggplot(aes(mpg, hp, color = as.factor(cyl))) +
+Formaldehyde %>%
+  as_tibble() %>%
+  ggplot(aes(carb, optden)) +
     geom_point() +
     theme_minimal()

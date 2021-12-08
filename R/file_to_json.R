@@ -51,10 +51,11 @@ pipeline_to_trace <- function(call){
 
 #' @export
 string_to_json <- function(code) {
+  result <- list(code = code)
   trace_raw <- safely(string_to_json_helper)(code)
 
   if(!is.null(trace_raw[["error"]])){
-    trace_ <- list(list(
+    result[["trace"]] <- list(list(
       type = "error",
       code_step = "NA",
       mapping = list(
@@ -68,14 +69,12 @@ string_to_json <- function(code) {
       data_frame = "NA"
     ))
   } else {
-    trace_ <- trace_raw[["result"]]
+    result[["trace"]] <- trace_raw[["result"]][["trace"]]
+    ggm <- trace_raw[["result"]][["ggplot_meta"]]
+    if(length(ggm) > 0){
+      result[["ggplot_meta"]] <- ggm
+    }
   }
-
-  result <- list(
-    code = code,
-    trace = trace_[["trace"]],
-    ggplot_meta = trace_[["ggplot_meta"]]
-  )
 
   result %>% toJSON(auto_unbox = TRUE, pretty = TRUE)
 }
@@ -93,7 +92,7 @@ string_to_json_helper <- function(code) {
 
   pipeline_call <- exprs_[[length(exprs_)]]
 
-  ggplot_meta <- list(code = "", base64 = "")
+  ggplot_meta <- list()
   if(is_ggplot_pipeline(pipeline_call)) {
     ggplot_meta[["code"]] <- get_ggp_text(pipeline_call)
     gg_plot <- eval(exprs_[[length(exprs_)]], envir = global_env())
