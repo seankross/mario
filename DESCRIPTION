@@ -12,8 +12,10 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
 Imports: 
+    base64enc,
     crayon,
     dplyr,
+    ggplot2,
     jsonlite,
     magrittr,
     pryr,
@@ -21,9 +23,9 @@ Imports:
     readr,
     rlang,
     stringr,
-    tibble
+    tibble,
+    utils
 Suggests: 
-    ggplot2,
     rmarkdown,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
