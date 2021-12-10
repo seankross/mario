@@ -221,7 +221,7 @@ handle <- function(Name_Strings, Verb_Strings, DF, Verbs,
   if(length(BA) > 0 && is_grouped_df(BA[[1]])){
     result[["data_frame"]][["lhs"]][["group_data"]] <- list(
       col_names = BA[[1]] %>% group_keys() %>% colnames() %>% I(),
-      group_indices = BA[[1]] %>% group_indices(),
+      group_indices = BA[[1]] %>% group_indices() %>% I(),
       group_keys = BA[[1]] %>% group_keys() %>%
         group_by_at(group_vars(BA[[1]])) %>%
         group_split() %>% map2(BA[[1]] %>%
@@ -235,7 +235,7 @@ handle <- function(Name_Strings, Verb_Strings, DF, Verbs,
   if(length(BA) > 1 && is_grouped_df(BA[[2]])){
     result[["data_frame"]][["rhs"]][["group_data"]] <- list(
       col_names = BA[[2]] %>% group_keys() %>% colnames() %>% I(),
-      group_indices = BA[[2]] %>% group_indices(),
+      group_indices = BA[[2]] %>% group_indices() %>% I(),
       group_keys = BA[[2]] %>% group_keys() %>%
         group_by_at(group_vars(BA[[2]])) %>%
         group_split() %>% map2(BA[[2]] %>%

@@ -1,0 +1,56 @@
+{
+  "code": "library(dplyr)\n\nmt <- mtcars %>%\n  select(mpg, cyl) %>%\n  slice(1)\n\nmt %>%\n  group_by(cyl)\n",
+  "trace": [
+    {
+      "type": "group_by",
+      "code_step": "group_by(cyl)",
+      "mapping": [
+        {
+          "illustrate": "outline",
+          "select": "column",
+          "anchor": "lhs",
+          "index": 2
+        },
+        {
+          "illustrate": "highlight",
+          "select": "row",
+          "anchor": "rhs",
+          "index": 1,
+          "group_id": 1
+        }
+      ],
+      "data_frame": {
+        "lhs": {
+          "col_names": ["mpg", "cyl"],
+          "data": [
+            {
+              "mpg": 21,
+              "cyl": 6
+            }
+          ]
+        },
+        "rhs": {
+          "col_names": ["mpg", "cyl"],
+          "data": [
+            {
+              "mpg": 21,
+              "cyl": 6
+            }
+          ],
+          "group_data": {
+            "col_names": ["cyl"],
+            "group_indices": [1],
+            "group_keys": [
+              {
+                "group_id": 1,
+                "key": {
+                  "cyl": 6
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  ]
+}
